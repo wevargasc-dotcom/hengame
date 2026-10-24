@@ -6,32 +6,18 @@
 <title>Gallinero Cuidadoso 6.0</title>
 <style>
   :root {
-    --bg-0: #0a0d10;
-    --bg-1: #11151a;
-    --bg-2: #181d23;
-    --surface-1: #1f252c;
-    --surface-2: #272e36;
-    --surface-3: #2f3740;
-    --border-1: #363d45;
-    --border-2: #4a525c;
+    --bg-0: #0a0d10; --bg-1: #11151a; --bg-2: #181d23;
+    --surface-1: #1f252c; --surface-2: #272e36; --surface-3: #2f3740;
+    --border-1: #363d45; --border-2: #4a525c;
     --border-accent: rgba(240, 192, 96, 0.28);
-    --text-primary: #f8f0e0;
-    --text-secondary: #c4b898;
-    --text-muted: #7a6f58;
-    --gold: #f0c060;
-    --gold-bright: #ffd880;
-    --gold-dark: #c09040;
-    --green: #8ac878;
-    --green-bright: #a8e898;
-    --blue: #6ab8e0;
-    --blue-bright: #90d8f8;
-    --red: #d95f4a;
-    --amber: #e8a850;
-    --violet: #b098e8;
+    --text-primary: #f8f0e0; --text-secondary: #c4b898; --text-muted: #7a6f58;
+    --gold: #f0c060; --gold-bright: #ffd880; --gold-dark: #c09040;
+    --green: #8ac878; --green-bright: #a8e898;
+    --blue: #6ab8e0; --blue-bright: #90d8f8;
+    --red: #d95f4a; --amber: #e8a850; --violet: #b098e8;
     --shadow-sm: 0 2px 8px rgba(0,0,0,.4);
     --shadow-md: 0 8px 24px rgba(0,0,0,.5);
     --shadow-lg: 0 16px 40px rgba(0,0,0,.6);
-    --shadow-glow: 0 0 24px rgba(240,192,96,.25);
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -104,6 +90,103 @@
   .panel h2 small { text-transform: none; letter-spacing: 0; color: var(--text-secondary); font-size: 10.5px; font-weight: 700; }
   .panel h2 .ico { margin-right: 7px; font-size: 14px; filter: drop-shadow(0 1px 2px rgba(0,0,0,.5)); }
   
+  /* ============ CONDICIONES (NUEVO DISEÑO) ============ */
+  .cond-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .cond {
+    background: linear-gradient(180deg, rgba(15,12,7,.92), rgba(10,8,5,.97));
+    border: 1px solid var(--border-1);
+    border-radius: 10px;
+    padding: 8px 10px 10px 12px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .25s, transform .2s;
+    cursor: default;
+  }
+  .cond:hover { border-color: var(--border-2); transform: translateY(-1px); }
+  .cond::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: #6dbb83;
+    transition: background .3s;
+  }
+  .cond.warn::before { background: #e2a03c; }
+  .cond.bad::before { background: #d95f4a; animation: condPulse 1.2s ease-in-out infinite; }
+  @keyframes condPulse {
+    0%,100% { opacity: 1; }
+    50% { opacity: .35; }
+  }
+  .cond-top {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 5px;
+  }
+  .cond-ico {
+    font-size: 13px;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,.5));
+    transition: transform .2s;
+  }
+  .cond:hover .cond-ico { transform: scale(1.15) rotate(-4deg); }
+  .cond-name {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--text-muted);
+    font-weight: 800;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cond-value {
+    font-size: 14.5px;
+    font-weight: 900;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.3px;
+    transition: color .25s;
+  }
+  .cond.warn .cond-value { color: #f0d8a8; }
+  .cond.bad .cond-value { color: #f0b8b0; }
+  .cond-bar {
+    height: 5px;
+    background: #0d0b07;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.8);
+    position: relative;
+  }
+  .cond-bar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(90deg, transparent 49%, rgba(0,0,0,.5) 50%, transparent 51%);
+    pointer-events: none;
+  }
+  .cond-bar i {
+    display: block;
+    height: 100%;
+    width: 0;
+    border-radius: 3px;
+    transition: width .35s ease, background .35s;
+    box-shadow: 0 0 6px currentColor;
+  }
+  .cond.warn .cond-bar i { animation: condBarPulse 1.2s ease-in-out infinite; }
+  .cond.bad .cond-bar i { animation: condBarPulse 0.9s ease-in-out infinite; }
+  @keyframes condBarPulse {
+    0%,100% { opacity: 1; }
+    50% { opacity: .5; }
+  }
+  .cond.wide { grid-column: span 2; }
+  
   .btn { background: linear-gradient(180deg, rgba(58, 50, 32, .95), rgba(34, 28, 18, 1)), radial-gradient(ellipse at top, rgba(240, 192, 96, .1), transparent 60%); color: var(--text-primary); border: 1px solid rgba(74, 82, 92, .9); border-radius: 10px; padding: 10px 12px; font-size: 12.5px; cursor: pointer; text-align: left; font-family: inherit; font-weight: 600; position: relative; overflow: hidden; transition: all .18s cubic-bezier(.2,.9,.3,1.2); display: flex; align-items: center; gap: 8px; }
   .btn::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 220, 150, .15), transparent 45%); opacity: 0; transition: opacity .3s; pointer-events: none; }
   .btn:hover { background: linear-gradient(180deg, rgba(74, 62, 38, 1), rgba(46, 38, 24, 1)), radial-gradient(ellipse at top, rgba(240, 192, 96, .15), transparent 60%); border-color: var(--border-2); box-shadow: 0 3px 14px rgba(240, 192, 96, .2); transform: translateY(-1px); }
@@ -117,6 +200,8 @@
   .btn.sm { font-size: 11.5px; padding: 8px 9px; justify-content: center; }
   .btn.spd.on { background: linear-gradient(180deg, #5a9a4a, #3f7532); border-color: #7ac06a; color: #fff; font-weight: 700; box-shadow: 0 0 14px rgba(120, 192, 106, .5); }
   .btn .p { color: var(--gold); font-size: 10.5px; font-weight: 700; }
+  .btn.locked { opacity: .45; cursor: not-allowed; }
+  .btn.locked:hover { transform: none; }
   kbd { float: right; background: #0f0c07; border: 1px solid #3a3022; border-radius: 4px; padding: 0 5px; font-size: 9px; color: #8a7d62; font-family: inherit; margin-left: auto; font-weight: 700; }
   .acts { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
   .foot { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
@@ -129,17 +214,6 @@
   .coopBtn b { display: block; font-size: 13px; font-weight: 900; color: var(--gold-bright); }
   .coopBtn small { font-size: 9px; color: var(--text-secondary); font-weight: 700; }
   .coopBtn.on b { color: var(--green-bright); }
-  
-  .gauge { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 8px; align-items: center; margin-bottom: 10px; font-size: 11.5px; color: var(--text-secondary); }
-  .gauge .gico { font-size: 13px; transition: transform .2s; }
-  .gauge:hover .gico { transform: scale(1.2) rotate(-3deg); }
-  .gauge b { font-size: 11.5px; color: var(--text-primary); min-width: 58px; text-align: right; font-weight: 800; }
-  .gauge .bar { grid-column: 1/-1; height: 8px; background: #0d0b07; border-radius: 5px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,.7); position: relative; }
-  .gauge .bar::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, transparent 49.5%, rgba(0,0,0,.3) 50%, transparent 50.5%); pointer-events: none; }
-  .gauge .bar i { display: block; height: 100%; width: 0; border-radius: 5px; transition: width .3s, background .3s; box-shadow: 0 0 10px currentColor; position: relative; }
-  .gauge .bar i::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.25), transparent 60%); border-radius: 5px; }
-  .gauge.warn .bar i { animation: gaugePulse 1.2s ease-in-out infinite; }
-  @keyframes gaugePulse { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
   
   .hens { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 5px; max-height: 240px; overflow: auto; }
   .hens li { display: grid; grid-template-columns: 12px 1fr auto; gap: 8px; align-items: center; padding: 7px 10px; border-radius: 9px; background: linear-gradient(180deg, #16120c, #100c08); cursor: pointer; font-size: 11.5px; border: 1px solid transparent; transition: all .15s; }
@@ -169,7 +243,6 @@
   .workers li span { color: var(--text-muted); font-size: 10px; }
   .hireList { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
   
-  /* ============ Layers + Efecto cortina ============ */
   .layer {
     position: absolute; inset: 10px;
     background: rgba(8, 6, 4, .94); border-radius: 14px;
@@ -267,6 +340,8 @@
     .hireList { grid-template-columns: 1fr; }
     .crates { grid-template-columns: 1fr; }
     h1 { font-size: 19px; }
+    .cond-grid { grid-template-columns: 1fr; }
+    .cond.wide { grid-column: span 1; }
   }
 </style>
 </head>
@@ -304,7 +379,7 @@
       <div id="sortLayer" class="layer hidden">
         <div class="sheet">
           <h2>📦 Clasificar la puesta</h2>
-          <p class="hint">Haz <b>clic en un huevo</b> para seleccionarlo, luego <b>clic en la caja</b> correcta. Clic en un huevo colocado lo devuelve. Atajos: <b>1-5</b> para B · A · AA · EX · Yumbo. ⚠ Los huevos <b>recogidos están a salvo en almacén</b> (no envejecen ni se dañan). ⚠ Un huevo <b>mal clasificado</b> se paga a <b>1 €</b> (menos si está muy lejos de su caja ideal).</p>
+          <p class="hint">Haz <b>clic en un huevo</b> para seleccionarlo, luego <b>clic en la caja</b> correcta. Clic en un huevo colocado lo devuelve. Atajos: <b>1-5</b> para B · A · AA · EX · Yumbo. ⚠ Los huevos <b>recogidos están a salvo en almacén</b> (no envejecen ni se dañan). ⚠ Un huevo <b>mal clasificado</b> vale <b>1 €</b> (menos si está muy lejos de su caja ideal).</p>
           <div class="sortBar">
             <div class="selInfo" id="selInfo">Selecciona un huevo para empezar</div>
             <button class="btn sm" id="btnClearCrates"><span class="bico">↩️</span> Vaciar cajas</button>
@@ -383,15 +458,41 @@
         <button class="btn wide" id="bCoop"><span class="bico">🏗️</span> Construir · <span id="coopCost">150 €</span> <kbd>B</kbd></button>
       </div>
 
-      <!-- ✅ CONDICIONES MOVIDAS ARRIBA -->
-      <div class="panel">
+      <!-- ============ CONDICIONES (DISEÑO MEJORADO) ============ -->
+      <div class="panel cond-panel">
         <h2><span><span class="ico">🌡️</span>Condiciones</span><small id="coopTag">Galpón A</small></h2>
-        <div class="gauge" id="gaugeTemp"><span class="gico">🌡️</span><span>Temperatura</span><b id="vTemp">22 °C</b><div class="bar"><i id="gTemp"></i></div></div>
-        <div class="gauge" id="gaugeAir"><span class="gico">💨</span><span>Amoníaco</span><b id="vAir">10/100</b><div class="bar"><i id="gAir"></i></div></div>
-        <div class="gauge" id="gaugeBed"><span class="gico">🛏️</span><span>Cama</span><b id="vBed">100%</b><div class="bar"><i id="gBed"></i></div></div>
-        <div class="gauge" id="gaugeWater"><span class="gico">💧</span><span>Bebederos</span><b id="vWater">100%</b><div class="bar"><i id="gWater"></i></div></div>
-        <div class="gauge" id="gaugeFeed"><span class="gico">🌾</span><span>Comederos</span><b id="vFeed">0%</b><div class="bar"><i id="gFeed"></i></div></div>
-        <div class="gauge" id="gaugeVent"><span class="gico">🪟</span><span>Ventilación</span><b id="vVent">25%</b><div class="bar"><i id="gVent"></i></div></div>
+        <div class="cond-grid">
+          <div class="cond" id="gaugeTemp">
+            <div class="cond-top"><span class="cond-ico">🌡️</span><span class="cond-name">Temperatura</span></div>
+            <div class="cond-value" id="vTemp">22,0 °C</div>
+            <div class="cond-bar"><i id="gTemp"></i></div>
+          </div>
+          <div class="cond" id="gaugeAir">
+            <div class="cond-top"><span class="cond-ico">💨</span><span class="cond-name">Amoníaco</span></div>
+            <div class="cond-value" id="vAir">10 / 100</div>
+            <div class="cond-bar"><i id="gAir"></i></div>
+          </div>
+          <div class="cond" id="gaugeBed">
+            <div class="cond-top"><span class="cond-ico">🛏️</span><span class="cond-name">Cama</span></div>
+            <div class="cond-value" id="vBed">100%</div>
+            <div class="cond-bar"><i id="gBed"></i></div>
+          </div>
+          <div class="cond" id="gaugeWater">
+            <div class="cond-top"><span class="cond-ico">💧</span><span class="cond-name">Bebederos</span></div>
+            <div class="cond-value" id="vWater">100%</div>
+            <div class="cond-bar"><i id="gWater"></i></div>
+          </div>
+          <div class="cond" id="gaugeFeed">
+            <div class="cond-top"><span class="cond-ico">🌾</span><span class="cond-name">Comederos</span></div>
+            <div class="cond-value" id="vFeed">0%</div>
+            <div class="cond-bar"><i id="gFeed"></i></div>
+          </div>
+          <div class="cond" id="gaugeVent">
+            <div class="cond-top"><span class="cond-ico">🪟</span><span class="cond-name">Ventilación</span></div>
+            <div class="cond-value" id="vVent">25%</div>
+            <div class="cond-bar"><i id="gVent"></i></div>
+          </div>
+        </div>
       </div>
 
       <div class="panel">
@@ -475,59 +576,34 @@ const EGG_CRACK_AGE = 1400;
 
 /* ============ ENFERMEDADES ============ */
 const DISEASES = {
-  frio: [
-    { name: 'Resfriado', icon: '🤧' },
-    { name: 'Pulmonía', icon: '🫁' },
-    { name: 'Bronquitis', icon: '😷' }
-  ],
-  sed: [
-    { name: 'Deshidratación', icon: '💧' },
-    { name: 'Cólico', icon: '🤢' },
-    { name: 'Gastroenteritis', icon: '🤮' }
-  ],
-  hambre: [
-    { name: 'Anemia', icon: '🩸' },
-    { name: 'Debilidad', icon: '💀' },
-    { name: 'Caquexia', icon: '🦴' }
-  ],
-  amoniaco: [
-    { name: 'Conjuntivitis', icon: '👁️' },
-    { name: 'Traqueítis', icon: '🫁' },
-    { name: 'Neumonía', icon: '😷' }
-  ],
-  sucio: [
-    { name: 'Coccidiosis', icon: '🪱' },
-    { name: 'Parásitos', icon: '🐛' },
-    { name: 'Tiña', icon: '🍄' }
-  ],
-  general: [
-    { name: 'Fiebre', icon: '🌡️' },
-    { name: 'Infección', icon: '🦠' },
-    { name: 'Malestar', icon: '🤒' }
-  ]
+  frio: [{ name: 'Resfriado', icon: '🤧' }, { name: 'Pulmonía', icon: '🫁' }, { name: 'Bronquitis', icon: '😷' }],
+  sed: [{ name: 'Deshidratación', icon: '💧' }, { name: 'Cólico', icon: '🤢' }, { name: 'Gastroenteritis', icon: '🤮' }],
+  hambre: [{ name: 'Anemia', icon: '🩸' }, { name: 'Debilidad', icon: '💀' }, { name: 'Caquexia', icon: '🦴' }],
+  amoniaco: [{ name: 'Conjuntivitis', icon: '👁️' }, { name: 'Traqueítis', icon: '🫁' }, { name: 'Neumonía', icon: '😷' }],
+  sucio: [{ name: 'Coccidiosis', icon: '🪱' }, { name: 'Parásitos', icon: '🐛' }, { name: 'Tiña', icon: '🍄' }],
+  general: [{ name: 'Fiebre', icon: '🌡️' }, { name: 'Infección', icon: '🦠' }, { name: 'Malestar', icon: '🤒' }]
 };
-
 function pickDisease(trigger) {
   const pool = DISEASES[trigger] || DISEASES.general;
   const d = pick(pool);
   return { name: d.name, icon: d.icon, trigger };
 }
 
-/* ============ CLIMA ============ */
 const WEATHERS = {
   soleado: { id: 'soleado', name: 'Soleado', icon: '☀️', tempMod: +3, waterAdd: 0, ammoniaWash: 0, isRain: false, skyMod: 'bright', moodBonus: +0.005 },
   nublado: { id: 'nublado', name: 'Nublado', icon: '☁️', tempMod: -1, waterAdd: 0, ammoniaWash: 0, isRain: false, skyMod: 'dim', moodBonus: 0 },
   lluvioso: { id: 'lluvioso', name: 'Lluvioso', icon: '🌧️', tempMod: -6, waterAdd: 0.045, ammoniaWash: 0.04, isRain: true, skyMod: 'dark', moodBonus: -0.02 }
 };
 
+/* ⚠ NIVELES: maxWorkers ya no es 0 en N1 y N2 */
 const LEVELS = [
-  { name: 'Nivel 1 · El primer gallinero', days: 5, money: 120, feed: 35, hens: 4, coops: 1, maxCoops: 1, maxWorkers: 0,
+  { name: 'Nivel 1 · El primer gallinero', days: 5, money: 120, feed: 35, hens: 4, coops: 1, maxCoops: 1, maxWorkers: 2,
     goals: [{ k: 'money', v: 200, txt: 'Terminar con 200 €' }, { k: 'hens', v: 4, txt: 'Mantener 4 gallinas vivas' }] },
-  { name: 'Nivel 2 · Ampliar la granja', days: 6, money: 150, feed: 40, hens: 5, coops: 1, maxCoops: 2, maxWorkers: 0,
+  { name: 'Nivel 2 · Ampliar la granja', days: 6, money: 150, feed: 40, hens: 5, coops: 1, maxCoops: 2, maxWorkers: 3,
     goals: [{ k: 'coops', v: 2, txt: 'Construir un 2º galpón' }, { k: 'sold', v: 70, txt: 'Vender 70 huevos' }, { k: 'money', v: 320, txt: 'Terminar con 320 €' }] },
-  { name: 'Nivel 3 · Manos extra', days: 6, money: 180, feed: 40, hens: 6, coops: 2, maxCoops: 3, maxWorkers: 3,
+  { name: 'Nivel 3 · Manos extra', days: 6, money: 180, feed: 40, hens: 6, coops: 2, maxCoops: 3, maxWorkers: 4,
     goals: [{ k: 'workers', v: 2, txt: 'Contratar 2 trabajadores' }, { k: 'sold', v: 110, txt: 'Vender 110 huevos' }, { k: 'money', v: 420, txt: 'Terminar con 420 €' }] },
-  { name: 'Nivel 4 · Granja en marcha', days: 7, money: 220, feed: 50, hens: 8, coops: 2, maxCoops: 4, maxWorkers: 5,
+  { name: 'Nivel 4 · Granja en marcha', days: 7, money: 220, feed: 50, hens: 8, coops: 2, maxCoops: 4, maxWorkers: 6,
     goals: [{ k: 'coops', v: 4, txt: 'Tener 4 galpones' }, { k: 'hens', v: 16, txt: 'Tener 16 gallinas vivas' }, { k: 'sold', v: 200, txt: 'Vender 200 huevos' }, { k: 'money', v: 700, txt: 'Terminar con 700 €' }] },
   { name: 'Nivel 5 · Granja modelo', days: 8, money: 300, feed: 60, hens: 10, coops: 3, maxCoops: 6, maxWorkers: 8,
     goals: [{ k: 'hens', v: 24, txt: 'Tener 24 gallinas vivas' }, { k: 'sold', v: 320, txt: 'Vender 320 huevos' }, { k: 'money', v: 1200, txt: 'Terminar con 1.200 €' }] }
@@ -563,8 +639,9 @@ const coopPrice = () => 150 + 120 * (S.coops.length - 1);
 const ampPrice  = c => 100 + 60 * c.amp;
 const totalFeedInCoop = c => c.feeders.reduce((a, f) => a + f.food, 0);
 const maxFeedInCoop = c => c.feeders.reduce((a, f) => a + f.max, 0);
+const feedPctInCoop = c => (totalFeedInCoop(c) / maxFeedInCoop(c)) * 100;
 
-/* ============ HELPERS DE CORTINA ============ */
+/* ============ CORTINA ============ */
 function showLayer(id) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -594,27 +671,20 @@ function hideLayer(id, callback) {
   }, 400);
 }
 
-function floorOf(c) {
-  return { x: c.rect.x + 10, y: c.rect.y + 44, w: c.rect.w - 20, h: c.rect.h - 54 };
-}
+function floorOf(c) { return { x: c.rect.x + 10, y: c.rect.y + 44, w: c.rect.w - 20, h: c.rect.h - 54 }; }
 
 function makeCoop() {
   return {
-    id: ++coopSeq,
-    name: 'Galpón ' + LETTERS[S.coops.length % 6],
-    nests: [], floor: [],
-    water: 100, bedding: 100, ammonia: 10, temp: 22, vent: 0.25, lamp: false,
-    feeders: [], drinkers: [],
-    amp: 0, rect: { x: 0, y: 0, w: 0, h: 0 }
+    id: ++coopSeq, name: 'Galpón ' + LETTERS[S.coops.length % 6],
+    nests: [], floor: [], water: 100, bedding: 100, ammonia: 10, temp: 22, vent: 0.25, lamp: false,
+    feeders: [], drinkers: [], amp: 0, rect: { x: 0, y: 0, w: 0, h: 0 }
   };
 }
-
 function ensureNests(c) {
   const want = 4 + c.amp * 2;
   while (c.nests.length < want) c.nests.push({ owner: null, eggs: [], x: 0, y: 0, w: 0, h: 0, cx: 0, cy: 0 });
   while (c.nests.length > want) c.nests.pop();
 }
-
 function layoutCoops() {
   const n = Math.max(1, S.coops.length);
   const cols = n === 1 ? 1 : n <= 4 ? 2 : 3;
@@ -623,7 +693,6 @@ function layoutCoops() {
   const availW = W - padX * 2 - gap * (cols - 1);
   const availH = H - TOPBAR - 12 - gap * (rows - 1);
   const cw = availW / cols, chh = availH / rows;
-
   S.coops.forEach((c, i) => {
     const r = Math.floor(i / cols), col = i % cols;
     c.rect = { x: padX + col * (cw + gap), y: TOPBAR + r * (chh + gap), w: cw, h: chh };
@@ -631,12 +700,8 @@ function layoutCoops() {
     const m = 8;
     const nw = (c.rect.w - m * 2) / c.nests.length;
     c.nests.forEach((nst, k) => {
-      nst.x = c.rect.x + m + k * nw;
-      nst.y = c.rect.y + 5;
-      nst.w = nw - 3;
-      nst.h = 32;
-      nst.cx = nst.x + nst.w / 2;
-      nst.cy = c.rect.y + 52;
+      nst.x = c.rect.x + m + k * nw; nst.y = c.rect.y + 5; nst.w = nw - 3; nst.h = 32;
+      nst.cx = nst.x + nst.w / 2; nst.cy = c.rect.y + 52;
     });
     const f = floorOf(c);
     const oldFeedTotal = c.feeders.length ? totalFeedInCoop(c) : 0;
@@ -653,10 +718,8 @@ function layoutCoops() {
   });
   SCALE = cols === 1 ? 1.12 : cols === 2 ? 0.94 : 0.80;
   for (const w of S.workers) {
-    const c = coopById(w.coop);
-    const f = floorOf(c);
-    w.x = clamp(w.x, f.x + 20, f.x + f.w - 20);
-    w.y = clamp(w.y, f.y + 20, f.y + f.h - 20);
+    const c = coopById(w.coop); const f = floorOf(c);
+    w.x = clamp(w.x, f.x + 20, f.x + f.w - 20); w.y = clamp(w.y, f.y + 20, f.y + f.h - 20);
     w.tx = w.x; w.ty = w.y;
   }
 }
@@ -667,9 +730,7 @@ const HEN_NAMES = ['Pipa', 'Canela', 'Nube', 'Torta', 'Perla', 'Greta', 'Dora', 
                    'Mora', 'Lola', 'Kika', 'Pepa', 'Rita', 'Sombra', 'Trufa', 'Vega', 'Yema', 'Zaina'];
 
 function newHen(coopId) {
-  const c = coopById(coopId);
-  const f = floorOf(c);
-  const p = PLUMES[hid % PLUMES.length];
+  const c = coopById(coopId); const f = floorOf(c); const p = PLUMES[hid % PLUMES.length];
   const h = {
     id: ++hid, name: HEN_NAMES[(hid - 1) % HEN_NAMES.length], plume: p, coop: c.id,
     x: rnd(f.x + 30, f.x + f.w - 30), y: rnd(f.y + 30, f.y + f.h - 24),
@@ -682,10 +743,8 @@ function newHen(coopId) {
   S.hens.push(h);
   return h;
 }
-
 function newWorker(role, coopId) {
-  const c = coopById(coopId);
-  const f = floorOf(c);
+  const c = coopById(coopId); const f = floorOf(c);
   return {
     id: ++hid, role, name: pick(WORKER_NAMES), cd: 20, coop: c.id,
     x: rnd(f.x + 30, f.x + f.w - 30), y: rnd(f.y + 30, f.y + f.h - 30),
@@ -703,15 +762,12 @@ function initRain() {
   for (let i = 0; i < 8; i++) {
     puddles.push({ x: rnd(0, W), y: rnd(TOPBAR + 50, H - 40), w: rnd(40, 100), h: rnd(8, 16), opacity: 0 });
   }
-  lightning = 0;
-  lightningTimer = rnd(5, 15);
+  lightning = 0; lightningTimer = rnd(5, 15);
 }
-
 function updateRain(dt) {
   if (!S.weather.isRain) return;
   for (const d of rainDrops) {
-    d.y += d.speed * dt;
-    d.x -= d.speed * 0.15 * dt;
+    d.y += d.speed * dt; d.x -= d.speed * 0.15 * dt;
     if (d.y > H) { d.y = -20; d.x = Math.random() * W * 1.2; }
     if (d.x < -30) { d.x = W + Math.random() * 60; }
   }
@@ -720,7 +776,6 @@ function updateRain(dt) {
   if (lightning > 0) lightning -= dt * 2;
   for (const p of puddles) { if (p.opacity < 0.35) p.opacity += dt * 0.15; }
 }
-
 function drawRain() {
   if (!S.weather.isRain) return;
   for (const p of puddles) {
@@ -746,15 +801,13 @@ function startLevel(li) {
   hid = 0; eggId = 0; coopSeq = 0; uiSig = ''; selectedEggId = null;
   rainDrops = []; puddles = []; lightning = 0;
   S = {
-    level: li, day: 1, t: 8 * 60,
-    money: L.money, feed: L.feed,
+    level: li, day: 1, t: 8 * 60, money: L.money, feed: L.feed,
     hens: [], coops: [], workers: [],
     pending: [], crates: { B: [], A: [], AA: [], EX: [], Yumbo: [] },
     log: [], sel: 0, selCoop: 0,
     paused: true, over: false, speed: 600, sorting: false,
-    weather: WEATHERS.soleado,
-    event: null, laying: 0, sold: 0, cart: 0,
-    dayIncome: 0, dayFeed: 0, lvlSold: 0,
+    weather: WEATHERS.soleado, event: null,
+    laying: 0, sold: 0, cart: 0, dayIncome: 0, dayFeed: 0, lvlSold: 0,
     hoverCoop: null, hoverHen: null
   };
   for (let i = 0; i < L.coops; i++) S.coops.push(makeCoop());
@@ -762,13 +815,11 @@ function startLevel(li) {
   for (let i = 0; i < L.hens; i++) newHen(S.coops[i % S.coops.length].id);
   S.selCoop = S.coops[0].id;
   S.sel = S.hens[0] ? S.hens[0].id : 0;
-
   buildSpeedButtons();
   logMsg(`${L.name}. Empiezas con ${L.money} € y ${L.hens} gallinas.`, 'good', true);
   updateUI(true);
   showLevelIntro();
 }
-
 function goalVal(k) {
   switch (k) {
     case 'money': return S.money;
@@ -779,22 +830,21 @@ function goalVal(k) {
     default: return 0;
   }
 }
-
 function showLevelIntro() {
   const L = LEVELS[S.level];
   const goals = L.goals.map(g => `<span>🎯 ${g.txt}</span><b>${g.k === 'money' ? g.v + ' €' : g.v}</b>`).join('');
   showModal('🐔 ' + L.name, `
     <p class="hint">Tienes <b>${L.days} días</b> para cumplir los objetivos. Los huevos que <b>recoges quedan a salvo</b>
       en el almacén (no envejecen ni se dañan). Solo los de nidos y suelo envejecen. Clasifica en 5 grados: <b>B · A · AA · EX · Yumbo</b>.
-      ⚠ Un huevo <b>mal clasificado</b> se paga a <b>1 €</b> (menos si está muy lejos de su caja ideal).
-      ⚠ Las gallinas <b>enferman</b> con frío, sed, hambre o amoníaco alto: cada una desarrolla una <b>enfermedad aleatoria</b>.</p>
+      ⚠ Un huevo <b>mal clasificado</b> vale <b>1 €</b> (menos si está muy lejos de su caja ideal).
+      ⚠ Las gallinas <b>enferman</b> con frío, sed, hambre o amoníaco alto.
+      👥 Puedes <b>contratar trabajadores desde este nivel</b> (hasta ${L.maxWorkers}).</p>
     <div class="kv">${goals}</div>
     <p class="hint"><b>Ratón:</b> clic en una gallina o un galpón para seleccionar.
       <b>1-6</b> cambia de galpón · <b>B</b> construye · <b>K</b> amplía · <b>G</b> compra gallinas ·
-      <b>Espacio</b> pausa. <b>El clima cambia cada día</b>: la lluvia enfría, llena bebederos y limpia el aire.</p>`,
+      <b>Espacio</b> pausa. <b>El clima cambia cada día</b>.</p>`,
     '¡A cuidar!', () => { S.paused = false; updateUI(true); });
 }
-
 function finishLevel() {
   S.over = true; S.paused = true;
   const L = LEVELS[S.level];
@@ -805,7 +855,6 @@ function finishLevel() {
   const all = res.every(r => r.ok);
   const rows = res.map(r => `<span>${r.ok ? '✅' : '❌'} ${r.txt}</span><b>${r.isMoney ? eur(r.have) : r.have}</b>`).join('');
   const last = S.level >= LEVELS.length - 1;
-
   if (all && last) {
     showModal('🏆 ¡Granja maestra!', `
       <div class="kv">
@@ -832,7 +881,6 @@ function finishLevel() {
     <div class="kv">${rows}</div>`,
     'Reintentar nivel', () => startLevel(S.level));
 }
-
 function failLevel(reason) {
   if (S.over) return;
   S.over = true; S.paused = true;
@@ -846,7 +894,6 @@ function failLevel(reason) {
     </div>`,
     'Reintentar nivel', () => startLevel(S.level));
 }
-
 function toast(text, kind = '') {
   const box = document.getElementById('toasts');
   if (box.children.length >= 3) box.firstChild.remove();
@@ -857,7 +904,6 @@ function toast(text, kind = '') {
   setTimeout(() => { t.style.transition = 'opacity .4s'; t.style.opacity = '0'; }, 2200);
   setTimeout(() => t.remove(), 2700);
 }
-
 function logMsg(text, kind = '', showToast = false) {
   if (!S) return;
   S.log.unshift({ t: `D${S.day} ${hhmm(S.t)}`, text, kind });
@@ -868,27 +914,51 @@ function logMsg(text, kind = '', showToast = false) {
 }
 
 /* ============ ACCIONES ============ */
+
+/* ⚠ FEED: no desperdicia si comederos ya están llenos */
 function feedCoop(c) {
   if (S.over) return;
   const n = hensIn(c.id).length;
   if (n === 0) return logMsg(`${c.name}: no hay gallinas que comer.`, 'warn', true);
-  const kg = Math.max(0.8, Math.round(n * 1.1 * 10) / 10);
-  if (S.feed < kg) return logMsg(`Falta pienso (necesitas ${kg} kg). Compra con P.`, 'warn', true);
-  S.feed = Math.round((S.feed - kg) * 10) / 10;
-  S.dayFeed += kg;
-  const units = kg * UNITS_PER_KG;
+
+  const total = totalFeedInCoop(c);
+  const max = maxFeedInCoop(c);
+  const pct = (total / max) * 100;
+
+  if (pct >= 97) {
+    return logMsg(`${c.name}: comederos ya al ${Math.round(pct)}%. No se ha usado pienso.`, '', true);
+  }
+
+  const kgWanted = Math.max(0.8, Math.round(n * 1.1 * 10) / 10);
+  const kgCapacity = (max - total) / UNITS_PER_KG;
+  const kgToUse = Math.min(kgWanted, kgCapacity);
+
+  if (kgToUse < 0.05) {
+    return logMsg(`${c.name}: comederos al ${Math.round(pct)}%. No se ha usado pienso.`, '', true);
+  }
+  if (S.feed < kgToUse) {
+    return logMsg(`Falta pienso (necesitas ${kgToUse.toFixed(1)} kg). Compra con P.`, 'warn', true);
+  }
+
+  S.feed = Math.round((S.feed - kgToUse) * 10) / 10;
+  S.dayFeed += kgToUse;
+  const units = kgToUse * UNITS_PER_KG;
   const per = units / c.feeders.length;
   c.feeders.forEach(fd => { fd.food = Math.min(fd.max, fd.food + per); });
-  logMsg(`${c.name}: ${kg} kg repartidos en ${c.feeders.length} comederos.`, 'good', true);
+  const newPct = Math.round(feedPctInCoop(c));
+  logMsg(`${c.name}: ${kgToUse.toFixed(1)} kg repartidos. Comederos al ${newPct}%.`, 'good', true);
   updateUI(true);
 }
+
+/* ⚠ WATER: no desperdicia si ya está al 100% */
 function waterTrough(c) {
   if (S.over) return;
-  if (c.water > 92) return logMsg(`${c.name}: los bebederos ya están llenos.`, '', true);
+  if (c.water >= 99) return logMsg(`${c.name}: bebederos ya al 100%.`, '', true);
   c.water = 100;
-  logMsg(`${c.name}: ${c.drinkers.length} bebederos renovados.`, 'good', true);
+  logMsg(`${c.name}: ${c.drinkers.length} bebederos renovados. Agua al 100%.`, 'good', true);
   updateUI(true);
 }
+
 function toggleVent(c) {
   if (S.over) return;
   c.vent = c.vent > 0.5 ? 0.15 : 0.85;
@@ -1035,17 +1105,12 @@ function hireWorker(role) {
 }
 function tickWorkers(dm) {
   for (const w of S.workers) {
-    const c = coopById(w.coop);
-    const f = floorOf(c);
-    if (w.wait > 0) {
-      w.wait -= dm;
-    } else {
-      const dx = w.tx - w.x, dy = w.ty - w.y;
-      const d = Math.hypot(dx, dy);
+    const c = coopById(w.coop); const f = floorOf(c);
+    if (w.wait > 0) { w.wait -= dm; }
+    else {
+      const dx = w.tx - w.x, dy = w.ty - w.y, d = Math.hypot(dx, dy);
       if (d < 3) {
-        w.tx = rnd(f.x + 20, f.x + f.w - 20);
-        w.ty = rnd(f.y + 20, f.y + f.h - 20);
-        w.wait = rnd(30, 100);
+        w.tx = rnd(f.x + 20, f.x + f.w - 20); w.ty = rnd(f.y + 20, f.y + f.h - 20); w.wait = rnd(30, 100);
       } else {
         const s = Math.min(d, 45 * dm);
         w.x += dx / d * s; w.y += dy / d * s;
@@ -1064,7 +1129,7 @@ function doWork(w) {
   if (role === 'peon') {
     const dry = S.coops.find(c => c.water < 45 && hensIn(c.id).length > 0);
     if (dry) { dry.water = 100; logMsg(`${w.name} (peón) rellenó los bebederos del ${dry.name}.`); return; }
-    const hungry = S.coops.find(c => hensIn(c.id).length && totalFeedInCoop(c) < 15);
+    const hungry = S.coops.find(c => hensIn(c.id).length && feedPctInCoop(c) < 40);
     if (hungry) feedCoop(hungry);
     return;
   }
@@ -1140,7 +1205,6 @@ function sim(dm) {
     h.bob += dm * (h.mode === 'walk' ? 2.2 : 0.6);
     h.hunger = clamp(h.hunger + 0.055 * dm, 0, 100);
     h.thirst = clamp(h.thirst + 0.075 * dm, 0, 100);
-
     let dmg = 0;
     if (h.hunger > 78) dmg += (h.hunger - 78) * 0.006;
     if (h.thirst > 72) dmg += (h.thirst - 72) * 0.014;
@@ -1148,7 +1212,6 @@ function sim(dm) {
     if (c.temp < 8) dmg += (8 - c.temp) * 0.022;
     if (c.ammonia > 45) dmg += (c.ammonia - 45) * 0.018;
     if (h.sick) { dmg += 0.055; h.sickMin += dm; }
-
     if (weather.isRain) {
       const nearNest = c.nests.some(n => Math.hypot(h.x - n.cx, h.y - n.cy) < 70);
       if (!nearNest) { h.wet = clamp((h.wet || 0) + 0.8 * dm, 0, 100); dmg += 0.008; }
@@ -1157,53 +1220,41 @@ function sim(dm) {
     } else {
       h.wet = clamp((h.wet || 0) - 0.8 * dm, 0, 100);
     }
-
     h.health = clamp(h.health - dmg * dm, 0, 100);
     h.mood += ((100 - dmg * 90) - h.mood) * clamp(0.02 * dm, 0, 1);
     if (weather.moodBonus) h.mood = clamp(h.mood + weather.moodBonus * dm, 0, 100);
 
-    /* ============ ENFERMEDAD POR CONDICIONES ============ */
+    /* ENFERMEDAD POR CONDICIONES */
     if (!h.sick) {
       let newDisease = null;
-
-      /* Frío: temp < 10 */
       if (c.temp < 10) {
         const sev = (10 - c.temp) / 10;
         if (Math.random() < 0.00025 * sev * dm) newDisease = pickDisease('frio');
       }
-      /* Sed: thirst > 72 */
       if (!newDisease && h.thirst > 72) {
         const sev = (h.thirst - 72) / 28;
         if (Math.random() < 0.00035 * sev * dm) newDisease = pickDisease('sed');
       }
-      /* Hambre: hunger > 75 */
       if (!newDisease && h.hunger > 75) {
         const sev = (h.hunger - 75) / 25;
         if (Math.random() < 0.00025 * sev * dm) newDisease = pickDisease('hambre');
       }
-      /* Amoníaco: > 50 */
       if (!newDisease && c.ammonia > 50) {
         const sev = (c.ammonia - 50) / 50;
         if (Math.random() < 0.0003 * sev * dm) newDisease = pickDisease('amoniaco');
       }
-      /* Cama sucia: < 30 */
       if (!newDisease && c.bedding < 30) {
         const sev = (30 - c.bedding) / 30;
         if (Math.random() < 0.00015 * sev * dm) newDisease = pickDisease('sucio');
       }
-      /* Fallback por daño general */
       if (!newDisease && dmg > 0.05 && Math.random() < (0.000012 + dmg * 0.00042) * dm) {
         newDisease = pickDisease('general');
       }
-
       if (newDisease) {
-        h.sick = true;
-        h.disease = newDisease;
-        h.sickMin = 0;
+        h.sick = true; h.disease = newDisease; h.sickMin = 0;
         logMsg(`${h.name} enfermó de ${newDisease.name} ${newDisease.icon}. Trátala con T.`, 'bad', true);
       }
     }
-
     if (!h.sick) {
       for (const o of S.hens) {
         if (o === h || !o.alive || !o.sick || o.coop !== h.coop) continue;
@@ -1216,9 +1267,7 @@ function sim(dm) {
         }
       }
     }
-
     if (h.sick && h.sickMin > 900 && h.health < 25) h.health = Math.min(h.health, 6);
-
     if (h.health <= 0) {
       h.alive = false; h.sick = false; h.disease = null;
       if (h.nest >= 0 && c.nests[h.nest]) { c.nests[h.nest].owner = null; h.nest = -1; }
@@ -1230,7 +1279,6 @@ function sim(dm) {
     behavior(h, c, dm);
   }
 
-  /* Solo envejecen los huevos en nidos y suelo. Los recogidos (S.pending) están a salvo. */
   for (const c of S.coops) {
     const ageEggs = list => list.forEach(e => {
       e.age += dm;
@@ -1252,7 +1300,6 @@ function sim(dm) {
     S.event = pick(['calor', 'frio']);
     logMsg(S.event === 'calor' ? '⚠ Ola de calor: abre la ventilación.' : '⌛ Golpe de frío nocturno: considera los caleones.', 'warn', true);
   }
-
   if (S.t >= DAY_MINUTES) endDay();
   updateUI();
 }
@@ -1420,14 +1467,11 @@ function endDay() {
   S.laying = 0; S.dayIncome = 0; S.dayFeed = 0;
   S.day++;
   S.paused = true;
-
   if (S.money < -150) { failLevel('La caja está en bancarrota.'); return; }
   if (S.day > L.days) { finishLevel(); return; }
 
   changeWeather();
-  showModal(`🌙 Cierre del día ${S.day - 1}`, rows, `Empezar día ${S.day}`, () => {
-    S.paused = false; updateUI(true);
-  });
+  showModal(`🌙 Cierre del día ${S.day - 1}`, rows, `Empezar día ${S.day}`, () => { S.paused = false; updateUI(true); });
 
   if (Math.random() < 0.30) {
     const ok = living().filter(h => !h.sick);
@@ -1446,7 +1490,7 @@ function tips() {
   if (!alive.length) return 'Sin gallinas vivas.';
   if (S.money < 0) return 'Consejo: estás en números rojos. Vende huevos clasificados y recorta gastos.';
   if (S.pending.length) return 'Consejo: los huevos en almacén están a salvo, pero no se venden solos. Clasifícalos (O).';
-  if (S.weather.isRain) return 'Consejo: con lluvia baja la temperatura y las gallinas se mojan. Enciende caleones (Q) y asegúrate de que tienen nidos secos.';
+  if (S.weather.isRain) return 'Consejo: con lluvia baja la temperatura y las gallinas se mojan. Enciende caleones (Q).';
   if (S.coops.some(c => c.ammonia > 50)) return 'Consejo: el amoníaco alto enferma. Ventila (V) y cambia la cama (L).';
   if (S.coops.some(c => c.temp > 29)) return 'Consejo: con más de 30 °C hay golpe de calor. Abre la ventilación.';
   if (S.coops.some(c => c.temp < 10)) return 'Consejo: hace frío; enciende caleones (Q).';
@@ -1476,13 +1520,11 @@ function rr(x, y, w, h, r) {
   ctx.arcTo(x, y, x + w, y, r);
   ctx.closePath();
 }
-
 function drawBackground() {
   const nf = nightFactor();
   const t = S.t / 60;
   const dayP = clamp((t - 5) / 14, 0, 1);
   const weather = S.weather;
-
   const g = ctx.createLinearGradient(0, 0, 0, H * 0.55);
   if (weather.isRain) {
     if (nf < 0.5) {
@@ -1502,7 +1544,6 @@ function drawBackground() {
   }
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, W, H * 0.55);
-
   if (nf > 0.3 && !weather.isRain) {
     ctx.fillStyle = `rgba(255,255,255,${nf * 0.8})`;
     for (let i = 0; i < 40; i++) {
@@ -1511,7 +1552,6 @@ function drawBackground() {
       ctx.fillRect(x, y, s, s);
     }
   }
-
   if (!weather.isRain) {
     if (nf < 0.5) {
       const sx = 40 + dayP * (W - 80);
@@ -1538,7 +1578,6 @@ function drawBackground() {
       ctx.beginPath(); ctx.arc(mx + 6, my - 4, 13, 0, Math.PI * 2); ctx.fill();
     }
   }
-
   const cloudCount = weather.isRain ? 7 : weather.id === 'nublado' ? 5 : 4;
   const cloudOpacity = weather.isRain ? 0.7 : weather.id === 'nublado' ? 0.5 : (nf > 0.4 ? 0.15 : 0.5);
   const cloudColor = weather.isRain ? 'rgba(60, 70, 85, ' : weather.id === 'nublado' ? 'rgba(140, 150, 170, ' : 'rgba(255,255,255, ';
@@ -1551,7 +1590,6 @@ function drawBackground() {
     ctx.beginPath(); ctx.ellipse(x + 18 * scale, y - 6, 26 * scale, 9 * scale, 0, 0, Math.PI * 2); ctx.fill();
     ctx.beginPath(); ctx.ellipse(x - 22 * scale, y - 4, 22 * scale, 8 * scale, 0, 0, Math.PI * 2); ctx.fill();
   }
-
   const hillG = ctx.createLinearGradient(0, H * 0.42, 0, H * 0.55);
   if (weather.isRain) { hillG.addColorStop(0, '#2a3828'); hillG.addColorStop(1, '#354232'); }
   else if (weather.id === 'nublado') { hillG.addColorStop(0, '#3a4a3a'); hillG.addColorStop(1, '#485845'); }
@@ -1565,7 +1603,6 @@ function drawBackground() {
   }
   ctx.lineTo(W, H * 0.55); ctx.lineTo(0, H * 0.55); ctx.closePath(); ctx.fill();
 }
-
 function drawSmallFeeder(fd) {
   const fill = fd.food / fd.max;
   const cx = fd.x, baseY = fd.y;
@@ -1609,7 +1646,6 @@ function drawSmallFeeder(fd) {
     ctx.fillText('!', cx + 12, tubeY - 3.5); ctx.textAlign = 'left';
   }
 }
-
 function drawSmallDrinker(d, water) {
   const fill = water / 100;
   const cx = d.x, baseY = d.y;
@@ -1659,7 +1695,6 @@ function drawSmallDrinker(d, water) {
     ctx.fillText('!', cx + domeW/2 + 4, domeY + 6.5); ctx.textAlign = 'left';
   }
 }
-
 function drawHen(h) {
   const s = SCALE;
   if (!h.alive) {
@@ -1676,12 +1711,10 @@ function drawHen(h) {
     ctx.fillText('retirar (R)', h.x, h.y - 16); ctx.textAlign = 'left';
     return;
   }
-
   const bob = Math.sin(h.bob) * (h.mode === 'walk' ? 1.8 : 0.5);
   const walkPhase = Math.sin(h.bob * 2) * (h.mode === 'walk' ? 1 : 0);
   const isHover = S.hoverHen === h.id;
   const isWet = (h.wet || 0) > 30;
-
   if (isHover) {
     const glow = ctx.createRadialGradient(h.x, h.y, 0, h.x, h.y, 30 * s);
     glow.addColorStop(0, 'rgba(255,220,150,.4)');
@@ -1689,18 +1722,12 @@ function drawHen(h) {
     ctx.fillStyle = glow;
     ctx.beginPath(); ctx.arc(h.x, h.y, 30 * s, 0, Math.PI * 2); ctx.fill();
   }
-
   ctx.fillStyle = 'rgba(0,0,0,.3)';
   ctx.beginPath(); ctx.ellipse(h.x + 2, h.y + 20 * s, 16 * s, 4 * s, 0, 0, Math.PI * 2); ctx.fill();
-
-  ctx.save();
-  ctx.translate(h.x, h.y);
-  ctx.scale(h.face * s, s);
-
+  ctx.save(); ctx.translate(h.x, h.y); ctx.scale(h.face * s, s);
   const bodyColor = h.sick ? '#b9bfa4' : h.plume[0];
   const wingColor = h.plume[1];
   const combColor = h.sick ? '#8a4a4a' : '#d8423a';
-
   ctx.fillStyle = wingColor;
   const tailFeathers = [
     { a: -0.55, len: 26, w: 5 }, { a: -0.40, len: 28, w: 5 }, { a: -0.25, len: 26, w: 4.5 },
@@ -1721,7 +1748,6 @@ function drawHen(h) {
   ctx.quadraticCurveTo(-20, -6, -30, 0);
   ctx.quadraticCurveTo(-20, 4, 0, 3);
   ctx.closePath(); ctx.fill(); ctx.restore();
-
   ctx.fillStyle = bodyColor;
   ctx.beginPath();
   ctx.moveTo(-12, bob - 8);
@@ -1731,14 +1757,12 @@ function drawHen(h) {
   ctx.quadraticCurveTo(10, bob - 12, 0, bob - 11);
   ctx.quadraticCurveTo(-8, bob - 12, -12, bob - 8);
   ctx.closePath(); ctx.fill();
-
   const bodyGrad = ctx.createRadialGradient(8, bob - 2, 2, 0, bob, 20);
   bodyGrad.addColorStop(0, 'rgba(255,255,255,.5)');
   bodyGrad.addColorStop(0.6, 'rgba(255,255,255,.15)');
   bodyGrad.addColorStop(1, 'rgba(0,0,0,.15)');
   ctx.fillStyle = bodyGrad;
   ctx.beginPath(); ctx.ellipse(0, bob, 15, 12, 0, 0, Math.PI * 2); ctx.fill();
-
   ctx.fillStyle = wingColor;
   ctx.beginPath();
   ctx.moveTo(-8, bob - 4);
@@ -1755,7 +1779,6 @@ function drawHen(h) {
   }
   ctx.fillStyle = 'rgba(255,255,255,.15)';
   ctx.beginPath(); ctx.ellipse(-3, bob - 2, 5, 3, 0.3, 0, Math.PI * 2); ctx.fill();
-
   ctx.fillStyle = bodyColor;
   ctx.beginPath();
   ctx.moveTo(7, bob - 8);
@@ -1763,21 +1786,17 @@ function drawHen(h) {
   ctx.lineTo(17, bob - 20);
   ctx.quadraticCurveTo(18, bob - 10, 12, bob - 2);
   ctx.closePath(); ctx.fill();
-
   const headX = 14, headY = bob - 22;
   ctx.fillStyle = bodyColor;
   ctx.beginPath(); ctx.arc(headX, headY, 7, 0, Math.PI * 2); ctx.fill();
   ctx.fillStyle = 'rgba(255,255,255,.35)';
   ctx.beginPath(); ctx.arc(headX - 2, headY - 2, 3, 0, Math.PI * 2); ctx.fill();
-
   ctx.fillStyle = combColor;
   const crestBumps = [{ dx: -4, dy: -6, r: 2.2 }, { dx: -1, dy: -7.5, r: 2.6 }, { dx: 2, dy: -7.5, r: 2.6 }, { dx: 5, dy: -6, r: 2.2 }];
   for (const b of crestBumps) { ctx.beginPath(); ctx.arc(headX + b.dx, headY + b.dy, b.r, 0, Math.PI * 2); ctx.fill(); }
-
   ctx.fillStyle = combColor;
   ctx.beginPath(); ctx.ellipse(headX + 5, headY + 5, 2.5, 3.5, 0.2, 0, Math.PI * 2); ctx.fill();
   ctx.beginPath(); ctx.ellipse(headX + 3, headY + 7, 2, 2.5, 0.2, 0, Math.PI * 2); ctx.fill();
-
   ctx.fillStyle = '#f0b040';
   ctx.beginPath();
   ctx.moveTo(headX + 6, headY - 1);
@@ -1786,12 +1805,10 @@ function drawHen(h) {
   ctx.closePath(); ctx.fill();
   ctx.strokeStyle = 'rgba(0,0,0,.3)'; ctx.lineWidth = 0.7;
   ctx.beginPath(); ctx.moveTo(headX + 6, headY + 0.7); ctx.lineTo(headX + 11, headY + 0.7); ctx.stroke();
-
   ctx.fillStyle = '#1a1a1a';
   ctx.beginPath(); ctx.arc(headX + 2.5, headY - 1, 1.8, 0, Math.PI * 2); ctx.fill();
   ctx.fillStyle = '#fff';
   ctx.beginPath(); ctx.arc(headX + 3, headY - 1.5, 0.6, 0, Math.PI * 2); ctx.fill();
-
   const legY = bob + 10;
   ctx.strokeStyle = '#d49030'; ctx.lineWidth = 2.2; ctx.lineCap = 'round';
   const lx = -3 + walkPhase * 2, rx = 4 - walkPhase * 2;
@@ -1804,9 +1821,7 @@ function drawHen(h) {
   for (const [fx, fw] of [[lx, -1], [lx, 0], [lx, 1], [rx, -1], [rx, 0], [rx, 1]]) {
     ctx.beginPath(); ctx.moveTo(fx, legY + 9); ctx.lineTo(fx + fw * 2.2, legY + 11.5); ctx.stroke();
   }
-
   ctx.restore();
-
   if (isWet) {
     ctx.fillStyle = 'rgba(120,170,220,.5)';
     for (let i = 0; i < 4; i++) {
@@ -1815,12 +1830,10 @@ function drawHen(h) {
       ctx.beginPath(); ctx.arc(gx, gy, 1.5, 0, Math.PI * 2); ctx.fill();
     }
   }
-
   if (S.sel === h.id) {
     ctx.strokeStyle = '#8fd6a6'; ctx.lineWidth = 1.8;
     ctx.beginPath(); ctx.ellipse(h.x, h.y + 4, 24 * s, 18 * s, 0, 0, Math.PI * 2); ctx.stroke();
   }
-
   let sign = '';
   const c = coopOf(h);
   if (h.sick) sign = h.disease ? h.disease.icon : '🤒';
@@ -1844,7 +1857,6 @@ function drawHen(h) {
     ctx.fillText(label, h.x, h.y + 34 * s); ctx.textAlign = 'left';
   }
 }
-
 function drawWorker(w) {
   const s = SCALE;
   const col = WORKER_COLORS[w.role] || { body: '#5a7a4a', hat: '#8a6a3a' };
@@ -1889,7 +1901,6 @@ function drawWorker(w) {
   ctx.fillText(w.name, w.x, iconY - 15);
   ctx.textAlign = 'left';
 }
-
 function drawCoop(c) {
   const r = c.rect, f = floorOf(c);
   const isHover = S.hoverCoop === c.id;
@@ -1956,7 +1967,6 @@ function drawCoop(c) {
     ctx.strokeStyle = 'rgba(0,0,0,.4)'; ctx.lineWidth = 0.8; ctx.strokeRect(vx, vy, 6, 6);
   }
 }
-
 function drawEgg(x, y, e, sc) {
   sc = sc || 1;
   const sizeR = { S: 5, M: 6.5, L: 8, XL: 9.5, XXL: 11 };
@@ -1980,7 +1990,6 @@ function drawEgg(x, y, e, sc) {
   }
   ctx.restore();
 }
-
 function drawTopBar() {
   const nf = nightFactor();
   const weather = S.weather;
@@ -2010,13 +2019,11 @@ function drawTopBar() {
   ctx.fillText(tag, W - 24, 27);
   ctx.textAlign = 'left';
 }
-
 function drawNightOverlay() {
   const nf = nightFactor();
   if (nf > 0.02) { ctx.fillStyle = `rgba(15,22,45,${nf * 0.4})`; ctx.fillRect(0, 0, W, H); }
   if (S.coops.some(c => c.temp > 30)) { ctx.fillStyle = 'rgba(220,80,40,.04)'; ctx.fillRect(0, 0, W, H); }
 }
-
 function render() {
   ctx.clearRect(0, 0, W, H);
   drawBackground();
@@ -2061,7 +2068,8 @@ function updateUI(force) {
   document.getElementById('ampCost').textContent = ampPrice(c) + ' €';
   document.getElementById('wageInfo').textContent = S.workers.reduce((a, w) => a + WORKERS[w.role].salary, 0) + ' €/día';
 
-  const g = (bar, txt, v, label, col, gaugeId) => {
+  /* ⚠ Gauge con estado warn/bad para el nuevo diseño */
+  const g = (bar, txt, v, label, col, gaugeId, warn, bad) => {
     const el = document.getElementById(bar);
     el.style.width = clamp(v, 0, 100) + '%';
     el.style.background = col;
@@ -2069,17 +2077,29 @@ function updateUI(force) {
     document.getElementById(txt).textContent = label;
     if (gaugeId) {
       const gEl = document.getElementById(gaugeId);
-      gEl.classList.toggle('warn', (v < 20 || (gaugeId === 'gaugeAir' && v > 55) || (gaugeId === 'gaugeTemp' && (c.temp > 29 || c.temp < 10))));
+      gEl.classList.toggle('warn', !!warn);
+      gEl.classList.toggle('bad', !!bad);
     }
   };
   const tempPct = (c.temp / 45) * 100;
-  g('gTemp', 'vTemp', tempPct, c.temp.toFixed(1) + ' °C', c.temp > 29 ? '#d9663f' : c.temp < 10 ? '#5aa9d6' : '#6dbb83', 'gaugeTemp');
-  g('gAir', 'vAir', c.ammonia, Math.round(c.ammonia) + '/100', c.ammonia > 55 ? '#d9663f' : c.ammonia > 35 ? '#e2a03c' : '#6dbb83', 'gaugeAir');
-  g('gBed', 'vBed', c.bedding, Math.round(c.bedding) + '%', c.bedding < 40 ? '#d9663f' : '#c9a86a', 'gaugeBed');
-  g('gWater', 'vWater', c.water, Math.round(c.water) + '%', c.water < 25 ? '#d9663f' : '#4fa3d1', 'gaugeWater');
-  const feedPct = (totalFeedInCoop(c) / maxFeedInCoop(c)) * 100;
-  g('gFeed', 'vFeed', feedPct, Math.round(feedPct) + '%', feedPct < 15 ? '#d9663f' : feedPct < 40 ? '#e2a03c' : '#e8b85c', 'gaugeFeed');
-  g('gVent', 'vVent', c.vent * 100, Math.round(c.vent * 100) + '%', c.vent > 0.5 ? '#5aa9d6' : '#8d7a55', 'gaugeVent');
+  g('gTemp', 'vTemp', tempPct, c.temp.toFixed(1).replace('.', ',') + ' °C',
+    c.temp > 29 ? '#d9663f' : c.temp < 10 ? '#5aa9d6' : '#6dbb83', 'gaugeTemp',
+    c.temp > 28 || c.temp < 12, c.temp > 32 || c.temp < 6);
+  g('gAir', 'vAir', c.ammonia, Math.round(c.ammonia) + ' / 100',
+    c.ammonia > 55 ? '#d9663f' : c.ammonia > 35 ? '#e2a03c' : '#6dbb83', 'gaugeAir',
+    c.ammonia > 40, c.ammonia > 60);
+  g('gBed', 'vBed', c.bedding, Math.round(c.bedding) + '%',
+    c.bedding < 40 ? '#d9663f' : '#c9a86a', 'gaugeBed',
+    c.bedding < 50, c.bedding < 25);
+  g('gWater', 'vWater', c.water, Math.round(c.water) + '%',
+    c.water < 25 ? '#d9663f' : '#4fa3d1', 'gaugeWater',
+    c.water < 40, c.water < 15);
+  const feedPct = feedPctInCoop(c);
+  g('gFeed', 'vFeed', feedPct, Math.round(feedPct) + '%',
+    feedPct < 15 ? '#d9663f' : feedPct < 40 ? '#e2a03c' : '#e8b85c', 'gaugeFeed',
+    feedPct < 30, feedPct < 10);
+  g('gVent', 'vVent', c.vent * 100, Math.round(c.vent * 100) + '%',
+    c.vent > 0.5 ? '#5aa9d6' : '#8d7a55', 'gaugeVent', false, false);
 
   const av = living();
   document.getElementById('avgHealth').textContent = av.length
@@ -2137,7 +2157,6 @@ function openSort() {
   updateSelInfo();
   sortInfo();
 }
-
 function renderSortBed() {
   const bed = document.getElementById('eggBed');
   bed.innerHTML = '';
@@ -2216,7 +2235,6 @@ const ideal = e => {
 };
 const ecrate = e => e.dom && e.dom.closest('.crate') ? e.dom.closest('.crate').dataset.crate : null;
 
-/* ⚠ Un huevo mal clasificado vale 1 € base, con penalización según cuántos grados se aleje de su caja ideal. */
 function misclassValue(e) {
   const cr = ecrate(e);
   if (!cr) return 0;
@@ -2228,7 +2246,6 @@ function misclassValue(e) {
   if (diff === 3) return 0.4;
   return 0.2;
 }
-
 function clearCrates() {
   let moved = 0;
   for (const e of S.pending) {
@@ -2299,7 +2316,6 @@ function buildSpeedButtons() {
 
 /* ============ ENLACES ============ */
 const on = (id, fn) => document.getElementById(id).addEventListener('click', fn);
-
 on('bFeed',  () => feedCoop(curCoop()));
 on('bWater', () => waterTrough(curCoop()));
 on('bVent',  () => toggleVent(curCoop()));
@@ -2417,7 +2433,6 @@ const KEYS = {
   p: buyFeed,
   g: openHenModal
 };
-
 addEventListener('keydown', ev => {
   if (ev.repeat) return;
   const k = ev.key.toLowerCase();
@@ -2466,7 +2481,6 @@ function frame(now) {
   render();
   requestAnimationFrame(frame);
 }
-
 startLevel(0);
 requestAnimationFrame(frame);
 
