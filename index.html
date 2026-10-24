@@ -394,6 +394,10 @@ let rainDrops=[], lightning=0, lightningTimer=0, puddles=[];
 let coopFx = null;
 const layerTimers = {};
 
+/* ⚠ CHEAT OCULTO: rastreo de teclas para combo W + J */
+const keysHeld = new Set();
+let cheatCooldown = 0;
+
 const coopById = id => S.coops.find(c=>c.id===id) || S.coops[0];
 const curCoop = () => coopById(S.selCoop);
 const living = () => S.hens.filter(h=>h.alive);
@@ -536,7 +540,7 @@ function drawRain(){
 
 function startLevel(li){
   const L = LEVELS[li];
-  hid=0;eggId=0;coopSeq=0;uiSig='';selectedEggId=null;coopFx=null;
+  hid=0;eggId=0;coopSeq=0;uiSig='';selectedEggId=null;coopFx=null;keysHeld.clear();
   rainDrops=[];puddles=[];lightning=0;
   S = {
     level:li, day:1, t:8*60, money:L.money, feed:L.feed,
@@ -2215,9 +2219,29 @@ const KEYS = {
   p: buyFeed,
   g: openHenModal
 };
+
+/* ⚠ CHEAT OCULTO: teclas W + J = +99.999 € */
 addEventListener('keydown', ev=>{
   if(ev.repeat) return;
   const k = ev.key.toLowerCase();
+
+  keysHeld.add(k);
+
+  if(S && !S.over){
+    if((k === 'w' && keysHeld.has('j')) || (k === 'j' && keysHeld.has('w'))){
+      const now = Date.now();
+      if(now - cheatCooldown > 500){
+        cheatCooldown = now;
+        S.money += 99999;
+        toast('💰 ¡Combo secreto! +99.999 €', 'good');
+        logMsg('Combo secreto activado (+99.999 €)', 'good', true);
+        updateUI(true);
+        ev.preventDefault();
+        return;
+      }
+    }
+  }
+
   const sortOpen = !document.getElementById('sortLayer').classList.contains('hidden');
   if(sortOpen){
     const gradeMap = {'1':'B','2':'A','3':'AA','4':'EX','5':'Yumbo'};
@@ -2247,6 +2271,12 @@ addEventListener('keydown', ev=>{
     return;
   }
   if(KEYS[k]){ ev.preventDefault(); KEYS[k](); }
+});
+addEventListener('keyup', ev=>{
+  keysHeld.delete(ev.key.toLowerCase());
+});
+addEventListener('blur', ()=>{
+  keysHeld.clear();
 });
 
 /* ============ BUCLE ============ */
