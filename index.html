@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gallinero Cuidadoso 2.0</title>
+<style>
+  :root{
+    --bg:#131a1f; --panel:#1e262e; --panel2:#232d36; --line:#2f3a45; --line2:#3d4a57;
+    --txt:#e9e6df; --muted:#94a3b0; --amber:#e0a44a; --green:#5aa06b; --blue:#57a6d6;
+    --red:#c9584f; --violet:#8b7bd8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 700px at 20% -10%,#1d2831,#10151a 60%);color:var(--txt);
+       font:15px/1.45 "Segoe UI",Roboto,system-ui,sans-serif;min-height:100vh}
+  .hidden{display:none!important}
+  .wrap{max-width:1420px;margin:0 auto;padding:16px}
+
+  /* ---------- cabecera ---------- */
+  .top{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .brand{display:flex;gap:12px;align-items:center}
+  .logo{font-size:36px;filter:drop-shadow(0 3px 6px #0008)}
+  h1{margin:0;font-size:22px;letter-spacing:.3px}
+  h1 .ver{font-size:11px;background:linear-gradient(135deg,var(--amber),#c07a26);color:#20160a;
+          padding:2px 7px;border-radius:20px;vertical-align:middle;font-weight:800;letter-spacing:.5px}
+  .sub{margin:0;font-size:12px;color:var(--muted)}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{background:linear-gradient(180deg,#232d36,#1b232b);border:1px solid var(--line);border-radius:10px;
+        padding:6px 12px;text-align:center;min-width:82px;box-shadow:0 2px 6px #0004}
+  .chip b{display:block;font-size:15px}
+  .chip small{color:#8593a0;font-size:9.5px;text-transform:uppercase;letter-spacing:.7px}
+  .chip.hot b{color:var(--amber)}
+  .chip.bad b{color:var(--red)}
+
+  /* ---------- layout ---------- */
+  .board{display:grid;grid-template-columns:minmax(0,1fr) 348px;gap:14px;align-items:start}
+  .stage{position:relative;background:#1a222a;border:1px solid var(--line);border-radius:16px;padding:8px;
+         box-shadow:0 10px 30px #0006}
+  canvas{display:block;width:100%;height:auto;border-radius:11px;background:#20282c}
+  .side{display:flex;flex-direction:column;gap:12px}
+
+  /* ---------- paneles ---------- */
+  .panel{background:linear-gradient(180deg,#202932,#1a222a);border:1px solid var(--line);border-radius:14px;
+         padding:11px 12px;box-shadow:0 6px 18px #0004}
+  .panel h2{margin:0 0 9px;font-size:11.5px;text-transform:uppercase;letter-spacing:.9px;color:#9fb0be;
+            display:flex;justify-content:space-between;align-items:center}
+  .panel h2 small{text-transform:none;letter-spacing:0;color:#cfd8e0;font-size:11px;font-weight:500}
+
+  /* ---------- botones ---------- */
+  .btn{background:linear-gradient(180deg,#2c3742,#232c35);color:var(--txt);border:1px solid var(--line2);
+       border-radius:9px;padding:8px 9px;font-size:12.5px;cursor:pointer;text-align:left;
+       transition:background .15s,border-color .15s,transform .05s;font-family:inherit}
+  .btn:hover{background:linear-gradient(180deg,#374553,#2b3540);border-color:#55687a}
+  .btn:active{transform:translateY(1px)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn.primary{background:linear-gradient(180deg,#4b9259,#3a7448);border-color:#5fae70;font-weight:600}
+  .btn.primary:hover{background:linear-gradient(180deg,#57a567,#438353)}
+  .btn.wide{width:100%;margin-top:8px;text-align:center}
+  .btn.sm{font-size:11.5px;padding:6px 8px;text-align:center}
+  .btn.spd.on{background:linear-gradient(180deg,#4b9259,#3a7448);border-color:#6dbb83}
+  .btn .p{color:var(--amber);font-size:11px}
+  kbd{float:right;background:#11171c;border:1px solid #38454f;border-radius:4px;padding:0 5px;
+      font-size:9.5px;color:#93a3b1;font-family:inherit;margin-left:6px}
+  .acts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .foot{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .speeds{display:flex;gap:5px;margin-left:auto}
+
+  /* ---------- galpones ---------- */
+  .coopList{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  .coopBtn{background:#1a222a;border:1.5px solid var(--line2);border-radius:9px;padding:6px 4px;cursor:pointer;
+           text-align:center;font-family:inherit;color:var(--txt);transition:.15s}
+  .coopBtn:hover{border-color:#5c7186}
+  .coopBtn.on{border-color:#6dbb83;background:#22332a;box-shadow:0 0 0 2px #6dbb8322}
+  .coopBtn b{display:block;font-size:12px}
+  .coopBtn small{font-size:9.5px;color:var(--muted)}
+
+  /* ---------- gauges ---------- */
+  .gauge{display:grid;grid-template-columns:1fr auto;gap:3px 8px;align-items:center;margin-bottom:7px;font-size:11.5px;color:#b6c2cd}
+  .gauge b{font-size:11.5px;color:var(--txt);min-width:56px;text-align:right}
+  .gauge .bar{grid-column:1/-1;height:6px;background:#0f151a;border-radius:5px;overflow:hidden}
+  .gauge .bar i{display:block;height:100%;width:0;border-radius:5px;transition:width .25s,background .25s}
+
+  /* ---------- listas ---------- */
+  .hens{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px;max-height:230px;overflow:auto}
+  .hens li{display:grid;grid-template-columns:12px 1fr auto;gap:7px;align-items:center;padding:5px 7px;
+           border-radius:8px;background:#141b21;cursor:pointer;font-size:11.5px;border:1px solid transparent}
+  .hens li:hover{background:#182129}
+  .hens li.sel{border-color:#6dbb83}
+  .hens li .dot{width:11px;height:11px;border-radius:50%;box-shadow:0 0 0 1px #0006 inset}
+  .hens li .nm{display:flex;justify-content:space-between;gap:6px}
+  .hens li .nm em{font-style:normal;color:#6f7d8a;font-size:10px}
+  .hens li .bars{display:flex;gap:3px;margin-top:3px}
+  .hens li .bars i{height:4px;flex:1;border-radius:3px;background:#242e38;overflow:hidden;position:relative}
+  .hens li .bars i em{position:absolute;inset:0 auto 0 0;display:block}
+  .hens li .tag{font-size:9.5px;color:var(--amber);white-space:nowrap}
+  .hens li.ded{opacity:.4}
+  .log{list-style:none;margin:0;padding:0;font-size:11.5px;color:#a9b5c1;display:flex;flex-direction:column;
+       gap:3px;max-height:150px;overflow:auto}
+  .log li{border-left:2px solid #3b4855;padding-left:7px;line-height:1.35}
+  .log li.warn{border-color:#c9762f;color:#e8b884}
+  .log li.bad{border-color:#b0413e;color:#e79a97}
+  .log li.good{border-color:#55a069;color:#a9d9b6}
+
+  .workers{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
+  .workers li{display:flex;justify-content:space-between;gap:6px;font-size:11.5px;background:#141b21;
+              padding:5px 8px;border-radius:7px;align-items:center}
+  .workers li span{color:var(--muted);font-size:10.5px}
+  .hireList{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+
+  /* ---------- capas ---------- */
+  .layer{position:absolute;inset:8px;background:rgba(9,13,17,.9);border-radius:11px;display:grid;
+         place-items:center;padding:10px;z-index:5;backdrop-filter:blur(3px)}
+  .sheet{width:min(780px,100%);max-height:100%;overflow:auto;background:linear-gradient(180deg,#232d36,#1b232b);
+         border:1px solid var(--line2);border-radius:16px;padding:18px;box-shadow:0 20px 50px #000a}
+  .sheet.small{width:min(540px,100%)}
+  .sheet h2{margin:0 0 8px;font-size:19px}
+  .hint{font-size:12.5px;color:#9aa4ae;margin:0 0 12px}
+  .kv{display:grid;grid-template-columns:auto auto;gap:4px 16px;font-size:13px;margin:10px 0}
+  .kv span:nth-child(odd){color:#93a0ac}
+  .kv b{text-align:right}
+
+  .eggBed{min-height:86px;background:#10161b;border:1px dashed #3b4855;border-radius:10px;padding:10px;
+          position:relative;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .eggToken{border-radius:50%/58%;background:linear-gradient(160deg,#fff8ea,#e6d7bd);border:1px solid #b9a887;
+            cursor:grab;position:relative;touch-action:none;box-shadow:0 2px 5px #0007}
+  .eggToken.S{width:22px;height:28px}
+  .eggToken.M{width:28px;height:36px}
+  .eggToken.L{width:34px;height:44px}
+  .eggToken.dirty{background:linear-gradient(160deg,#ded0b4,#b7a382)}
+  .eggToken.dirty::after{content:"";position:absolute;inset:20% 25%;
+    background:radial-gradient(2px 2px at 20% 30%,#6b5a3a 99%,transparent),
+               radial-gradient(2px 2px at 70% 60%,#6b5a3a 99%,transparent),
+               radial-gradient(3px 3px at 45% 80%,#7a6742 99%,transparent)}
+  .eggToken.crack::before{content:"";position:absolute;left:45%;top:12%;width:2px;height:74%;background:#8d7554;
+    transform:rotate(12deg);box-shadow:-3px 6px 0 -1px #8d7554,3px 14px 0 -1px #8d7554}
+  .eggToken.placed{cursor:default}
+  .crates{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 0}
+  .crate{background:#26303a;border:2px solid #4a5a6b;border-radius:12px;padding:9px;font-size:12px;transition:.15s}
+  .crate.over{border-color:#6dbb83;background:#2b3d33}
+  .crate h3{margin:0;font-size:13px}
+  .crate p{margin:1px 0 4px;color:#93a0ac;font-size:11px}
+  .crate b{color:#a9d9b6}
+  .crate .slot{min-height:62px;margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start;
+               background:#10161b;border-radius:8px;padding:6px}
+  .sheetFoot{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+  .sheetFoot .btn{text-align:center}
+  .info{flex:1;font-size:12.5px;color:#9aa4ae}
+
+  @media (max-width:1050px){
+    .board{grid-template-columns:1fr}
+    .crates{grid-template-columns:1fr}
+    .coopList{grid-template-columns:repeat(4,1fr)}
+  }
+</style>
+</head>
+<body>
+<div id="app" class="wrap">
+  <header class="top">
+    <div class="brand">
+      <span class="logo">🐔</span>
+      <div>
+        <h1>Gallinero Cuidadoso <span class="ver">2.0</span></h1>
+        <p class="sub">Granja por niveles · varios galpones · peones automáticos · clasificación de huevos</p>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><b id="cLevel">N1</b><small>nivel</small></div>
+      <div class="chip"><b id="cDay">Día 1</b><small id="cDaySub">de 5</small></div>
+      <div class="chip"><b id="cClock">08:00</b><small>hora</small></div>
+      <div class="chip"><b id="cMoney">120 €</b><small>caja</small></div>
+      <div class="chip"><b id="cFeed">35 kg</b><small>silo</small></div>
+      <div class="chip"><b id="cEggs">0</b><small>sin clasificar</small></div>
+      <div class="chip"><b id="cWork">0</b><small>peones</small></div>
+    </div>
+  </header>
+
+  <main class="board">
+    <section class="stage">
+      <canvas id="cv" width="1000" height="620" aria-label="Vista de la granja"></canvas>
+
+      <!-- capa clasificación -->
+      <div id="sortLayer" class="layer hidden">
+        <div class="sheet">
+          <h2>Clasificar la puesta</h2>
+          <p class="hint">Arrastra cada huevo a su caja. Grandes y limpios valen más; sucios, agrietados o
+            pequeños van al descarte. Acertar da +0,30 €, fallar resta −0,10 €.</p>
+          <div id="eggBed" class="eggBed"></div>
+          <div class="crates">
+            <div class="crate" data-crate="A"><h3>Caja A · Extra</h3><p>Grande + limpio</p><b>2,90 €/u</b><div class="slot"></div></div>
+            <div class="crate" data-crate="B"><h3>Caja B · Normal</h3><p>Mediano + limpio</p><b>2,00 €/u</b><div class="slot"></div></div>
+            <div class="crate" data-crate="C"><h3>Caja C · Descarte</h3><p>Sucio, agrietado o pequeño</p><b>0,80 €/u</b><div class="slot"></div></div>
+          </div>
+          <div class="sheetFoot">
+            <span id="sortInfo" class="info"></span>
+            <button class="btn primary" id="btnSell">Vender lotes</button>
+            <button class="btn" id="btnSortClose">Cerrar sin vender</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- capa modal -->
+      <div id="modal" class="layer hidden">
+        <div class="sheet small">
+          <h2 id="mTitle"></h2>
+          <div id="mBody"></div>
+          <div class="sheetFoot">
+            <span id="mInfo" class="info"></span>
+            <button class="btn primary" id="mBtn">Continuar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="side">
+      <div class="panel">
+        <h2>Galpones <small id="coopCount">1 / 1</small></h2>
+        <div id="coopList" class="coopList"></div>
+        <button class="btn wide" id="bCoop">Construir galpón · <span id="coopCost">150 €</span> <kbd>B</kbd></button>
+      </div>
+
+      <div class="panel">
+        <h2 id="coopTitle">Galpón A</h2>
+        <div class="acts">
+          <button class="btn" id="bFeed">Pienso <kbd>E</kbd></button>
+          <button class="btn" id="bWater">Agua <kbd>A</kbd></button>
+          <button class="btn" id="bVent">Ventilar <kbd>V</kbd></button>
+          <button class="btn" id="bLamp">Caleón <kbd>Q</kbd></button>
+          <button class="btn" id="bClean">Limpiar <kbd>L</kbd></button>
+          <button class="btn" id="bAmp">Ampliar · <span id="ampCost">100 €</span> <kbd>K</kbd></button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Acciones</h2>
+        <div class="acts">
+          <button class="btn" id="bCollect">Recoger huevos <kbd>C</kbd></button>
+          <button class="btn" id="bSort">Clasificar <kbd>O</kbd></button>
+          <button class="btn" id="bVet">Veterinario <kbd>T</kbd></button>
+          <button class="btn" id="bRemove">Retirar muertas <kbd>R</kbd></button>
+          <button class="btn" id="bBuy">Pienso 35 kg · 18 € <kbd>P</kbd></button>
+          <button class="btn" id="bHen">Gallina · 35 € <kbd>G</kbd></button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Equipo <small id="wageInfo">0 €/día</small></h2>
+        <div id="hireList" class="hireList"></div>
+        <ul id="workerList" class="workers"></ul>
+      </div>
+
+      <div class="panel">
+        <h2>Condiciones <small id="coopTag">Galpón A</small></h2>
+        <div class="gauge"><span>Temperatura</span><b id="vTemp">22 °C</b><div class="bar"><i id="gTemp"></i></div></div>
+        <div class="gauge"><span>Amoníaco</span><b id="vAir">10/100</b><div class="bar"><i id="gAir"></i></div></div>
+        <div class="gauge"><span>Cama limpia</span><b id="vBed">100%</b><div class="bar"><i id="gBed"></i></div></div>
+        <div class="gauge"><span>Bebedero</span><b id="vWater">100%</b><div class="bar"><i id="gWater"></i></div></div>
+        <div class="gauge"><span>Ventilación</span><b id="vVent">25%</b><div class="bar"><i id="gVent"></i></div></div>
+      </div>
+
+      <div class="panel">
+        <h2>Parvada <small id="avgHealth"></small></h2>
+        <ul id="henList" class="hens"></ul>
+      </div>
+
+      <div class="panel">
+        <h2>Registro</h2>
+        <ul id="log" class="log"></ul>
+      </div>
+
+      <div class="panel foot">
+        <button class="btn" id="bPause">Pausa <kbd>espacio</kbd></button>
+        <div class="speeds">
+          <button class="btn sm spd" data-spd="1">1×</button>
+          <button class="btn sm spd on" data-spd="2">2×</button>
+          <button class="btn sm spd" data-spd="4">4×</button>
+        </div>
+        <button class="btn sm" id="bRestart">Reiniciar</button>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<script>
+(() => {
+'use strict';
+
+/* ============================ utilidades ============================ */
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+const W = cv.width, H = cv.height, TOPBAR = 46;
+
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const rnd = (a, b) => a + Math.random() * (b - a);
+const irnd = (a, b) => Math.floor(rnd(a, b + 1));
+const pick = arr => arr[irnd(0, arr.length - 1)];
+const hhmm = m => String(Math.floor(m / 60) % 24).padStart(2, '0') + ':' + String(Math.floor(m % 60)).padStart(2, '0');
+const eur = v => v.toFixed(2).replace('.', ',') + ' €';
+
+const MINS_PER_SEC = 11, UNITS_PER_KG = 40;
+const PRICE = { A: 2.9, B: 2.0, C: 0.8 };
+const LETTERS = 'ABCDEF';
+
+const NAMES = ['Pipa', 'Canela', 'Nube', 'Torta', 'Perla', 'Greta', 'Dora', 'Chispa', 'Rubia', 'Bimba',
+               'Mora', 'Lola', 'Kika', 'Pepa', 'Rita', 'Sombra', 'Trufa', 'Vega', 'Yema', 'Zaina'];
+const PLUMES = [['#f4efe4', '#d9d2c2'], ['#c8813f', '#9c622c'], ['#7d6a55', '#5d4d3c'],
+                ['#e8dcc8', '#cbbda4'], ['#4b4a4c', '#333234'], ['#d8b56a', '#b08f45']];
+
+/* ---------------------------- trabajadores ---------------------------- */
+const WORKERS = {
+  peon:        { name: 'Peón',        icon: '🧑‍🌾', cost: 90,  salary: 9,  cd: 70,  desc: 'Riega pienso y agua' },
+  recolector:  { name: 'Recolector',  icon: '🧺', cost: 70,  salary: 8,  cd: 95,  desc: 'Recoge huevos' },
+  veterinario: { name: 'Veterinario', icon: '🩺', cost: 140, salary: 14, cd: 140, desc: 'Cura gallinas enfermas' },
+  limpiador:   { name: 'Limpiador',   icon: '🧹', cost: 80,  salary: 7,  cd: 190, desc: 'Cambia la cama' }
+};
+const WORKER_NAMES = ['Ana', 'Bruno', 'Carmen', 'Diego', 'Elena', 'Fidel', 'Gloria', 'Hugo', 'Irene', 'Julián'];
+
+/* ------------------------------- niveles ------------------------------- */
+const LEVELS = [
+  { name: 'Nivel 1 · El primer gallinero', days: 5, money: 120, feed: 35,
+    hens: 4, coops: 1, maxCoops: 1, maxWorkers: 0,
+    goals: [
+      { k: 'money', v: 200, txt: 'Terminar con 200 € en caja' },
+      { k: 'hens',  v: 4,   txt: 'Mantener 4 gallinas vivas' }
+    ] },
+  { name: 'Nivel 2 · Ampliar la granja', days: 6, money: 150, feed: 40,
+    hens: 5, coops: 1, maxCoops: 2, maxWorkers: 0,
+    goals: [
+      { k: 'coops', v: 2,   txt: 'Construir un segundo galpón' },
+      { k: 'sold',  v: 70,  txt: 'Vender 70 huevos' },
+      { k: 'money', v: 320, txt: 'Terminar con 320 €' }
+    ] },
+  { name: 'Nivel 3 · Manos extra', days: 6, money: 180, feed: 40,
+    hens: 6, coops: 2, maxCoops: 3, maxWorkers: 3,
+    goals: [
+      { k: 'workers', v: 2,   txt: 'Contratar 2 trabajadores' },
+      { k: 'sold',    v: 110, txt: 'Vender 110 huevos' },
+      { k: 'money',   v: 420, txt: 'Terminar con 420 €' }
+    ] },
+  { name: 'Nivel 4 · Granja en marcha', days: 7, money: 220, feed: 50,
+    hens: 8, coops: 2, maxCoops: 4, maxWorkers: 5,
+    goals: [
+      { k: 'coops', v: 4,   txt: 'Tener 4 galpones' },
+      { k: 'hens',  v: 16,  txt: 'Tener 16 gallinas vivas' },
+      { k: 'sold',  v: 200, txt: 'Vender 200 huevos' },
+      { k: 'money', v: 700, txt: 'Terminar con 700 €' }
+    ] },
+  { name: 'Nivel 5 · Granja modelo', days: 8, money: 300, feed: 60,
+    hens: 10, coops: 3, maxCoops: 6, maxWorkers: 8,
+    goals: [
+      { k: 'hens',  v: 24,   txt: 'Tener 24 gallinas vivas' },
+      { k: 'sold',  v: 320,  txt: 'Vender 320 huevos' },
+      { k: 'money', v: 1200, txt: 'Terminar con 1.200 €' }
+    ] }
+];
+
+/* ============================== estado ============================== */
+let S, hid = 0, eggId = 0, coopSeq = 0, SCALE = 1, uiLast = 0, uiSig = '';
+
+const coopById = id => S.coops.find(c => c.id === id) || S.coops[0];
+const curCoop  = () => coopById(S.selCoop);
+const living   = () => S.hens.filter(h => h.alive);
+const hensIn   = id => S.hens.filter(h => h.alive && h.coop === id);
+const coopOf   = h => S.coops.find(c => c.id === h.coop) || S.coops[0];
+const coopCap  = c => 5 + c.amp * 2;
+const totalCap = () => S.coops.reduce((a, c) => a + coopCap(c), 0);
+const coopPrice = () => 150 + 120 * (S.coops.length - 1);
+const ampPrice = c => 100 + 60 * c.amp;
+
+function floorOf(c) {
+  return { x: c.rect.x + 10, y: c.rect.y + 44, w: c.rect.w - 20, h: c.rect.h - 54 };
+}
+function troughOf(c) {
+  const f = floorOf(c);
+  const w = Math.min(130, f.w * 0.30);
+  return { x: f.x + 8, y: f.y + f.h - 22, w, h: 18 };
+}
+
+/* --------------------------- crear estructuras --------------------------- */
+function makeCoop() {
+  return {
+    id: ++coopSeq,
+    name: 'Galpón ' + LETTERS[S.coops.length % 6],
+    nests: [], piles: [], floor: [],
+    water: 100, bedding: 100, ammonia: 10, temp: 22, vent: 0.25, lamp: false,
+    amp: 0, rect: { x: 0, y: 0, w: 0, h: 0 }
+  };
+}
+function ensureNests(c) {
+  const want = 4 + c.amp * 2;
+  while (c.nests.length < want) c.nests.push({ owner: null, eggs: [], x: 0, y: 0, w: 0, h: 0, cx: 0, cy: 0 });
+  while (c.nests.length > want) c.nests.pop();
+}
+
+function layoutCoops() {
+  const n = Math.max(1, S.coops.length);
+  const cols = n === 1 ? 1 : n <= 4 ? 2 : 3;
+  const rows = Math.ceil(n / cols);
+  const padX = 12, gap = 10;
+  const availW = W - padX * 2 - gap * (cols - 1);
+  const availH = H - TOPBAR - 12 - gap * (rows - 1);
+  const cw = availW / cols, chh = availH / rows;
+
+  S.coops.forEach((c, i) => {
+    const r = Math.floor(i / cols), col = i % cols;
+    c.rect = { x: padX + col * (cw + gap), y: TOPBAR + r * (chh + gap), w: cw, h: chh };
+    ensureNests(c);
+    const m = 8;
+    const nw = (c.rect.w - m * 2) / c.nests.length;
+    c.nests.forEach((nst, k) => {
+      nst.x = c.rect.x + m + k * nw;
+      nst.y = c.rect.y + 5;
+      nst.w = nw - 3;
+      nst.h = 32;
+      nst.cx = nst.x + nst.w / 2;
+      nst.cy = c.rect.y + 52;
+    });
+  });
+  SCALE = cols === 1 ? 1.12 : cols === 2 ? 0.94 : 0.80;
+}
+
+function newHen(coopId) {
+  const c = coopById(coopId);
+  const f = floorOf(c);
+  const p = PLUMES[hid % PLUMES.length];
+  const h = {
+    id: ++hid, name: NAMES[(hid - 1) % NAMES.length], plume: p, coop: c.id,
+    x: rnd(f.x + 30, f.x + f.w - 30), y: rnd(f.y + 30, f.y + f.h - 24),
+    tx: 0, ty: 0, mode: 'walk', face: 1, bob: rnd(0, 6.28), wait: rnd(10, 60),
+    hunger: rnd(14, 34), thirst: rnd(18, 38), health: 100, mood: 90,
+    sick: false, sickMin: 0, layT: rnd(150, 800), layProg: 0, nest: -1,
+    floorWait: 0, alive: true, deadMin: 0, age: 0, eatPile: null
+  };
+  h.tx = h.x; h.ty = h.y;
+  S.hens.push(h);
+  return h;
+}
+
+/* ============================== nivel ============================== */
+function startLevel(li) {
+  const L = LEVELS[li];
+  hid = 0; eggId = 0; coopSeq = 0; uiSig = '';
+  S = {
+    level: li, day: 1, t: 8 * 60,
+    money: L.money, feed: L.feed,
+    hens: [], coops: [], workers: [],
+    pending: [], crates: { A: [], B: [], C: [] },
+    log: [], sel: 0, selCoop: 0,
+    paused: true, over: false, speed: 2, sorting: false,
+    event: null, laying: 0, sold: 0, cart: 0,
+    dayIncome: 0, dayFeed: 0, lvlSold: 0
+  };
+  for (let i = 0; i < L.coops; i++) S.coops.push(makeCoop());
+  layoutCoops();
+  for (let i = 0; i < L.hens; i++) newHen(S.coops[i % S.coops.length].id);
+  S.selCoop = S.coops[0].id;
+  S.sel = S.hens[0] ? S.hens[0].id : 0;
+  logMsg(`${L.name}. Empiezas con ${L.money} € y ${L.hens} gallinas.`, 'good');
+  updateUI(true);
+  showLevelIntro();
+}
+
+function goalVal(k) {
+  switch (k) {
+    case 'money': return S.money;
+    case 'hens': return living().length;
+    case 'coops': return S.coops.length;
+    case 'workers': return S.workers.length;
+    case 'sold': return S.lvlSold;
+    default: return 0;
+  }
+}
+
+function showLevelIntro() {
+  const L = LEVELS[S.level];
+  const goals = L.goals.map(g => `<span>🎯 ${g.txt}</span><b>${g.k === 'money' ? g.v + ' €' : g.v}</b>`).join('');
+  showModal(L.name, `
+    <p class="hint">Tienes <b>${L.days} días</b> para cumplir los objetivos. Los huevos sin clasificar
+      se malvenden al cerrar el día: recógelos y clasifícalos con <b>O</b>.</p>
+    <div class="kv">${goals}</div>
+    <p class="hint"><b>Ratón:</b> clic en una gallina o en un galpón para seleccionarlo.
+      <b>1-6</b> cambia de galpón · <b>B</b> construye galpón · <b>K</b> amplía · <b>Espacio</b> pausa.</p>`,
+    '¡A cuidar!', () => { S.paused = false; updateUI(true); });
+}
+
+function finishLevel() {
+  S.over = true; S.paused = true;
+  const L = LEVELS[S.level];
+  const res = L.goals.map(g => {
+    const have = goalVal(g.k);
+    return { txt: g.txt, ok: have >= g.v, have, need: g.v, isMoney: g.k === 'money' };
+  });
+  const all = res.every(r => r.ok);
+  const rows = res.map(r =>
+    `<span>${r.ok ? '✅' : '❌'} ${r.txt}</span><b>${r.isMoney ? eur(r.have) : r.have}</b>`).join('');
+  const last = S.level >= LEVELS.length - 1;
+
+  if (all && last) {
+    showModal('🏆 ¡Granja maestra!', `
+      <div class="kv">
+        <span>Has completado los ${LEVELS.length} niveles</span><b>🏆</b>
+        <span>Gallinas vivas</span><b>${living().length}</b>
+        <span>Galpones</span><b>${S.coops.length}</b>
+        <span>Trabajadores</span><b>${S.workers.length}</b>
+        <span>Huevos vendidos en el nivel</span><b>${S.lvlSold}</b>
+        <span>Caja final</span><b>${eur(S.money)}</b>
+      </div>
+      <p class="hint">Enhorabuena, tu gallinero es un ejemplo para toda la comarca.</p>`,
+      'Volver a empezar', () => { startLevel(0); });
+    return;
+  }
+  if (all) {
+    showModal('✅ Nivel superado', `
+      <p class="hint">Objetivos cumplidos. ¡A por el siguiente!</p>
+      <div class="kv">${rows}</div>`,
+      'Siguiente nivel ▶', () => { startLevel(S.level + 1); });
+    return;
+  }
+  showModal('❌ Nivel no superado', `
+    <p class="hint">No llegaste a todos los objetivos. Repite el nivel: la granja se reinicia
+      pero conservas lo aprendido.</p>
+    <div class="kv">${rows}</div>`,
+    'Reintentar nivel', () => { startLevel(S.level); });
+}
+
+function failLevel(reason) {
+  if (S.over) return;
+  S.over = true; S.paused = true;
+  showModal('💀 Fin de la partida', `
+    <p class="hint">${reason}</p>
+    <div class="kv">
+      <span>Nivel</span><b>${S.level + 1}</b>
+      <span>Día</span><b>${S.day} / ${LEVELS[S.level].days}</b>
+      <span>Gallinas perdidas</span><b>${S.cart}</b>
+      <span>Caja</span><b>${eur(S.money)}</b>
+    </div>`,
+    'Reintentar nivel', () => { startLevel(S.level); });
+}
+
+/* ============================== registro ============================== */
+function logMsg(text, kind = '') {
+  if (!S) return;
+  S.log.unshift({ t: `D${S.day} ${hhmm(S.t)}`, text, kind });
+  if (S.log.length > 50) S.log.pop();
+  const el = document.getElementById('log');
+  el.innerHTML = S.log.slice(0, 10).map(l => `<li class="${l.kind}">${l.t} · ${l.text}</li>`).join('');
+}
+
+/* ============================== acciones ============================== */
+function feedCoop(c) {
+  if (S.over) return;
+  const n = hensIn(c.id).length;
+  if (n === 0) return logMsg(`${c.name}: no hay gallinas que comer.`, 'warn');
+  const kg = Math.max(0.8, Math.round(n * 1.1 * 10) / 10);
+  if (S.feed < kg) return logMsg(`Falta pienso (necesitas ${kg} kg). Compra con P.`, 'warn');
+  S.feed = Math.round((S.feed - kg) * 10) / 10;
+  S.dayFeed += kg;
+  const f = floorOf(c);
+  const total = kg * UNITS_PER_KG;
+  for (let i = 0; i < 3; i++) {
+    c.piles.push({
+      x: rnd(f.x + 30, f.x + f.w - 30),
+      y: rnd(f.y + 24, f.y + f.h - 30),
+      food: total / 3, max: total / 3
+    });
+  }
+  logMsg(`${c.name}: ${kg} kg de pienso repartidos en 3 zonas.`, 'good');
+  updateUI(true);
+}
+
+function waterTrough(c) {
+  if (S.over) return;
+  if (c.water > 92) return logMsg(`${c.name}: el bebedero ya está lleno.`);
+  c.water = 100;
+  logMsg(`${c.name}: bebedero renovado.`, 'good');
+  updateUI(true);
+}
+
+function toggleVent(c) {
+  if (S.over) return;
+  c.vent = c.vent > 0.5 ? 0.15 : 0.85;
+  logMsg(`${c.name}: ventanas ${c.vent > 0.5 ? 'abiertas (baja calor y amoníaco)' : 'casi cerradas (conserva calor)'}.`);
+  updateUI(true);
+}
+
+function toggleLamp(c) {
+  if (S.over) return;
+  if (!c.lamp && S.money < 8) return logMsg('Sin dinero para el caleón (8 €/día).', 'warn');
+  c.lamp = !c.lamp;
+  logMsg(`${c.name}: caleón ${c.lamp ? 'encendido (+7 °C de noche, 8 €/día)' : 'apagado'}.`);
+  updateUI(true);
+}
+
+function cleanBedding(c) {
+  if (S.over) return;
+  if (c.bedding > 88) return logMsg(`${c.name}: la cama aún está limpia.`);
+  if (S.money < 4) return logMsg('Necesitas 4 € para cambiar la cama.', 'warn');
+  S.money -= 4; c.bedding = 100; c.ammonia = Math.max(4, c.ammonia - 30);
+  logMsg(`${c.name}: cama cambiada (−4 €).`, 'good');
+  updateUI(true);
+}
+
+function amplifyCoop(c) {
+  if (S.over) return;
+  if (c.amp >= 2) return logMsg(`${c.name}: ya está ampliado al máximo.`, 'warn');
+  const price = ampPrice(c);
+  if (S.money < price) return logMsg(`Ampliar cuesta ${price} € y no llegas.`, 'warn');
+  S.money -= price; c.amp++;
+  layoutCoops();
+  logMsg(`${c.name}: ampliado a ${coopCap(c)} plazas y ${c.nests.length} nidos (−${price} €).`, 'good');
+  updateUI(true);
+}
+
+function buildCoop() {
+  if (S.over) return;
+  const L = LEVELS[S.level];
+  if (S.coops.length >= L.maxCoops) return logMsg(`Este nivel permite ${L.maxCoops} galpón(es). Sube de nivel.`, 'warn');
+  const price = coopPrice();
+  if (S.money < price) return logMsg(`Un galpón cuesta ${price} €.`, 'warn');
+  S.money -= price;
+  S.coops.push(makeCoop());
+  layoutCoops();
+  logMsg(`¡Nuevo ${S.coops[S.coops.length - 1].name} construido! (−${price} €)`, 'good');
+  updateUI(true);
+}
+
+function collectCoop(c) {
+  let got = 0;
+  c.nests.forEach(n => { got += n.eggs.length; S.pending.push(...n.eggs); n.eggs = []; n.owner = null; });
+  got += c.floor.length; S.pending.push(...c.floor); c.floor = [];
+  return got;
+}
+
+function collectEggs(silent) {
+  if (S.over && !silent) return;
+  let got = 0;
+  for (const c of S.coops) got += collectCoop(c);
+  if (!got) { if (!silent) logMsg('No había huevos que recoger.'); return 0; }
+  if (!silent) logMsg(`Recogiste ${got} huevos. Clasifícalos con O.`, 'good');
+  updateUI(true);
+  return got;
+}
+
+function treatHens() {
+  if (S.over) return;
+  const sick = living().filter(h => h.sick);
+  if (!sick.length) return logMsg('Ninguna gallina está enferma.');
+  const cost = sick.length * 12;
+  if (S.money < cost) return logMsg(`El veterinario cuesta ${cost} € y no tienes suficiente.`, 'warn');
+  S.money -= cost;
+  sick.forEach(h => { h.sick = false; h.sickMin = 0; h.health = clamp(h.health + 18, 0, 100); });
+  logMsg(`Trataste ${sick.length} gallina(s) (−${cost} €).`, 'good');
+  updateUI(true);
+}
+
+function removeDead() {
+  if (S.over) return;
+  const dead = S.hens.filter(h => !h.alive);
+  if (!dead.length) return logMsg('No hay gallinas muertas que retirar.');
+  dead.forEach(h => { const c = coopOf(h); if (h.nest >= 0 && c.nests[h.nest]) c.nests[h.nest].owner = null; });
+  S.hens = S.hens.filter(h => h.alive);
+  logMsg(`Retiraste ${dead.length} gallina(s): el aire mejora.`, 'good');
+  updateUI(true);
+}
+
+function buyFeed() {
+  if (S.over) return;
+  if (S.money < 18) return logMsg('No tienes 18 € para un saco de pienso.', 'warn');
+  S.money -= 18; S.feed += 35;
+  logMsg('Saco de 35 kg de pienso comprado (−18 €).');
+  updateUI(true);
+}
+
+function buyHen() {
+  if (S.over) return;
+  const c = curCoop();
+  let target = hensIn(c.id).length < coopCap(c) ? c : S.coops.find(x => hensIn(x.id).length < coopCap(x));
+  if (!target) return logMsg('No hay sitio: amplía un galpón (K) o construye otro (B).', 'warn');
+  if (S.money < 35) return logMsg('Una polla joven cuesta 35 €.', 'warn');
+  S.money -= 35;
+  const h = newHen(target.id);
+  S.sel = h.id;
+  logMsg(`${h.name} llegó al ${target.name} (−35 €).`, 'good');
+  updateUI(true);
+}
+
+/* ---------------------------- trabajadores ---------------------------- */
+function hireWorker(role) {
+  if (S.over) return;
+  const L = LEVELS[S.level];
+  if (S.workers.length >= L.maxWorkers) return logMsg(`En este nivel puedes tener ${L.maxWorkers} trabajador(es).`, 'warn');
+  const def = WORKERS[role];
+  if (S.money < def.cost) return logMsg(`${def.name} cuesta ${def.cost} €.`, 'warn');
+  S.money -= def.cost;
+  S.workers.push({ id: ++hid, role, name: pick(WORKER_NAMES), cd: 20 });
+  logMsg(`Contratado ${def.name.toLowerCase()} por ${def.cost} € (${def.salary} €/día).`, 'good');
+  updateUI(true);
+}
+
+function tickWorkers(dm) {
+  for (const w of S.workers) {
+    w.cd -= dm;
+    if (w.cd > 0) continue;
+    w.cd = WORKERS[w.role].cd;
+    doWork(w);
+  }
+}
+
+function doWork(w) {
+  const role = w.role;
+  if (role === 'peon') {
+    // 1) agua
+    const dry = S.coops.find(c => c.water < 45 && hensIn(c.id).length > 0);
+    if (dry) { dry.water = 100; logMsg(`${w.name} (peón) rellenó el agua del ${dry.name}.`); return; }
+    // 2) pienso
+    const hungry = S.coops.find(c => {
+      const hs = hensIn(c.id);
+      return hs.length && hs.some(h => h.hunger > 55) && c.piles.reduce((a, p) => a + p.food, 0) < 4;
+    });
+    if (hungry) { feedCoop(hungry); return; }
+    return;
+  }
+  if (role === 'recolector') {
+    for (const c of S.coops) {
+      const has = c.nests.some(n => n.eggs.length) || c.floor.length;
+      if (has) {
+        const got = collectCoop(c);
+        logMsg(`${w.name} recogió ${got} huevos del ${c.name}.`);
+        updateUI(true);
+        return;
+      }
+    }
+    return;
+  }
+  if (role === 'veterinario') {
+    const sick = living().find(h => h.sick);
+    if (sick) {
+      sick.sick = false; sick.sickMin = 0; sick.health = clamp(sick.health + 22, 0, 100);
+      logMsg(`${w.name} curó a ${sick.name}.`, 'good');
+      updateUI(true);
+    }
+    return;
+  }
+  if (role === 'limpiador') {
+    const dirty = S.coops.find(c => c.bedding < 58);
+    if (dirty && S.money >= 4) {
+      S.money -= 4; dirty.bedding = 100; dirty.ammonia = Math.max(4, dirty.ammonia - 30);
+      logMsg(`${w.name} cambió la cama del ${dirty.name} (−4 €).`, 'good');
+      updateUI(true);
+    }
+    return;
+  }
+}
+
+/* ============================== simulación ============================== */
+function nightFactor() {
+  const h = S.t / 60;
+  if (h >= 21 || h < 5) return 1;
+  if (h >= 5 && h < 7) return 1 - (h - 5) / 2;
+  if (h >= 19 && h < 21) return (h - 19) / 2;
+  return 0;
+}
+
+function sim(dm) {
+  if (S.over || S.paused || S.sorting) return;
+  S.t += dm;
+  const nf = nightFactor();
+
+  /* ---------- ambiente por galpón ---------- */
+  for (const c of S.coops) {
+    const n = hensIn(c.id).length;
+    let target = 21 + n * 1.0 - c.vent * 9 - nf * 7;
+    if (c.lamp && nf > 0.2) target += 7;
+    if (S.event === 'calor') target += 6;
+    if (S.event === 'frio') target -= 7;
+    target += (100 - c.bedding) * 0.03;
+    c.temp += (target - c.temp) * clamp(0.05 * dm, 0, 1);
+
+    c.bedding = clamp(c.bedding - 0.0055 * Math.max(1, n) * dm, 0, 100);
+    let am = 0.006 * Math.max(1, n) * dm * (1 + (100 - c.bedding) / 35) - c.vent * 0.05 * dm;
+    const dead = S.hens.filter(h => !h.alive && h.coop === c.id).length;
+    am += dead * 0.05 * dm;
+    c.ammonia = clamp(c.ammonia + am, 0, 100);
+    c.water = clamp(c.water - 0.006 * n * dm, 0, 100);
+  }
+
+  /* ---------- gallinas ---------- */
+  for (const h of S.hens) {
+    if (!h.alive) { h.deadMin += dm; continue; }
+    const c = coopOf(h);
+    h.age += dm / 1440;
+    h.hunger = clamp(h.hunger + 0.055 * dm, 0, 100);
+    h.thirst = clamp(h.thirst + 0.075 * dm, 0, 100);
+
+    let dmg = 0;
+    if (h.hunger > 78) dmg += (h.hunger - 78) * 0.006;
+    if (h.thirst > 72) dmg += (h.thirst - 72) * 0.014;
+    if (c.temp > 30) dmg += (c.temp - 30) * 0.022;
+    if (c.temp < 8) dmg += (8 - c.temp) * 0.022;
+    if (c.ammonia > 45) dmg += (c.ammonia - 45) * 0.018;
+    if (h.sick) { dmg += 0.055; h.sickMin += dm; }
+    h.health = clamp(h.health - dmg * dm, 0, 100);
+    h.mood += ((100 - dmg * 90) - h.mood) * clamp(0.02 * dm, 0, 1);
+
+    if (!h.sick && dmg > 0.05) {
+      if (Math.random() < (0.000012 + dmg * 0.00042) * dm) {
+        h.sick = true;
+        logMsg(`${h.name} se ha enfermado. Trátala con T.`, 'bad');
+      }
+    }
+    if (!h.sick) {
+      for (const o of S.hens) {
+        if (o === h || !o.alive || !o.sick || o.coop !== h.coop) continue;
+        if (Math.hypot(o.x - h.x, o.y - h.y) < 70 &&
+            Math.random() < 0.00009 * dm * (1 + (100 - c.bedding) / 60)) {
+          h.sick = true; logMsg(`${h.name} se contagió de ${o.name}.`, 'bad'); break;
+        }
+      }
+    }
+    if (h.sick && h.sickMin > 900 && h.health < 25) h.health = Math.min(h.health, 6);
+
+    if (h.health <= 0) {
+      h.alive = false; h.sick = false;
+      if (h.nest >= 0 && c.nests[h.nest]) { c.nests[h.nest].owner = null; h.nest = -1; }
+      S.cart++;
+      logMsg(`${h.name} ha muerto. Retírala con R.`, 'bad');
+      if (!living().length) { failLevel('Toda la parvada ha muerto. El gallinero queda en silencio.'); return; }
+      continue;
+    }
+    behavior(h, c, dm);
+  }
+
+  /* ---------- huevos ---------- */
+  for (const c of S.coops) {
+    const ageEggs = list => list.forEach(e => { e.age += dm; if (e.age > 700 || c.bedding < 34) e.dirty = true; });
+    c.nests.forEach(n => ageEggs(n.eggs));
+    ageEggs(c.floor);
+    if (c.floor.length && Math.random() < 0.00004 * dm * c.floor.length) {
+      c.floor[irnd(0, c.floor.length - 1)].crack = true;
+      logMsg(`${c.name}: un huevo del suelo se rompió por pisadas.`, 'warn');
+    }
+    c.piles = c.piles.filter(p => p.food > 0.5);
+  }
+
+  /* ---------- trabajadores ---------- */
+  tickWorkers(dm);
+
+  /* ---------- eventos ---------- */
+  if (!S.event && Math.random() < 0.00004 * dm) {
+    S.event = pick(['calor', 'frio']);
+    logMsg(S.event === 'calor'
+      ? '⚠ Ola de calor: abre la ventilación de todos los galpones.'
+      : '⌛ Golpe de frío nocturno: considera los caleones.', 'warn');
+  }
+
+  if (S.t >= 1440) endDay();
+  updateUI();
+}
+
+const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+
+function move(h, tx, ty, sp, dm) {
+  const dx = tx - h.x, dy = ty - h.y, d = Math.hypot(dx, dy);
+  if (d < 2) return;
+  const s = Math.min(d, sp * dm);
+  h.x += dx / d * s; h.y += dy / d * s;
+  if (Math.abs(dx) > 3) h.face = dx > 0 ? 1 : -1;
+  h.bob += dm * 0.9;
+}
+
+function behavior(h, c, dm) {
+  const f = floorOf(c);
+  const speed = 52 * (h.health > 50 ? 1 : 0.7) * (c.temp > 30 ? 0.78 : 1);
+
+  if (h.mode === 'eat') {
+    const p = h.eatPile;
+    if (!p || p.food <= 0.5) { h.eatPile = null; choose(h, c); return; }
+    if (dist(h, p) > 14) { move(h, p.x, p.y, speed, dm); return; }
+    h.hunger = clamp(h.hunger - 1.7 * dm, 0, 100);
+    p.food = Math.max(0, p.food - 0.62 * dm);
+    if (h.hunger < 6) { h.eatPile = null; choose(h, c); }
+    return;
+  }
+  if (h.mode === 'drink') {
+    const tr = troughOf(c);
+    const tx = tr.x + tr.w / 2, ty = tr.y + 5;
+    if (c.water < 2) { choose(h, c); return; }
+    if (Math.hypot(h.x - tx, h.y - ty) > 14) { move(h, tx, ty, speed, dm); return; }
+    h.thirst = clamp(h.thirst - 2.1 * dm, 0, 100);
+    c.water = clamp(c.water - 0.02 * dm, 0, 100);
+    if (h.thirst < 5) choose(h, c);
+    return;
+  }
+  if (h.mode === 'lay') {
+    const nst = c.nests[h.nest];
+    if (!nst) { h.nest = -1; choose(h, c); return; }
+    if (Math.hypot(h.x - nst.cx, h.y - nst.cy) > 12) { move(h, nst.cx, nst.cy, speed, dm); return; }
+    h.layProg += dm;
+    if (h.layProg >= 35) {
+      nst.eggs.push(makeEgg(h, c));
+      S.laying++;
+      h.layProg = 0; h.layT = rnd(900, 1300); nst.owner = null; h.nest = -1;
+      choose(h, c);
+    }
+    return;
+  }
+  h.wait = (h.wait || 0) - dm;
+  if (h.wait <= 0) choose(h, c);
+  if (h.mode === 'walk') move(h, h.tx, h.ty, speed, dm);
+  void f;
+}
+
+function choose(h, c) {
+  if (h.thirst > 58 && c.water > 3) { h.mode = 'drink'; h.wait = 0; return; }
+  const piles = c.piles.filter(p => p.food > 2);
+  if (h.hunger > 45 && piles.length) {
+    h.eatPile = piles.reduce((a, b) => dist(h, a) < dist(h, b) ? a : b);
+    h.mode = 'eat'; h.wait = 0; return;
+  }
+  if (h.layT <= 0) {
+    const i = c.nests.findIndex(n => n.owner === null);
+    if (i >= 0) { c.nests[i].owner = h.id; h.nest = i; h.mode = 'lay'; h.layProg = 0; h.wait = 0; return; }
+    h.floorWait += 30;
+    if (h.floorWait > 100) {
+      h.floorWait = 0; h.layT = rnd(900, 1300);
+      const f = floorOf(c);
+      const e = makeEgg(h, c); e.dirty = true;
+      e.x = clamp(h.x + rnd(-10, 10), f.x + 12, f.x + f.w - 12);
+      e.y = clamp(h.y + rnd(6, 16), f.y + 16, f.y + f.h - 8);
+      c.floor.push(e); S.laying++;
+      logMsg(`${h.name} puso un huevo en el suelo (nidos llenos).`, 'warn');
+    }
+    h.mode = 'walk'; h.tx = h.x; h.ty = h.y; h.wait = rnd(40, 90); return;
+  }
+  const f = floorOf(c);
+  h.tx = rnd(f.x + 20, f.x + f.w - 20);
+  h.ty = rnd(f.y + 20, f.y + f.h - 18);
+  h.mode = 'walk'; h.wait = rnd(30, 110);
+}
+
+function tickLay(h, dm) {
+  const c = coopOf(h);
+  const fert = clamp((h.health / 100) *
+    (1 - clamp((h.hunger - 62) / 55, 0, 0.9)) *
+    (1 - clamp((h.thirst - 58) / 42, 0, 0.9)) *
+    (1 - clamp((c.ammonia - 40) / 90, 0, 0.6)), 0.05, 1.2);
+  if (h.mode !== 'lay') h.layT -= dm * fert;
+}
+
+function makeEgg(h, c) {
+  const strong = h.health > 74 && h.age > 0.9;
+  let size = strong ? (Math.random() < 0.72 ? 'L' : 'M') : (h.health > 48 ? 'M' : 'S');
+  if (Math.random() < 0.08) size = 'S';
+  return { id: ++eggId, size, dirty: c.bedding < 45 && Math.random() < 0.55, crack: false, age: 0, by: h.name };
+}
+
+/* ============================== fin de día ============================== */
+function endDay() {
+  S.t = 0; S.event = null;
+  const L = LEVELS[S.level];
+
+  let lampCost = S.coops.filter(c => c.lamp).length * 8;
+  let salaries = S.workers.reduce((a, w) => a + WORKERS[w.role].salary, 0);
+  S.money -= lampCost + salaries;
+  if (lampCost) logMsg(`Caleones encendidos: −${lampCost} €.`);
+  if (salaries) logMsg(`Salarios del equipo: −${salaries} €.`);
+
+  let penalty = 0;
+  if (S.pending.length) {
+    penalty = S.pending.length * 0.42;
+    S.money += penalty;
+    S.sold += S.pending.length;
+    S.lvlSold += S.pending.length;
+    S.dayIncome += penalty;
+    logMsg(`Vendiste ${S.pending.length} huevos sin clasificar a bajo precio (+${eur(penalty)}).`, 'warn');
+    S.pending = [];
+  }
+
+  const rows = `
+    <div class="kv">
+      <span>Puesta del día</span><b>${S.laying} huevos</b>
+      <span>Ingresos extra</span><b>${eur(S.dayIncome)}</b>
+      <span>Pienso usado</span><b>${S.dayFeed.toFixed(1)} kg</b>
+      <span>Gallinas vivas</span><b>${living().length} / ${S.hens.length}</b>
+      <span>Galpones</span><b>${S.coops.length}</b>
+      <span>Trabajadores</span><b>${S.workers.length} (${salaries} €/día)</b>
+      <span>Enfermas ahora</span><b>${living().filter(h => h.sick).length}</b>
+      <span>Saldo de caja</span><b>${eur(S.money)}</b>
+    </div>
+    <p class="hint">${tips()}</p>`;
+
+  S.laying = 0; S.dayIncome = 0; S.dayFeed = 0;
+  S.day++;
+  S.paused = true;
+
+  if (S.money < -150) { failLevel('La caja está en bancarrota: los acreedores cierran la granja.'); return; }
+
+  if (S.day > L.days) {
+    finishLevel();
+    return;
+  }
+
+  showModal(`Cierre del día ${S.day - 1}`, rows, `Empezar día ${S.day}`, () => {
+    S.paused = false;
+    updateUI(true);
+  });
+
+  if (Math.random() < 0.45) {
+    S.event = pick(['calor', 'frio']);
+    logMsg(S.event === 'calor' ? 'Pronóstico: ola de calor para hoy.' : 'Pronóstico: noche fría para hoy.', 'warn');
+  }
+  if (Math.random() < 0.30) {
+    const ok = living().filter(h => !h.sick);
+    if (ok.length > 1 && Math.random() < 0.4) {
+      const h = pick(ok); h.sick = true;
+      logMsg(`Brote: ${h.name} amaneció enferma.`, 'bad');
+    }
+  }
+  updateUI(true);
+}
+
+function tips() {
+  const alive = living();
+  if (!alive.length) return 'Sin gallinas vivas.';
+  if (S.money < 0) return 'Consejo: estás en números rojos. Vende huevos clasificados y recorta gastos.';
+  const avgH = alive.reduce((a, h) => a + h.hunger, 0) / alive.length;
+  const avgT = alive.reduce((a, h) => a + h.thirst, 0) / alive.length;
+  if (S.coops.some(c => c.ammonia > 50)) return 'Consejo: el amoníaco alto enferma. Ventila (V) y cambia la cama (L).';
+  if (avgT > 60) return 'Consejo: con sed bajan la puesta. Renueva el agua (A).';
+  if (avgH > 60) return 'Consejo: riega pienso (E) repartido en varias zonas.';
+  if (S.coops.some(c => c.temp > 29)) return 'Consejo: con más de 30 °C hay golpe de calor. Abre la ventilación.';
+  if (S.coops.some(c => c.temp < 10)) return 'Consejo: hace frío; enciende caleones (Q) por la noche.';
+  if (S.pending.length) return 'Consejo: clasifica los huevos (O); un huevo grande en el descarte pierde casi 2 €.';
+  return 'Consejo: recoge los huevos a diario; los que duermen en el nido se ensucian.';
+}
+
+/* ============================== modales ============================== */
+function showModal(title, html, btnText, onBtn) {
+  document.getElementById('mTitle').textContent = title;
+  document.getElementById('mBody').innerHTML = html;
+  const b = document.getElementById('mBtn');
+  b.textContent = btnText;
+  document.getElementById('mInfo').textContent = '';
+  const m = document.getElementById('modal');
+  m.classList.remove('hidden');
+  b.onclick = () => { m.classList.add('hidden'); onBtn && onBtn(); };
+}
+
+/* ============================== dibujo ============================== */
+function rr(x, y, w, h, r) {
+  r = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function drawSky() {
+  const nf = nightFactor();
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, nf > 0.5 ? '#101a2b' : '#2c3a42');
+  g.addColorStop(1, nf > 0.5 ? '#1a2432' : '#3a4a44');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+}
+
+function drawTopBar() {
+  const nf = nightFactor();
+  const g = ctx.createLinearGradient(0, 0, 0, TOPBAR);
+  if (nf < 0.5) { g.addColorStop(0, '#4d7ea8'); g.addColorStop(1, '#8fb8d4'); }
+  else { g.addColorStop(0, '#0d1725'); g.addColorStop(1, '#22314a'); }
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, TOPBAR);
+
+  // sol / luna
+  const h = S.t / 60;
+  const dayP = clamp((h - 6) / 14, 0, 1);
+  const sx = 40 + dayP * (W - 80);
+  ctx.fillStyle = nf < 0.5 ? '#ffd45e' : '#e8e6d0';
+  ctx.beginPath(); ctx.arc(nf < 0.5 ? sx : W - 70, 22, 12, 0, 6.3); ctx.fill();
+  if (nf > 0.5) {
+    ctx.fillStyle = '#22314a';
+    ctx.beginPath(); ctx.arc(W - 64, 19, 10, 0, 6.3); ctx.fill();
+  }
+
+  // nubes
+  ctx.fillStyle = 'rgba(255,255,255,.28)';
+  for (let i = 0; i < 4; i++) {
+    const x = ((i * 300 + S.t * 0.25) % (W + 160)) - 80;
+    ctx.beginPath(); ctx.ellipse(x, 16 + i * 7, 26, 8, 0, 0, 6.3); ctx.fill();
+  }
+
+  // texto
+  ctx.fillStyle = 'rgba(10,16,22,.55)';
+  rr(10, 10, 400, 26, 8); ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 13px system-ui'; ctx.textAlign = 'left';
+  const L = LEVELS[S.level];
+  ctx.fillText(`Nivel ${S.level + 1} · Día ${S.day}/${L.days} · ${hhmm(S.t)}`, 20, 28);
+
+  let tag = '';
+  if (S.paused) tag = '⏸ EN PAUSA';
+  if (S.event === 'calor') tag += ' · ⚠ calor';
+  if (S.event === 'frio') tag += ' · ❄ frío';
+  if (tag) {
+    ctx.fillStyle = 'rgba(10,16,22,.55)';
+    const tw = ctx.measureText(tag).width + 24;
+    rr(W - tw - 12, 10, tw, 26, 8); ctx.fill();
+    ctx.fillStyle = '#ffd79a';
+    ctx.textAlign = 'right';
+    ctx.fillText(tag, W - 24, 28);
+    ctx.textAlign = 'left';
+  }
+}
+
+function drawNest(nst) {
+  ctx.fillStyle = '#6b5236';
+  ctx.fillRect(nst.x, nst.y, nst.w, nst.h);
+  ctx.fillStyle = '#3b2d1d';
+  ctx.fillRect(nst.x + 3, nst.y + 3, nst.w - 6, nst.h - 7);
+  ctx.fillStyle = '#c9a86a';
+  const step = Math.max(6, nst.w / 7);
+  for (let k = 0; k * step < nst.w - 6; k++) ctx.fillRect(nst.x + 5 + k * step, nst.y + nst.h - 9, step * 0.7, 4);
+  ctx.strokeStyle = '#8b6b45'; ctx.lineWidth = 1.5;
+  ctx.strokeRect(nst.x, nst.y, nst.w, nst.h);
+  nst.eggs.slice(0, 5).forEach((e, i) => {
+    drawEgg(nst.x + nst.w / 2 - 22 + i * 11, nst.y + nst.h - 8, e, 0.7);
+  });
+  ctx.fillStyle = nst.owner ? '#7ec493' : '#4a545e';
+  ctx.fillRect(nst.x + nst.w - 8, nst.y + 4, 5, 5);
+}
+
+function drawEgg(x, y, e, sc) {
+  sc = sc || 1;
+  const r = (e.size === 'L' ? 9 : e.size === 'M' ? 7.5 : 6) * sc;
+  ctx.save(); ctx.translate(x, y);
+  ctx.fillStyle = e.dirty ? '#c3b18b' : (e.crack ? '#f0dfc4' : '#fbf3e2');
+  ctx.beginPath(); ctx.ellipse(0, 0, r * 0.78, r, 0, 0, 6.3); ctx.fill();
+  ctx.strokeStyle = '#9c8a68'; ctx.lineWidth = 1; ctx.stroke();
+  if (e.dirty) {
+    ctx.fillStyle = '#6d5a38';
+    for (let k = 0; k < 3; k++) ctx.fillRect(-r * 0.5 + k * 3, -2 + (k % 2) * 4, 1.6, 1.6);
+  }
+  if (e.crack) {
+    ctx.strokeStyle = '#7a6242'; ctx.beginPath();
+    ctx.moveTo(-3 * sc, -r + 2); ctx.lineTo(1 * sc, 0); ctx.lineTo(-2 * sc, r - 3); ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawTrough(c) {
+  const t = troughOf(c);
+  ctx.fillStyle = '#3f4c58'; rr(t.x - 3, t.y - 3, t.w + 6, t.h + 6, 4); ctx.fill();
+  ctx.fillStyle = '#1b242b'; ctx.fillRect(t.x, t.y, t.w, t.h);
+  const lvl = (c.water / 100) * (t.h - 5);
+  ctx.fillStyle = c.water < 20 ? '#7a5f3a' : '#4fa3d1';
+  ctx.fillRect(t.x + 2, t.y + t.h - 2 - lvl, t.w - 4, lvl);
+}
+
+function drawPile(p) {
+  const r = 8 + 14 * (p.food / p.max);
+  ctx.fillStyle = '#e6c260';
+  ctx.beginPath(); ctx.ellipse(p.x, p.y, r, r * 0.48, 0, 0, 6.3); ctx.fill();
+  ctx.fillStyle = '#c99f37';
+  for (let k = 0; k < 8; k++) ctx.fillRect(p.x - r + (k * r) / 4, p.y - 3 + (k % 3) * 3, 2.6, 1.8);
+}
+
+function drawCoop(c) {
+  const r = c.rect, f = floorOf(c);
+
+  // estructura
+  ctx.fillStyle = '#4b3a26'; rr(r.x, r.y, r.w, r.h, 10); ctx.fill();
+  ctx.fillStyle = '#33271a'; rr(r.x + 3, r.y + 3, r.w - 6, r.h - 6, 8); ctx.fill();
+
+  // cama
+  const dirt = c.bedding / 100;
+  ctx.fillStyle = `rgb(${Math.round(168 - dirt * 40)},${Math.round(140 - dirt * 46)},${Math.round(96 - dirt * 30)})`;
+  rr(f.x, f.y, f.w, f.h, 8); ctx.fill();
+
+  // paja
+  ctx.fillStyle = 'rgba(90,60,30,.25)';
+  const specks = Math.floor((f.w * f.h) / 1200);
+  for (let i = 0; i < specks; i++) {
+    const x = f.x + ((i * 97) % f.w), y = f.y + ((i * 53) % f.h);
+    ctx.fillRect(x, y, 6, 2);
+  }
+  // manchas
+  if (dirt < 0.55) {
+    ctx.fillStyle = `rgba(70,52,26,${0.5 - dirt * 0.6})`;
+    for (let i = 0; i < 18; i++) {
+      const x = f.x + ((i * 211) % f.w), y = f.y + ((i * 137) % f.h);
+      ctx.beginPath(); ctx.ellipse(x, y, 9, 5, 0, 0, 6.3); ctx.fill();
+    }
+  }
+
+  // sombreado térmico
+  if (c.temp > 30) { ctx.fillStyle = `rgba(220,80,40,${Math.min(.18, (c.temp - 30) * .03)})`; rr(f.x, f.y, f.w, f.h, 8); ctx.fill(); }
+  if (c.temp < 10) { ctx.fillStyle = `rgba(90,150,220,${Math.min(.18, (10 - c.temp) * .025)})`; rr(f.x, f.y, f.w, f.h, 8); ctx.fill(); }
+
+  // nidos, bebedero, pienso, huevos
+  c.nests.forEach(drawNest);
+  drawTrough(c);
+  c.piles.forEach(drawPile);
+  c.floor.forEach(e => drawEgg(e.x, e.y, e, 1));
+
+  // marco
+  ctx.strokeStyle = '#6b5236'; ctx.lineWidth = 2;
+  rr(r.x, r.y, r.w, r.h, 10); ctx.stroke();
+
+  // etiqueta
+  ctx.fillStyle = 'rgba(8,12,16,.62)';
+  rr(r.x + r.w - 138, r.y + r.h - 21, 130, 16, 5); ctx.fill();
+  ctx.fillStyle = '#cbb99a'; ctx.font = '10px system-ui'; ctx.textAlign = 'right';
+  ctx.fillText(`${c.name} · ${hensIn(c.id).length}/${coopCap(c)}`, r.x + r.w - 13, r.y + r.h - 9);
+  ctx.textAlign = 'left';
+
+  // selección
+  if (c.id === S.selCoop) {
+    ctx.strokeStyle = '#8fd6a6'; ctx.lineWidth = 2.5;
+    rr(r.x - 2, r.y - 2, r.w + 4, r.h + 4, 12); ctx.stroke();
+  }
+  // caleón
+  if (c.lamp) {
+    ctx.fillStyle = 'rgba(255,190,90,.18)';
+    ctx.beginPath(); ctx.arc(r.x + r.w - 26, r.y + 26, 40, 0, 6.3); ctx.fill();
+    ctx.fillStyle = '#ffcf7a';
+    ctx.beginPath(); ctx.arc(r.x + r.w - 26, r.y + 26, 5, 0, 6.3); ctx.fill();
+  }
+  // ventilación
+  ctx.fillStyle = c.vent > 0.5 ? '#9fd7ef' : '#48545f';
+  for (let i = 0; i < 3; i++) ctx.fillRect(r.x + 8 + i * 9, r.y + r.h - 15, 6, 6);
+}
+
+function drawHen(h) {
+  const s = SCALE;
+  if (!h.alive) {
+    ctx.save(); ctx.translate(h.x, h.y); ctx.scale(s, s);
+    ctx.globalAlpha = 0.8;
+    ctx.fillStyle = '#8b8f93';
+    ctx.beginPath(); ctx.ellipse(0, 6, 17, 8, 0, 0, 6.3); ctx.fill();
+    ctx.strokeStyle = '#2b2f33'; ctx.lineWidth = 1.8;
+    ctx.beginPath(); ctx.moveTo(12, 1); ctx.lineTo(18, 7); ctx.moveTo(18, 1); ctx.lineTo(12, 7); ctx.stroke();
+    ctx.restore();
+    ctx.fillStyle = 'rgba(255,255,255,.75)'; ctx.font = '10px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('retirar (R)', h.x, h.y - 14); ctx.textAlign = 'left';
+    return;
+  }
+  const bob = Math.sin(h.bob) * (h.mode === 'walk' ? 2.2 : 0.7);
+  ctx.save();
+  ctx.translate(h.x, h.y);
+  ctx.scale(h.face * s, s);
+  // cola
+  ctx.fillStyle = h.sick ? '#b9bfa4' : h.plume[0];
+  ctx.beginPath(); ctx.moveTo(-11, 0); ctx.lineTo(-24, -12); ctx.lineTo(-19, 5); ctx.closePath(); ctx.fill();
+  // cuerpo
+  ctx.beginPath(); ctx.ellipse(0, bob, 14, 11, 0, 0, 6.3); ctx.fill();
+  ctx.fillStyle = h.plume[1];
+  ctx.beginPath(); ctx.ellipse(-1, bob + 2, 8, 5.5, .25, 0, 6.3); ctx.fill();
+  // cabeza
+  ctx.fillStyle = h.sick ? '#b9bfa4' : h.plume[0];
+  ctx.beginPath(); ctx.arc(12, bob - 11, 7.2, 0, 6.3); ctx.fill();
+  // cresta
+  ctx.fillStyle = '#cf4234';
+  for (let k = 0; k < 3; k++) { ctx.beginPath(); ctx.arc(9 + k * 3.2, bob - 18, 2.6, 0, 6.3); ctx.fill(); }
+  // pico
+  ctx.fillStyle = '#e8a33c';
+  ctx.beginPath(); ctx.moveTo(18, bob - 12); ctx.lineTo(25, bob - 10); ctx.lineTo(18, bob - 8); ctx.closePath(); ctx.fill();
+  // ojo
+  ctx.fillStyle = h.sick ? '#6b6b3a' : '#181a1c';
+  ctx.beginPath(); ctx.arc(14, bob - 12, 1.5, 0, 6.3); ctx.fill();
+  // patas
+  ctx.fillStyle = '#7a5230';
+  ctx.fillRect(-4, 10, 2.4, 7); ctx.fillRect(3, 10, 2.4, 7);
+  ctx.restore();
+
+  if (S.sel === h.id) {
+    ctx.strokeStyle = '#8fd6a6'; ctx.lineWidth = 1.6;
+    ctx.beginPath(); ctx.ellipse(h.x, h.y + 4, 22 * s, 16 * s, 0, 0, 6.3); ctx.stroke();
+  }
+
+  // señales
+  let sign = '';
+  const c = coopOf(h);
+  if (h.sick) sign = '🤒';
+  else if (h.thirst > 62) sign = '💧';
+  else if (h.hunger > 62) sign = '🌾';
+  else if (h.health < 55) sign = '💊';
+  else if (c.temp > 30) sign = '🥵';
+  else if (c.temp < 9) sign = '🥶';
+  else if (c.ammonia > 50) sign = '😷';
+  if (sign) {
+    ctx.font = '15px system-ui'; ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(12,16,20,.7)';
+    ctx.beginPath(); ctx.arc(h.x, h.y - 28 * s, 12, 0, 6.3); ctx.fill();
+    ctx.fillText(sign, h.x, h.y - 23 * s); ctx.textAlign = 'left';
+  }
+  if (S.sel === h.id) {
+    ctx.fillStyle = '#e9e6df'; ctx.font = '11px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText(h.name, h.x, h.y + 30 * s); ctx.textAlign = 'left';
+  }
+}
+
+function drawNightOverlay() {
+  const nf = nightFactor();
+  if (nf > 0.02) { ctx.fillStyle = `rgba(20,32,64,${nf * 0.38})`; ctx.fillRect(0, 0, W, H); }
+}
+
+function render() {
+  ctx.clearRect(0, 0, W, H);
+  drawSky();
+  for (const c of S.coops) drawCoop(c);
+  for (const h of S.hens) if (h.alive) drawHen(h);
+  for (const h of S.hens) if (!h.alive) drawHen(h);
+  drawNightOverlay();
+  drawTopBar();
+}
+
+/* =============================== UI =============================== */
+function updateUI(force) {
+  if (!S) return;
+  const now = performance.now();
+  if (!force && now - uiLast < 180) return;
+  uiLast = now;
+
+  const L = LEVELS[S.level];
+  document.getElementById('cLevel').textContent = 'N' + (S.level + 1);
+  document.getElementById('cDay').textContent = 'Día ' + S.day;
+  document.getElementById('cDaySub').textContent = 'de ' + L.days;
+  document.getElementById('cClock').textContent = hhmm(S.t);
+  document.getElementById('cMoney').textContent = Math.round(S.money) + ' €';
+  document.getElementById('cMoney').parentElement.classList.toggle('bad', S.money < 0);
+  document.getElementById('cFeed').textContent = S.feed.toFixed(1) + ' kg';
+  document.getElementById('cEggs').textContent = S.pending.length;
+  document.getElementById('cWork').textContent = S.workers.length;
+
+  const c = curCoop();
+  document.getElementById('coopTitle').textContent = 'Cuidados · ' + c.name;
+  document.getElementById('coopTag').textContent = c.name;
+  document.getElementById('coopCount').textContent = `${S.coops.length} / ${L.maxCoops}`;
+  document.getElementById('coopCost').textContent = coopPrice() + ' €';
+  document.getElementById('ampCost').textContent = ampPrice(c) + ' €';
+  document.getElementById('wageInfo').textContent =
+    S.workers.reduce((a, w) => a + WORKERS[w.role].salary, 0) + ' €/día';
+
+  const g = (bar, txt, v, label, col) => {
+    const el = document.getElementById(bar);
+    el.style.width = clamp(v, 0, 100) + '%';
+    el.style.background = col;
+    document.getElementById(txt).textContent = label;
+  };
+  const tempPct = (c.temp / 45) * 100;
+  g('gTemp', 'vTemp', tempPct, c.temp.toFixed(1) + ' °C',
+    c.temp > 29 ? '#d9663f' : c.temp < 10 ? '#5aa9d6' : '#6dbb83');
+  g('gAir', 'vAir', c.ammonia, Math.round(c.ammonia) + '/100',
+    c.ammonia > 55 ? '#d9663f' : c.ammonia > 35 ? '#e2a03c' : '#6dbb83');
+  g('gBed', 'vBed', c.bedding, Math.round(c.bedding) + '%',
+    c.bedding < 40 ? '#d9663f' : '#c9a86a');
+  g('gWater', 'vWater', c.water, Math.round(c.water) + '%',
+    c.water < 25 ? '#d9663f' : '#4fa3d1');
+  g('gVent', 'vVent', c.vent * 100, Math.round(c.vent * 100) + '%',
+    c.vent > 0.5 ? '#5aa9d6' : '#8d7a55');
+
+  const av = living();
+  document.getElementById('avgHealth').textContent = av.length
+    ? `salud media ${Math.round(av.reduce((a, h) => a + h.health, 0) / av.length)} · ${av.filter(h => h.layT < 60).length} poniendo`
+    : 'sin gallinas';
+
+  // listas estructurales
+  const sig = `${S.coops.length}|${S.workers.length}|${S.hens.length}|${S.selCoop}`;
+  if (sig !== uiSig || force) {
+    uiSig = sig;
+    document.getElementById('coopList').innerHTML = S.coops.map(cc => `
+      <button class="coopBtn ${cc.id === S.selCoop ? 'on' : ''}" data-coop="${cc.id}">
+        <b>${cc.name.replace('Galpón ', '')}</b>
+        <small>${hensIn(cc.id).length}/${coopCap(cc)}</small>
+      </button>`).join('');
+
+    document.getElementById('hireList').innerHTML = Object.entries(WORKERS).map(([k, d]) => `
+      <button class="btn sm" data-hire="${k}">${d.icon} ${d.name}<br><span class="p">${d.cost} € · ${d.salary} €/d</span></button>
+    `).join('');
+
+    document.getElementById('workerList').innerHTML = S.workers.length
+      ? S.workers.map(w => `<li><span>${WORKERS[w.role].icon} <b style="color:#e9e6df">${w.name}</b> · ${WORKERS[w.role].name}</span>
+          <span>${WORKERS[w.role].salary} €/d</span></li>`).join('')
+      : '<li><span>Sin trabajadores contratados</span></li>';
+  }
+
+  const list = document.getElementById('henList');
+  list.innerHTML = S.hens.map(h => {
+    const bad = !h.alive;
+    const tag = bad ? 'muerta' : h.sick ? 'enferma' : h.health < 55 ? 'débil' : (h.layT < 60 ? 'poniendo' : '');
+    const bar = (v, col) => `<i><em style="width:${clamp(v, 0, 100)}%;background:${col}"></em></i>`;
+    const cn = coopById(h.coop).name.replace('Galpón ', '');
+    return `<li class="${bad ? 'ded' : ''} ${S.sel === h.id ? 'sel' : ''}" data-id="${h.id}">
+      <span class="dot" style="background:${bad ? '#6a6f75' : h.plume[0]}"></span>
+      <div>
+        <div class="nm"><span>${h.name} <em>${cn}</em></span><span class="tag">${tag}</span></div>
+        <div class="bars">${bar(h.health, '#6dbb83')}${bar(100 - h.hunger, '#e2c05a')}${bar(100 - h.thirst, '#5aa9d6')}</div>
+      </div>
+      <b>${Math.round(h.health)}</b></li>`;
+  }).join('');
+}
+
+/* =========================== clasificación =========================== */
+function openSort() {
+  if (S.over) return;
+  if (!S.pending.length) return logMsg('No hay huevos recogidos. Recoge con C.', 'warn');
+  S.sorting = true; S.paused = true;
+  const bed = document.getElementById('eggBed');
+  bed.innerHTML = '';
+  S.pending.forEach(e => {
+    const d = document.createElement('div');
+    d.className = `eggToken ${e.size}${e.dirty ? ' dirty' : ''}${e.crack ? ' crack' : ''}`;
+    d.dataset.id = e.id;
+    bed.appendChild(d);
+    e.dom = d;
+  });
+  document.querySelectorAll('.crate .slot').forEach(s => s.innerHTML = '');
+  document.getElementById('sortLayer').classList.remove('hidden');
+  sortInfo();
+}
+
+const ideal = e => (e.dirty || e.crack || e.size === 'S') ? 'C' : e.size === 'L' ? 'A' : 'B';
+const ecrate = e => e.dom && e.dom.closest('.crate') ? e.dom.closest('.crate').dataset.crate : null;
+
+function sortInfo() {
+  const left = S.pending.filter(e => !ecrate(e)).length;
+  const good = S.pending.filter(e => ecrate(e) === ideal(e)).length;
+  document.getElementById('sortInfo').textContent =
+    `Sin clasificar: ${left} · aciertos: ${good}/${S.pending.length}`;
+}
+
+function doSell() {
+  let inc = 0, mis = 0, moved = 0;
+  for (const e of S.pending) {
+    const cr = ecrate(e);
+    if (!cr) continue;
+    moved++;
+    const bonus = cr === ideal(e) ? 0.3 : -0.1;
+    if (cr !== ideal(e)) mis++;
+    inc += PRICE[cr] + bonus;
+  }
+  S.money += inc;
+  S.sold += moved; S.lvlSold += moved; S.dayIncome += inc;
+  S.pending = S.pending.filter(e => !ecrate(e));
+  logMsg(moved
+    ? `Vendidos ${moved} huevos: ${eur(inc)} (${mis} mal clasificados).`
+    : 'Nada vendido.', moved && !mis ? 'good' : mis ? 'warn' : '');
+  closeSort();
+}
+
+function closeSort() {
+  document.getElementById('sortLayer').classList.add('hidden');
+  S.sorting = false; S.paused = false;
+  updateUI(true);
+}
+
+let drag = null, dragOff = [0, 0];
+const layer = document.getElementById('sortLayer');
+
+layer.addEventListener('pointerdown', ev => {
+  const t = ev.target.closest('.eggToken');
+  if (!t || t.classList.contains('placed')) return;
+  drag = t;
+  t.style.position = 'fixed'; t.style.zIndex = 20;
+  const r = t.getBoundingClientRect();
+  dragOff = [ev.clientX - r.left, ev.clientY - r.top];
+  t.style.left = r.left + 'px'; t.style.top = r.top + 'px';
+  try { t.setPointerCapture(ev.pointerId); } catch (e) { /* ignorar */ }
+  ev.preventDefault();
+});
+layer.addEventListener('pointermove', ev => {
+  if (!drag) return;
+  drag.style.left = ev.clientX - dragOff[0] + 'px';
+  drag.style.top = ev.clientY - dragOff[1] + 'px';
+  const c = crateUnder(ev.clientX, ev.clientY);
+  document.querySelectorAll('.crate').forEach(el => el.classList.toggle('over', el === c));
+});
+function crateUnder(x, y) {
+  let found = null;
+  document.querySelectorAll('.crate').forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) found = el;
+  });
+  return found;
+}
+layer.addEventListener('pointerup', ev => {
+  if (!drag) return;
+  const c = crateUnder(ev.clientX, ev.clientY);
+  document.querySelectorAll('.crate').forEach(el => el.classList.remove('over'));
+  if (c) { c.querySelector('.slot').appendChild(drag); drag.classList.add('placed'); }
+  drag.style.position = ''; drag.style.left = ''; drag.style.top = ''; drag.style.zIndex = '';
+  drag = null;
+  sortInfo();
+});
+
+/* ============================== enlaces ============================== */
+const on = (id, fn) => document.getElementById(id).addEventListener('click', fn);
+on('bFeed', () => feedCoop(curCoop()));
+on('bWater', () => waterTrough(curCoop()));
+on('bVent', () => toggleVent(curCoop()));
+on('bLamp', () => toggleLamp(curCoop()));
+on('bClean', () => cleanBedding(curCoop()));
+on('bAmp', () => amplifyCoop(curCoop()));
+on('bCoop', buildCoop);
+on('bCollect', () => collectEggs(false));
+on('bSort', openSort);
+on('bVet', treatHens);
+on('bRemove', removeDead);
+on('bBuy', buyFeed);
+on('bHen', buyHen);
+on('btnSell', doSell);
+on('btnSortClose', () => {
+  if (S.pending.length) logMsg(`${S.pending.length} huevo(s) sin clasificar; se venderán baratos al cerrar el día.`, 'warn');
+  closeSort();
+});
+on('bPause', () => { if (!S.over && !S.sorting) { S.paused = !S.paused; updateUI(true); } });
+on('bRestart', () => { if (confirm('¿Reiniciar el nivel actual?')) startLevel(S.level); });
+
+document.querySelectorAll('.spd').forEach(b => b.addEventListener('click', () => {
+  S.speed = +b.dataset.spd;
+  document.querySelectorAll('.spd').forEach(o => o.classList.toggle('on', o === b));
+}));
+
+document.getElementById('coopList').addEventListener('click', ev => {
+  const b = ev.target.closest('[data-coop]');
+  if (!b) return;
+  S.selCoop = +b.dataset.coop;
+  updateUI(true);
+});
+
+document.getElementById('hireList').addEventListener('click', ev => {
+  const b = ev.target.closest('[data-hire]');
+  if (!b) return;
+  hireWorker(b.dataset.hire);
+});
+
+document.getElementById('henList').addEventListener('click', ev => {
+  const li = ev.target.closest('li');
+  if (!li) return;
+  S.sel = +li.dataset.id;
+  const h = S.hens.find(x => x.id === S.sel);
+  if (h && h.alive) S.selCoop = h.coop;
+  updateUI(true);
+});
+
+cv.addEventListener('click', ev => {
+  const r = cv.getBoundingClientRect();
+  const x = (ev.clientX - r.left) * (W / r.width);
+  const y = (ev.clientY - r.top) * (H / r.height);
+
+  // galpón
+  let hitCoop = null;
+  for (const c of S.coops) {
+    if (x >= c.rect.x && x <= c.rect.x + c.rect.w && y >= c.rect.y && y <= c.rect.y + c.rect.h) { hitCoop = c; break; }
+  }
+  if (hitCoop) S.selCoop = hitCoop.id;
+
+  // gallina
+  let best = null, bd = 34;
+  for (const h of S.hens) {
+    const d = Math.hypot(h.x - x, h.y - y);
+    if (d < bd) { bd = d; best = h; }
+  }
+  if (best) { S.sel = best.id; S.selCoop = best.coop; }
+  updateUI(true);
+});
+
+const KEYS = {
+  e: () => feedCoop(curCoop()),
+  a: () => waterTrough(curCoop()),
+  v: () => toggleVent(curCoop()),
+  q: () => toggleLamp(curCoop()),
+  l: () => cleanBedding(curCoop()),
+  k: () => amplifyCoop(curCoop()),
+  b: buildCoop,
+  c: () => collectEggs(false),
+  o: openSort,
+  t: treatHens,
+  r: removeDead,
+  p: buyFeed,
+  g: buyHen
+};
+
+addEventListener('keydown', ev => {
+  if (ev.repeat) return;
+  const k = ev.key.toLowerCase();
+
+  if (k === ' ') {
+    ev.preventDefault();
+    if (!S.over && !S.sorting) { S.paused = !S.paused; updateUI(true); }
+    return;
+  }
+  if (!document.getElementById('modal').classList.contains('hidden')) {
+    if (k === 'enter') document.getElementById('mBtn').click();
+    return;
+  }
+  if (!document.getElementById('sortLayer').classList.contains('hidden')) return;
+
+  if (k >= '1' && k <= '6') {
+    const i = +k - 1;
+    if (S.coops[i]) { S.selCoop = S.coops[i].id; updateUI(true); }
+    return;
+  }
+  if (KEYS[k]) { ev.preventDefault(); KEYS[k](); }
+});
+
+/* =============================== bucle =============================== */
+let last = performance.now();
+function frame(now) {
+  const dtReal = Math.min(0.06, (now - last) / 1000);
+  last = now;
+  const dm = dtReal * MINS_PER_SEC * S.speed;
+  if (!S.paused && !S.over && !S.sorting) {
+    for (const h of S.hens) if (h.alive) tickLay(h, dm);
+    sim(dm);
+  }
+  render();
+  requestAnimationFrame(frame);
+}
+
+startLevel(0);
+requestAnimationFrame(frame);
+
+})();
+</script>
+</body>
+</html>
