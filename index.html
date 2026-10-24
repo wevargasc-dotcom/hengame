@@ -120,6 +120,9 @@
   .workers li:hover{border-color:var(--border-2);background:#1c1810}
   .workers li span{color:var(--text-muted);font-size:10px}
   .hireList{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+  .hireList [data-hire="operario"]{grid-column:1/-1;border-color:var(--gold);background:linear-gradient(180deg,rgba(90,50,20,.95),rgba(50,28,10,1));box-shadow:0 0 0 1px rgba(240,192,96,.25),inset 0 1px 0 rgba(255,220,150,.12)}
+  .hireList [data-hire="operario"]:hover{border-color:var(--gold-bright);box-shadow:0 3px 16px rgba(240,192,96,.35)}
+  .hireList [data-hire="operario"] .p{color:var(--gold-bright)}
   .layer{position:absolute;inset:10px;background:rgba(8,6,4,.94);border-radius:14px;display:grid;place-items:center;padding:12px;z-index:5;backdrop-filter:blur(8px);clip-path:inset(0 0 0 0);will-change:clip-path}
   @keyframes curtainIn{from{clip-path:inset(100% 0 0 0);opacity:.3}to{clip-path:inset(0 0 0 0);opacity:1}}
   @keyframes curtainOut{from{clip-path:inset(0 0 0 0);opacity:1}to{clip-path:inset(100% 0 0 0);opacity:.3}}
@@ -364,15 +367,15 @@ const WEATHERS = {
 };
 
 const LEVELS = [
-  { name:'Nivel 1 · El primer gallinero', days:5, money:120, feed:35, hens:4, coops:1, maxCoops:1, maxWorkers:2,
+  { name:'Nivel 1 · El primer gallinero', days:5, money:120, feed:35, hens:4, coops:1, maxCoops:1, maxWorkers:99,
     goals:[{k:'money',v:200,txt:'Terminar con 200 €'},{k:'hens',v:4,txt:'Mantener 4 gallinas vivas'}] },
-  { name:'Nivel 2 · Ampliar la granja', days:6, money:150, feed:40, hens:5, coops:1, maxCoops:2, maxWorkers:3,
+  { name:'Nivel 2 · Ampliar la granja', days:6, money:150, feed:40, hens:5, coops:1, maxCoops:2, maxWorkers:99,
     goals:[{k:'coops',v:2,txt:'Construir un 2º galpón'},{k:'sold',v:70,txt:'Vender 70 huevos'},{k:'money',v:320,txt:'Terminar con 320 €'}] },
-  { name:'Nivel 3 · Manos extra', days:6, money:180, feed:40, hens:6, coops:2, maxCoops:3, maxWorkers:4,
+  { name:'Nivel 3 · Manos extra', days:6, money:180, feed:40, hens:6, coops:2, maxCoops:3, maxWorkers:99,
     goals:[{k:'workers',v:2,txt:'Contratar 2 trabajadores'},{k:'sold',v:110,txt:'Vender 110 huevos'},{k:'money',v:420,txt:'Terminar con 420 €'}] },
-  { name:'Nivel 4 · Granja en marcha', days:7, money:220, feed:50, hens:8, coops:2, maxCoops:4, maxWorkers:6,
+  { name:'Nivel 4 · Granja en marcha', days:7, money:220, feed:50, hens:8, coops:2, maxCoops:4, maxWorkers:99,
     goals:[{k:'coops',v:4,txt:'Tener 4 galpones'},{k:'hens',v:16,txt:'Tener 16 gallinas vivas'},{k:'sold',v:200,txt:'Vender 200 huevos'},{k:'money',v:700,txt:'Terminar con 700 €'}] },
-  { name:'Nivel 5 · Granja modelo', days:8, money:300, feed:60, hens:10, coops:3, maxCoops:6, maxWorkers:8,
+  { name:'Nivel 5 · Granja modelo', days:8, money:300, feed:60, hens:10, coops:3, maxCoops:6, maxWorkers:99,
     goals:[{k:'hens',v:24,txt:'Tener 24 gallinas vivas'},{k:'sold',v:320,txt:'Vender 320 huevos'},{k:'money',v:1200,txt:'Terminar con 1.200 €'}] }
 ];
 
@@ -380,11 +383,13 @@ const WORKERS = {
   peon:{ name:'Peón', icon:'🧑‍🌾', cost:90, salary:9, cd:60, desc:'Todas las tareas de granja' },
   recolector:{ name:'Recolector', icon:'🧺', cost:70, salary:8, cd:95, desc:'Recoge huevos' },
   veterinario:{ name:'Veterinario', icon:'🩺', cost:140, salary:14, cd:140, desc:'Cura gallinas enfermas' },
-  limpiador:{ name:'Limpiador', icon:'🧹', cost:80, salary:7, cd:190, desc:'Cambia la cama' }
+  limpiador:{ name:'Limpiador', icon:'🧹', cost:80, salary:7, cd:190, desc:'Cambia la cama' },
+  operario:{ name:'Operario', icon:'👷', cost:450, salary:22, cd:45, desc:'Todo (peón+recolector+veterinario+limpiador) + clasifica y vende huevos' }
 };
 const WORKER_COLORS = {
   peon:{ body:'#5a7a4a', hat:'#8a6a3a' }, recolector:{ body:'#7a5a3a', hat:'#a07a4a' },
-  veterinario:{ body:'#4a6a8a', hat:'#c8c8d0' }, limpiador:{ body:'#6a5a6a', hat:'#8a7a8a' }
+  veterinario:{ body:'#4a6a8a', hat:'#c8c8d0' }, limpiador:{ body:'#6a5a6a', hat:'#8a7a8a' },
+  operario:{ body:'#b05a2a', hat:'#f0d060' }
 };
 const WORKER_NAMES = ['Ana','Bruno','Carmen','Diego','Elena','Fidel','Gloria','Hugo','Irene','Julián','Kira','Leo','Marta','Nico'];
 
@@ -579,7 +584,7 @@ function showLevelIntro(){
     <p class="hint">Tienes <b>${L.days} días</b> para los objetivos. Los huevos recogidos <b>no envejecen</b>.
       ⚠ Mal clasificado = <b>1 €</b>. ⚠ Las gallinas <b>enferman por frío, sed, hambre, amoníaco, cama sucia,
       bebederos sucios, mallas sucias o falta de cascarilla</b>. <b>Cura con T</b> (8 €/gallina, +inmunidad 12 h).
-      👥 Puedes contratar trabajadores (hasta ${L.maxWorkers}). El <b>peón</b> hace todas las tareas.</p>
+      👥 Puedes contratar trabajadores desde el nivel 1. El <b>peón</b> hace todas las tareas; el <b>operario</b> (450 €) lo hace todo y además clasifica y vende huevos.</p>
     <div class="kv">${goals}</div>
     <p class="hint"><b>Teclas:</b> E pienso · A agua · V ventilar · Q caleón · L limpiar · K ampliar ·
       <b>U cortinas · W lavar bebederos (+2 €) · N barrer mallas (+2 €) · H cascarilla (+2 €)</b> ·
@@ -872,35 +877,84 @@ function tickWorkers(dm){
     doWork(w);
   }
 }
+function doPeonTasks(w){
+  const dry = S.coops.find(c=>c.water<45 && hensIn(c.id).length>0);
+  if(dry){ dry.water = 100; logMsg(`${w.name}: rellenó bebederos del ${dry.name}.`); setWorkerAction(w,'💧'); return true; }
+  const dDirty = S.coops.find(c=>c.drinkersDirty>60 && hensIn(c.id).length>0);
+  if(dDirty){ dDirty.drinkersDirty = 0; dDirty.water = Math.max(dDirty.water,80); logMsg(`${w.name}: lavó bebederos del ${dDirty.name}.`); setWorkerAction(w,'🚿'); return true; }
+  const dScr = S.coops.find(c=>c.screensDirty>60);
+  if(dScr){ dScr.screensDirty = 0; logMsg(`${w.name}: barrió mallas del ${dScr.name}.`); setWorkerAction(w,'🧽'); return true; }
+  const lowHusk = S.coops.find(c=>c.nestHusk<30);
+  if(lowHusk){ lowHusk.nestHusk = 100; logMsg(`${w.name}: añadió cascarilla a nidos del ${lowHusk.name}.`); setWorkerAction(w,'🌿'); return true; }
+  const hungry = S.coops.find(c=>hensIn(c.id).length && feedPctInCoop(c)<40);
+  if(hungry){ feedCoop(hungry); setWorkerAction(w,'🌾'); return true; }
+  const w2 = S.weather;
+  const wrongCurtain = S.coops.find(c=>{
+    if(w2.isRain && !c.curtainsClosed) return true;
+    if(!w2.isRain && c.curtainsClosed && c.temp>18) return true;
+    if(c.temp<10 && !c.curtainsClosed) return true;
+    return false;
+  });
+  if(wrongCurtain){ wrongCurtain.curtainsClosed = wrongCurtain.curtainsClosed?0:1; logMsg(`${w.name}: ajustó cortinas del ${wrongCurtain.name}.`); setWorkerAction(w,'🚪'); return true; }
+  const dD2 = S.coops.find(c=>c.drinkersDirty>30);
+  if(dD2){ dD2.drinkersDirty = 0; dD2.water = Math.max(dD2.water,80); logMsg(`${w.name}: lavó bebederos del ${dD2.name}.`); setWorkerAction(w,'🚿'); return true; }
+  const dS2 = S.coops.find(c=>c.screensDirty>30);
+  if(dS2){ dS2.screensDirty = 0; logMsg(`${w.name}: barrió mallas del ${dS2.name}.`); setWorkerAction(w,'🧽'); return true; }
+  const lH2 = S.coops.find(c=>c.nestHusk<60);
+  if(lH2){ lH2.nestHusk = 100; logMsg(`${w.name}: cascarilla a nidos del ${lH2.name}.`); setWorkerAction(w,'🌿'); return true; }
+  return false;
+}
+function autoClassify(w){
+  if(!S.pending.length) return false;
+  let inc = 0, count = 0;
+  for(const e of S.pending){ inc += PRICE[ideal(e)]; count++; }
+  S.pending = [];
+  S.money += inc;
+  S.sold += count;
+  S.lvlSold += count;
+  S.dayIncome += inc;
+  logMsg(`${w.name}: clasificó y vendió ${count} huevo(s) (+${eur(inc)}).`,'good',true);
+  setWorkerAction(w, '📦');
+  updateUI(true);
+  return true;
+}
 function doWork(w){
   const role = w.role;
-  if(role === 'peon'){
-    const dry = S.coops.find(c=>c.water<45 && hensIn(c.id).length>0);
-    if(dry){ dry.water = 100; logMsg(`${w.name}: rellenó bebederos del ${dry.name}.`); setWorkerAction(w,'💧'); return; }
-    const dDirty = S.coops.find(c=>c.drinkersDirty>60 && hensIn(c.id).length>0);
-    if(dDirty){ dDirty.drinkersDirty = 0; dDirty.water = Math.max(dDirty.water,80); logMsg(`${w.name}: lavó bebederos del ${dDirty.name}.`); setWorkerAction(w,'🚿'); return; }
-    const dScr = S.coops.find(c=>c.screensDirty>60);
-    if(dScr){ dScr.screensDirty = 0; logMsg(`${w.name}: barrió mallas del ${dScr.name}.`); setWorkerAction(w,'🧽'); return; }
-    const lowHusk = S.coops.find(c=>c.nestHusk<30);
-    if(lowHusk){ lowHusk.nestHusk = 100; logMsg(`${w.name}: añadió cascarilla a nidos del ${lowHusk.name}.`); setWorkerAction(w,'🌿'); return; }
-    const hungry = S.coops.find(c=>hensIn(c.id).length && feedPctInCoop(c)<40);
-    if(hungry){ feedCoop(hungry); setWorkerAction(w,'🌾'); return; }
-    const w2 = S.weather;
-    const wrongCurtain = S.coops.find(c=>{
-      if(w2.isRain && !c.curtainsClosed) return true;
-      if(!w2.isRain && c.curtainsClosed && c.temp>18) return true;
-      if(c.temp<10 && !c.curtainsClosed) return true;
-      return false;
-    });
-    if(wrongCurtain){ wrongCurtain.curtainsClosed = wrongCurtain.curtainsClosed?0:1; logMsg(`${w.name}: ajustó cortinas del ${wrongCurtain.name}.`); setWorkerAction(w,'🚪'); return; }
-    const dD2 = S.coops.find(c=>c.drinkersDirty>30);
-    if(dD2){ dD2.drinkersDirty = 0; dD2.water = Math.max(dD2.water,80); logMsg(`${w.name}: lavó bebederos del ${dD2.name}.`); setWorkerAction(w,'🚿'); return; }
-    const dS2 = S.coops.find(c=>c.screensDirty>30);
-    if(dS2){ dS2.screensDirty = 0; logMsg(`${w.name}: barrió mallas del ${dS2.name}.`); setWorkerAction(w,'🧽'); return; }
-    const lH2 = S.coops.find(c=>c.nestHusk<60);
-    if(lH2){ lH2.nestHusk = 100; logMsg(`${w.name}: cascarilla a nidos del ${lH2.name}.`); setWorkerAction(w,'🌿'); return; }
+
+  if(role === 'peon'){ doPeonTasks(w); return; }
+
+  if(role === 'operario'){
+    // 1) Curar gallinas enfermas
+    const sick = living().find(h=>h.sick);
+    if(sick){
+      const dname = sick.disease ? sick.disease.name : 'enfermedad';
+      sick.sick = false; sick.sickMin = 0; sick.disease = null;
+      sick.immunityMin = CURE_IMMUNITY_MIN;
+      sick.health = clamp(sick.health+22,0,100);
+      logMsg(`${w.name} curó a ${sick.name} (${dname}).`,'good',true);
+      setWorkerAction(w,'🩺');
+      updateUI(true);
+      return;
+    }
+    // 2) Recoger todos los huevos
+    let got = 0;
+    for(const c of S.coops){
+      const has = c.nests.some(n=>n.eggs.length) || c.floor.length;
+      if(has) got += collectCoop(c);
+    }
+    if(got){
+      logMsg(`${w.name} recogió ${got} huevo(s).`,'good',true);
+      setWorkerAction(w,'🥚');
+      updateUI(true);
+      return;
+    }
+    // 3) Clasificar y vender
+    if(autoClassify(w)) return;
+    // 4) Tareas de peón
+    doPeonTasks(w);
     return;
   }
+
   if(role === 'recolector'){
     for(const c of S.coops){
       const has = c.nests.some(n=>n.eggs.length) || c.floor.length;
@@ -1254,7 +1308,7 @@ function tips(){
   if(S.coops.some(c=>c.nestHusk<30)) return 'Consejo: poca cascarilla. Añade con H (+2 €).';
   if(alive.some(h=>h.thirst>72)) return 'Consejo: sed. Renueva agua (A).';
   if(alive.some(h=>h.hunger>75)) return 'Consejo: hambre. Riega pienso (E).';
-  return 'Consejo: el peón hace todas las tareas. Recoge huevos a diario.';
+  return 'Consejo: el peón hace todas las tareas. El operario, además, clasifica y vende.';
 }
 
 function showModal(title,html,btnText,onBtn){
