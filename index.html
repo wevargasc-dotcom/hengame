@@ -599,37 +599,36 @@
       <div id="sortLayer" class="layer hidden">
         <div class="sheet">
           <h2>📦 Clasificar la puesta</h2>
-          <p class="hint">Haz <b>clic en un huevo</b> para seleccionarlo, luego <b>clic en la caja</b> correcta. Clic en un huevo colocado lo devuelve. Atajos: <b>1-5</b> para B · A · AA · EX · Yumbo. Los huevos recogidos <b>están a salvo</b>: no envejecen.</p>
+          <p class="hint">Haz <b>clic en un huevo</b> para seleccionarlo, luego <b>clic en la caja</b> correcta. Clic en un huevo colocado lo devuelve. Atajos: <b>1-5</b> para B · A · AA · EX · Yumbo. ⚠ Un huevo mal clasificado se paga como <b>dañado (0,20 €)</b>.</p>
           <div class="sortBar">
             <div class="selInfo" id="selInfo">Selecciona un huevo para empezar</div>
-            <button class="btn sm" id="btnAutoSort"><span class="bico">⚡</span> Auto-ordenar</button>
             <button class="btn sm" id="btnClearCrates"><span class="bico">↩️</span> Vaciar cajas</button>
           </div>
           <div id="eggBed" class="eggBed"></div>
           <div class="crates">
             <div class="crate B" data-crate="B">
               <span class="gradeTag">#1</span>
-              <h3>B · Descarte</h3><p>Sucio, agrietado o S</p><b>0,50 €/u</b>
+              <h3>B · Descarte</h3><p>Sucio, agrietado o S</p><b>1,50 €/u</b>
               <div class="slot"></div>
             </div>
             <div class="crate A" data-crate="A">
               <span class="gradeTag">#2</span>
-              <h3>A · Pequeño</h3><p>Mediano limpio</p><b>1,20 €/u</b>
+              <h3>A · Pequeño</h3><p>Mediano limpio</p><b>3,00 €/u</b>
               <div class="slot"></div>
             </div>
             <div class="crate AA" data-crate="AA">
               <span class="gradeTag">#3</span>
-              <h3>AA · Normal</h3><p>Grande limpio</p><b>2,00 €/u</b>
+              <h3>AA · Normal</h3><p>Grande limpio</p><b>4,50 €/u</b>
               <div class="slot"></div>
             </div>
             <div class="crate EX" data-crate="EX">
               <span class="gradeTag">#4</span>
-              <h3>EX · Extra</h3><p>Muy grande limpio</p><b>3,00 €/u</b>
+              <h3>EX · Extra</h3><p>Muy grande limpio</p><b>6,50 €/u</b>
               <div class="slot"></div>
             </div>
             <div class="crate Yumbo" data-crate="Yumbo">
               <span class="gradeTag">#5</span>
-              <h3>Yumbo ⭐</h3><p>El más grande</p><b>4,50 €/u</b>
+              <h3>Yumbo ⭐</h3><p>El más grande</p><b>10,00 €/u</b>
               <div class="slot"></div>
             </div>
           </div>
@@ -757,7 +756,8 @@ const eur = v => v.toFixed(2).replace('.', ',') + ' €';
 
 const REAL_MINS_PER_SEC = 1 / 60;
 const UNITS_PER_KG = 40;
-const PRICE = { B: 0.5, A: 1.2, AA: 2.0, EX: 3.0, Yumbo: 4.5 };
+const PRICE = { B: 1.5, A: 3.0, AA: 4.5, EX: 6.5, Yumbo: 10.0 };
+const DAMAGED_PRICE = 0.20;   // precio de huevo mal clasificado
 const LETTERS = 'ABCDEF';
 
 const SPEEDS = [1, 10, 60, 600, 3600];
@@ -1081,7 +1081,8 @@ function showLevelIntro() {
     `<span>🎯 ${g.txt}</span><b>${g.k === 'money' ? g.v + ' €' : g.v}</b>`).join('');
   showModal('🐔 ' + L.name, `
     <p class="hint">Tienes <b>${L.days} días</b> para cumplir los objetivos. Los huevos que <b>recoges quedan a salvo</b>
-      en el almacén. Solo los de nidos y suelo envejecen. Clasifica en 5 grados: <b>B · A · AA · EX · Yumbo</b>.</p>
+      en el almacén. Solo los de nidos y suelo envejecen. Clasifica en 5 grados: <b>B · A · AA · EX · Yumbo</b>.
+      ⚠ Un huevo <b>mal clasificado se paga como dañado (0,20 €)</b>.</p>
     <div class="kv">${goals}</div>
     <p class="hint"><b>Ratón:</b> clic en una gallina o un galpón para seleccionar.
       <b>1-6</b> cambia de galpón · <b>B</b> construye · <b>K</b> amplía · <b>G</b> compra gallinas ·
@@ -2708,13 +2709,13 @@ function unplaceEgg(e) {
 function updateSelInfo() {
   const el = document.getElementById('selInfo');
   if (!selectedEggId) {
-    el.innerHTML = 'Selecciona un huevo para empezar · o pulsa <b>Auto-ordenar</b>';
+    el.innerHTML = 'Selecciona un huevo para empezar.';
     return;
   }
   const e = S.pending.find(x => x.id === selectedEggId);
   if (!e) { el.innerHTML = 'Selecciona un huevo para empezar'; return; }
   const target = ideal(e);
-  el.innerHTML = `Seleccionado: <b>${sizeLabel(e.size)}</b>${e.dirty ? ' · sucio' : ''}${e.crack ? ' · agrietado' : ''} → caja ideal <b>${target}</b>. Haz clic en una caja o pulsa <b>1-5</b>.`;
+  el.innerHTML = `Seleccionado: <b>${sizeLabel(e.size)}</b>${e.dirty ? ' · sucio' : ''}${e.crack ? ' · agrietado' : ''} → caja ideal <b>${target}</b>. Haz clic en una caja o pulsa <b>1-5</b>. <span style="color:#d95f4a">⚠ Mal clasificado = 0,20 €</span>`;
 }
 
 function updateCrateArmed(armed) {
@@ -2749,25 +2750,6 @@ const ideal = e => {
 };
 const ecrate = e => e.dom && e.dom.closest('.crate') ? e.dom.closest('.crate').dataset.crate : null;
 
-function autoSort() {
-  let moved = 0;
-  for (const e of S.pending) {
-    if (ecrate(e)) continue;
-    const grade = ideal(e);
-    const crate = document.querySelector(`.crate[data-crate="${grade}"]`);
-    if (!crate) continue;
-    crate.querySelector('.slot').appendChild(e.dom);
-    e.dom.classList.add('placed');
-    moved++;
-  }
-  selectedEggId = null;
-  updateSelInfo();
-  updateCrateArmed(false);
-  sortInfo();
-  if (moved) toast(`Auto-ordenados ${moved} huevos`, 'good');
-  else toast('Todos los huevos ya están en sus cajas', '');
-}
-
 function clearCrates() {
   let moved = 0;
   for (const e of S.pending) {
@@ -2790,24 +2772,23 @@ function sortInfo() {
   for (const e of S.pending) {
     const cr = ecrate(e);
     if (!cr) continue;
-    const isGood = cr === ideal(e);
-    totalValue += PRICE[cr] + (isGood ? 0.3 : -0.1);
-    if (!isGood) wrongValue++;
+    if (cr === ideal(e)) totalValue += PRICE[cr];
+    else { totalValue += DAMAGED_PRICE; wrongValue++; }
   }
   document.getElementById('sortInfo').innerHTML =
     `Sin clasificar: <b>${left}</b> · aciertos: <b>${good}/${S.pending.length}</b> · valor: <b>${eur(totalValue)}</b>` +
-    (wrongValue ? ` · <span style="color:#d95f4a">${wrongValue} mal</span>` : '');
+    (wrongValue ? ` · <span style="color:#d95f4a">${wrongValue} dañados</span>` : '');
 }
 
 function doSell() {
-  let inc = 0, mis = 0, moved = 0;
+  let inc = 0, mis = 0, moved = 0, ok = 0;
   for (const e of S.pending) {
     const cr = ecrate(e);
     if (!cr) continue;
     moved++;
-    const bonus = cr === ideal(e) ? 0.3 : -0.1;
-    if (cr !== ideal(e)) mis++;
-    inc += PRICE[cr] + bonus;
+    const good = cr === ideal(e);
+    if (good) { ok++; inc += PRICE[cr]; }
+    else      { mis++; inc += DAMAGED_PRICE; }
   }
   if (!moved) {
     toast('No hay huevos colocados en cajas para vender', 'warn');
@@ -2816,9 +2797,10 @@ function doSell() {
   S.money += inc;
   S.sold += moved; S.lvlSold += moved; S.dayIncome += inc;
   S.pending = S.pending.filter(e => !ecrate(e));
-  logMsg(moved
-    ? `Vendidos ${moved} huevos: ${eur(inc)} (${mis} mal clasificados).`
-    : 'Nada vendido.', moved && !mis ? 'good' : mis ? 'warn' : '', true);
+  const msg = mis
+    ? `Vendidos ${moved} huevos: ${eur(inc)} (${ok} bien · ${mis} dañados por mal clasificar).`
+    : `Vendidos ${moved} huevos: ${eur(inc)} (¡todos bien clasificados!)`;
+  logMsg(msg, mis ? 'warn' : 'good', true);
   closeSort();
 }
 
@@ -2862,7 +2844,6 @@ on('bRemove', removeDead);
 on('bBuy',   buyFeed);
 on('bHen',   openHenModal);
 on('btnSell', doSell);
-on('btnAutoSort', autoSort);
 on('btnClearCrates', clearCrates);
 on('btnSortClose', () => {
   if (S.pending.length) logMsg(`${S.pending.length} huevo(s) sin clasificar quedan a salvo en almacén.`, 'warn');
@@ -2997,7 +2978,6 @@ addEventListener('keydown', ev => {
     if (gradeMap[k]) { ev.preventDefault(); placeSelectedInCrate(gradeMap[k]); return; }
     if (k === 'escape') { closeSort(); return; }
     if (k === 'enter') { doSell(); return; }
-    if (k === 'a') { autoSort(); return; }
     if (k === 'delete' || k === 'backspace') { clearCrates(); return; }
     return;
   }
