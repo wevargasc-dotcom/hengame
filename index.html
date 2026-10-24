@@ -329,6 +329,7 @@ const EGG_DIRTY_AGE = 700;
 const EGG_CRACK_AGE = 1400;
 const VET_COST = 8;
 const CURE_IMMUNITY_MIN = 720;
+const TASK_REWARD = 2;
 
 const TRIGGER_LABELS = {
   frio:'por frío', sed:'por sed', hambre:'por hambre',
@@ -390,6 +391,7 @@ const WORKER_NAMES = ['Ana','Bruno','Carmen','Diego','Elena','Fidel','Gloria','H
 let S, hid=0, eggId=0, coopSeq=0, SCALE=1, uiLast=0, uiSig='';
 let selectedEggId = null;
 let rainDrops=[], lightning=0, lightningTimer=0, puddles=[];
+let coopFx = null;
 const layerTimers = {};
 
 const coopById = id => S.coops.find(c=>c.id===id) || S.coops[0];
@@ -404,6 +406,9 @@ const ampPrice = c => 100 + 60*c.amp;
 const totalFeedInCoop = c => c.feeders.reduce((a,f)=>a+f.food,0);
 const maxFeedInCoop = c => c.feeders.reduce((a,f)=>a+f.max,0);
 const feedPctInCoop = c => (totalFeedInCoop(c)/maxFeedInCoop(c))*100;
+
+function setCoopFx(c, icon){ coopFx = { coopId: c.id, icon, t: 1.4, maxT: 1.4 }; }
+function setWorkerAction(w, icon){ w.actionFx = { icon, t: 1.4, maxT: 1.4 }; }
 
 function showLayer(id){
   const el = document.getElementById(id); if(!el) return;
@@ -494,7 +499,7 @@ function newWorker(role,coopId){
   const c = coopById(coopId); const f = floorOf(c);
   return{ id:++hid, role, name:pick(WORKER_NAMES), cd:20, coop:c.id,
     x:rnd(f.x+30,f.x+f.w-30), y:rnd(f.y+30,f.y+f.h-30),
-    tx:0,ty:0,face:1,bob:rnd(0,6.28),wait:rnd(20,60) };
+    tx:0,ty:0,face:1,bob:rnd(0,6.28),wait:rnd(20,60), actionFx:null };
 }
 
 function initRain(){
@@ -531,7 +536,7 @@ function drawRain(){
 
 function startLevel(li){
   const L = LEVELS[li];
-  hid=0;eggId=0;coopSeq=0;uiSig='';selectedEggId=null;
+  hid=0;eggId=0;coopSeq=0;uiSig='';selectedEggId=null;coopFx=null;
   rainDrops=[];puddles=[];lightning=0;
   S = {
     level:li, day:1, t:8*60, money:L.money, feed:L.feed,
@@ -569,11 +574,12 @@ function showLevelIntro(){
   showModal('🐔 '+L.name, `
     <p class="hint">Tienes <b>${L.days} días</b> para los objetivos. Los huevos recogidos <b>no envejecen</b>.
       ⚠ Mal clasificado = <b>1 €</b>. ⚠ Las gallinas <b>enferman por frío, sed, hambre, amoníaco, cama sucia,
-      bebederos sucios, mallas sucias o falta de cascarilla</b>. <b>Cura con T</b> (8 €/gallina, +inmunidad 12h).
+      bebederos sucios, mallas sucias o falta de cascarilla</b>. <b>Cura con T</b> (8 €/gallina, +inmunidad 12 h).
       👥 Puedes contratar trabajadores (hasta ${L.maxWorkers}). El <b>peón</b> hace todas las tareas.</p>
     <div class="kv">${goals}</div>
     <p class="hint"><b>Teclas:</b> E pienso · A agua · V ventilar · Q caleón · L limpiar · K ampliar ·
-      <b>U cortinas · W lavar bebederos · N barrer mallas · H cascarilla</b> · T veterinario · C recoger · O clasificar.</p>`,
+      <b>U cortinas · W lavar bebederos (+2 €) · N barrer mallas (+2 €) · H cascarilla (+2 €)</b> ·
+      T veterinario · C recoger · O clasificar.</p>`,
     '¡A cuidar!', ()=>{S.paused=false;updateUI(true);});
 }
 function finishLevel(){
@@ -677,6 +683,7 @@ function cleanBedding(c){
   if(S.money<4) return logMsg('Necesitas 4 €.','warn',true);
   S.money -= 4; c.bedding=100; c.ammonia=Math.max(4,c.ammonia-30);
   logMsg(`${c.name}: cama cambiada (−4 €).`,'good',true);
+  setCoopFx(c, '🧹');
   updateUI(true);
 }
 function amplifyCoop(c){
@@ -693,34 +700,35 @@ function toggleCurtains(c){
   if(S.over) return;
   c.curtainsClosed = c.curtainsClosed > 0.5 ? 0 : 1;
   logMsg(`${c.name}: cortinas ${c.curtainsClosed?'cerradas':'abiertas'}.`,'',true);
+  setCoopFx(c, '🚪');
   updateUI(true);
 }
 function washDrinkers(c){
   if(S.over) return;
   if(c.drinkersDirty < 15) return logMsg(`${c.name}: bebederos ya limpios (${Math.round(100-c.drinkersDirty)}%).`,'',true);
-  if(S.money<2) return logMsg('Necesitas 2 €.','warn',true);
-  S.money -= 2;
+  S.money += TASK_REWARD;
   c.drinkersDirty = 0;
   c.water = Math.max(c.water, 80);
-  logMsg(`${c.name}: bebederos lavados (−2 €).`,'good',true);
+  logMsg(`${c.name}: bebederos lavados (+${TASK_REWARD} €).`,'good',true);
+  setCoopFx(c, '🚿');
   updateUI(true);
 }
 function sweepScreens(c){
   if(S.over) return;
   if(c.screensDirty < 15) return logMsg(`${c.name}: mallas ya limpias (${Math.round(100-c.screensDirty)}%).`,'',true);
-  if(S.money<2) return logMsg('Necesitas 2 €.','warn',true);
-  S.money -= 2;
+  S.money += TASK_REWARD;
   c.screensDirty = 0;
-  logMsg(`${c.name}: mallas barridas (−2 €).`,'good',true);
+  logMsg(`${c.name}: mallas barridas (+${TASK_REWARD} €).`,'good',true);
+  setCoopFx(c, '🧽');
   updateUI(true);
 }
 function addHusk(c){
   if(S.over) return;
   if(c.nestHusk > 85) return logMsg(`${c.name}: nidos con cascarilla al ${Math.round(c.nestHusk)}%.`,'',true);
-  if(S.money<3) return logMsg('Necesitas 3 €.','warn',true);
-  S.money -= 3;
+  S.money += TASK_REWARD;
   c.nestHusk = 100;
-  logMsg(`${c.name}: cascarilla añadida a los nidos (−3 €).`,'good',true);
+  logMsg(`${c.name}: cascarilla añadida a los nidos (+${TASK_REWARD} €).`,'good',true);
+  setCoopFx(c, '🌿');
   updateUI(true);
 }
 function buildCoop(){
@@ -836,6 +844,14 @@ function hireWorker(role){
   logMsg(`Contratado ${def.name.toLowerCase()} (−${def.cost} €). ${def.salary} €/día.`,'good',true);
   updateUI(true);
 }
+function fireWorker(id){
+  const w = S.workers.find(x=>x.id===id);
+  if(!w) return;
+  if(!confirm(`¿Despedir a ${w.name} (${WORKERS[w.role].name})? No hay devolución.`)) return;
+  S.workers = S.workers.filter(x=>x.id!==id);
+  logMsg(`Despediste a ${w.name} (${WORKERS[w.role].name}).`,'warn',true);
+  updateUI(true);
+}
 function tickWorkers(dm){
   for(const w of S.workers){
     const c = coopById(w.coop); const f = floorOf(c);
@@ -855,22 +871,16 @@ function tickWorkers(dm){
 function doWork(w){
   const role = w.role;
   if(role === 'peon'){
-    // 1. Agua urgente
     const dry = S.coops.find(c=>c.water<45 && hensIn(c.id).length>0);
-    if(dry){ dry.water = 100; logMsg(`${w.name}: rellenó bebederos del ${dry.name}.`); return; }
-    // 2. Bebederos muy sucios
+    if(dry){ dry.water = 100; logMsg(`${w.name}: rellenó bebederos del ${dry.name}.`); setWorkerAction(w,'💧'); return; }
     const dDirty = S.coops.find(c=>c.drinkersDirty>60 && hensIn(c.id).length>0);
-    if(dDirty){ dDirty.drinkersDirty = 0; dDirty.water = Math.max(dDirty.water,80); logMsg(`${w.name}: lavó bebederos del ${dDirty.name}.`); return; }
-    // 3. Mallas muy sucias
+    if(dDirty){ dDirty.drinkersDirty = 0; dDirty.water = Math.max(dDirty.water,80); logMsg(`${w.name}: lavó bebederos del ${dDirty.name}.`); setWorkerAction(w,'🚿'); return; }
     const dScr = S.coops.find(c=>c.screensDirty>60);
-    if(dScr){ dScr.screensDirty = 0; logMsg(`${w.name}: barrió mallas del ${dScr.name}.`); return; }
-    // 4. Cascarilla baja
+    if(dScr){ dScr.screensDirty = 0; logMsg(`${w.name}: barrió mallas del ${dScr.name}.`); setWorkerAction(w,'🧽'); return; }
     const lowHusk = S.coops.find(c=>c.nestHusk<30);
-    if(lowHusk){ lowHusk.nestHusk = 100; logMsg(`${w.name}: añadió cascarilla a nidos del ${lowHusk.name}.`); return; }
-    // 5. Pienso bajo
+    if(lowHusk){ lowHusk.nestHusk = 100; logMsg(`${w.name}: añadió cascarilla a nidos del ${lowHusk.name}.`); setWorkerAction(w,'🌿'); return; }
     const hungry = S.coops.find(c=>hensIn(c.id).length && feedPctInCoop(c)<40);
-    if(hungry){ feedCoop(hungry); return; }
-    // 6. Cortinas mal puestas
+    if(hungry){ feedCoop(hungry); setWorkerAction(w,'🌾'); return; }
     const w2 = S.weather;
     const wrongCurtain = S.coops.find(c=>{
       if(w2.isRain && !c.curtainsClosed) return true;
@@ -878,20 +888,19 @@ function doWork(w){
       if(c.temp<10 && !c.curtainsClosed) return true;
       return false;
     });
-    if(wrongCurtain){ wrongCurtain.curtainsClosed = wrongCurtain.curtainsClosed?0:1; logMsg(`${w.name}: ajustó cortinas del ${wrongCurtain.name}.`); return; }
-    // 7. Mantenimiento
+    if(wrongCurtain){ wrongCurtain.curtainsClosed = wrongCurtain.curtainsClosed?0:1; logMsg(`${w.name}: ajustó cortinas del ${wrongCurtain.name}.`); setWorkerAction(w,'🚪'); return; }
     const dD2 = S.coops.find(c=>c.drinkersDirty>30);
-    if(dD2){ dD2.drinkersDirty = 0; dD2.water = Math.max(dD2.water,80); logMsg(`${w.name}: lavó bebederos del ${dD2.name}.`); return; }
+    if(dD2){ dD2.drinkersDirty = 0; dD2.water = Math.max(dD2.water,80); logMsg(`${w.name}: lavó bebederos del ${dD2.name}.`); setWorkerAction(w,'🚿'); return; }
     const dS2 = S.coops.find(c=>c.screensDirty>30);
-    if(dS2){ dS2.screensDirty = 0; logMsg(`${w.name}: barrió mallas del ${dS2.name}.`); return; }
+    if(dS2){ dS2.screensDirty = 0; logMsg(`${w.name}: barrió mallas del ${dS2.name}.`); setWorkerAction(w,'🧽'); return; }
     const lH2 = S.coops.find(c=>c.nestHusk<60);
-    if(lH2){ lH2.nestHusk = 100; logMsg(`${w.name}: cascarilla a nidos del ${lH2.name}.`); return; }
+    if(lH2){ lH2.nestHusk = 100; logMsg(`${w.name}: cascarilla a nidos del ${lH2.name}.`); setWorkerAction(w,'🌿'); return; }
     return;
   }
   if(role === 'recolector'){
     for(const c of S.coops){
       const has = c.nests.some(n=>n.eggs.length) || c.floor.length;
-      if(has){ const got = collectCoop(c); logMsg(`${w.name} recogió ${got} huevos del ${c.name}.`,'good',true); updateUI(true); return; }
+      if(has){ const got = collectCoop(c); logMsg(`${w.name} recogió ${got} huevos del ${c.name}.`,'good',true); setWorkerAction(w,'🥚'); updateUI(true); return; }
     }
     return;
   }
@@ -903,6 +912,7 @@ function doWork(w){
       sick.immunityMin = CURE_IMMUNITY_MIN;
       sick.health = clamp(sick.health+22,0,100);
       logMsg(`${w.name} curó a ${sick.name} (${dname}).`,'good',true);
+      setWorkerAction(w,'🩺');
       updateUI(true);
     }
     return;
@@ -912,6 +922,7 @@ function doWork(w){
     if(dirty && S.money>=4){
       S.money -= 4; dirty.bedding = 100; dirty.ammonia = Math.max(4,dirty.ammonia-30);
       logMsg(`${w.name} cambió cama del ${dirty.name} (−4 €).`,'good',true);
+      setWorkerAction(w,'🧹');
       updateUI(true);
     }
   }
@@ -933,31 +944,22 @@ function sim(dm){
 
   for(const c of S.coops){
     const n = hensIn(c.id).length;
-    // Temperatura con cortinas
     let target = 21 + n*1.0 - c.vent*9 - nf*7 + weather.tempMod;
     if(c.lamp && nf>0.2) target += 7;
     if(S.event==='calor') target += 6;
     if(S.event==='frio') target -= 7;
     target += (100-c.bedding)*0.03;
-    // Cortinas cerradas: retienen calor de noche/frío
     if(c.curtainsClosed && (nf>0.3 || c.temp<15)) target += 3;
-    // Cortinas cerradas de día caluroso: sube más
     if(c.curtainsClosed && c.temp>25) target += 2;
     c.temp += (target-c.temp)*clamp(0.05*dm,0,1);
-
-    // Suciedad
     c.bedding = clamp(c.bedding - 0.0055*Math.max(1,n)*dm, 0, 100);
     c.drinkersDirty = clamp(c.drinkersDirty + 0.0025*n*dm, 0, 100);
     c.screensDirty = clamp(c.screensDirty + 0.002*n*dm, 0, 100);
     c.nestHusk = clamp(c.nestHusk - 0.0022*n*dm, 0, 100);
-
-    // Amoníaco
     let am = 0.006*Math.max(1,n)*dm*(1+(100-c.bedding)/35) - c.vent*0.05*dm;
     const dead = S.hens.filter(h=>!h.alive && h.coop===c.id).length;
     am += dead*0.05*dm;
     c.ammonia = clamp(c.ammonia + am, 0, 100);
-
-    // Lluvia
     if(weather.waterAdd>0) c.water = clamp(c.water + weather.waterAdd*dm, 0, 100);
     if(weather.ammoniaWash>0) c.ammonia = clamp(c.ammonia - weather.ammoniaWash*dm, 0, 100);
     c.water = clamp(c.water - 0.006*n*dm, 0, 100);
@@ -968,12 +970,9 @@ function sim(dm){
     const c = coopOf(h);
     h.age += dm/1440;
     h.bob += dm*(h.mode==='walk'?2.2:0.6);
-
-    // Sed más rápida con bebederos sucios
     const dirtyThirst = 1 + (c.drinkersDirty/100)*0.6;
     h.hunger = clamp(h.hunger + 0.055*dm, 0, 100);
     h.thirst = clamp(h.thirst + 0.075*dirtyThirst*dm, 0, 100);
-
     if(h.immunityMin>0) h.immunityMin -= dm;
 
     let dmg = 0;
@@ -982,11 +981,8 @@ function sim(dm){
     if(c.temp>30) dmg += (c.temp-30)*0.022;
     if(c.temp<8) dmg += (8-c.temp)*0.022;
     if(c.ammonia>45) dmg += (c.ammonia-45)*0.018;
-
     let sickDmg = 0;
     if(h.sick){ sickDmg = 0.055; dmg += sickDmg; h.sickMin += dm; }
-
-    // Lluvia solo moja si cortinas abiertas
     if(weather.isRain && !c.curtainsClosed){
       const nearNest = c.nests.some(n=>Math.hypot(h.x-n.cx,h.y-n.cy)<70);
       if(!nearNest){ h.wet = clamp((h.wet||0)+0.8*dm,0,100); dmg += 0.008; }
@@ -995,20 +991,16 @@ function sim(dm){
     } else {
       h.wet = clamp((h.wet||0)-0.8*dm,0,100);
     }
-
-    // Aplicar daño con suelo de seguridad si solo es enfermedad
     const newHealth = h.health - dmg*dm;
-    const onlySick = h.sick && dmg <= 0.06; // daño viene principalmente de enfermedad
+    const onlySick = h.sick && dmg <= 0.06;
     if(onlySick){
       h.health = clamp(Math.max(newHealth, 5), 0, 100);
     } else {
       h.health = clamp(newHealth, 0, 100);
     }
-
     h.mood += ((100-dmg*90)-h.mood)*clamp(0.02*dm,0,1);
     if(weather.moodBonus) h.mood = clamp(h.mood + weather.moodBonus*dm, 0, 100);
 
-    // Enfermedad por condiciones (saltamos si inmune)
     if(!h.sick && h.immunityMin<=0){
       let newDisease = null;
       if(c.temp<10){ const sev = (10-c.temp)/10; if(Math.random()<0.00025*sev*dm) newDisease = pickDisease('frio'); }
@@ -1026,7 +1018,6 @@ function sim(dm){
         logMsg(`${h.name} enfermó de ${newDisease.name} ${newDisease.icon} ${reason}. Trátala con T.`,'bad',true);
       }
     }
-    // Contagio
     if(!h.sick && h.immunityMin<=0){
       for(const o of S.hens){
         if(o===h || !o.alive || !o.sick || o.coop!==h.coop) continue;
@@ -1038,8 +1029,6 @@ function sim(dm){
         }
       }
     }
-
-    // Muerte solo si el daño no es exclusivamente por enfermedad
     if(h.health<=0 && !onlySick){
       h.alive = false; h.sick = false; h.disease = null;
       if(h.nest>=0 && c.nests[h.nest]){ c.nests[h.nest].owner = null; h.nest = -1; }
@@ -1051,7 +1040,6 @@ function sim(dm){
     behavior(h,c,dm);
   }
 
-  // Huevos: envejecen en nidos y suelo, no en pending
   for(const c of S.coops){
     const ageEggs = list => list.forEach(e=>{
       e.age += dm;
@@ -1170,27 +1158,22 @@ function tickLay(h,dm){
     (S.weather.isRain?0.85:1),0.05,1.2);
   if(h.mode!=='lay') h.layT -= dm*fert;
 }
-/* ⚠ HUEVOS ALEATORIOS entre categorías */
 function makeEgg(h,c){
   const roll = Math.random();
   let size;
-  // Distribución base: XXL=8%, XL=20%, L=30%, M=30%, S=12%
   if(roll<0.08) size='XXL';
   else if(roll<0.28) size='XL';
   else if(roll<0.58) size='L';
   else if(roll<0.88) size='M';
   else size='S';
-  // Bonus salud alta + edad madura
   if(h.health>80 && h.age>1 && Math.random()<0.20){
     const up = {S:'M',M:'L',L:'XL',XL:'XXL',XXL:'XXL'};
     size = up[size];
   }
-  // Penalización salud baja
   if(h.health<40 && Math.random()<0.25){
     const dn = {XXL:'XL',XL:'L',L:'M',M:'S',S:'S'};
     size = dn[size];
   }
-  // Probabilidad de sucio depende de cama y cascarilla
   const dirtyChance = (c.bedding<45?0.5:0.08) + (c.nestHusk<30?0.35:0);
   const dirty = Math.random()<dirtyChance;
   return { id:++eggId, size, dirty, crack:false, age:0, by:h.name };
@@ -1262,9 +1245,9 @@ function tips(){
   if(S.coops.some(c=>c.ammonia>50)) return 'Consejo: amoníaco alto. Ventila (V) y limpia cama (L).';
   if(S.coops.some(c=>c.temp>29)) return 'Consejo: calor. Abre cortinas y ventilación.';
   if(S.coops.some(c=>c.temp<10)) return 'Consejo: frío. Cierra cortinas (U) y enciende caleón (Q).';
-  if(S.coops.some(c=>c.drinkersDirty>50)) return 'Consejo: bebederos sucios. Lava con W.';
-  if(S.coops.some(c=>c.screensDirty>50)) return 'Consejo: mallas sucias. Barre con N.';
-  if(S.coops.some(c=>c.nestHusk<30)) return 'Consejo: poca cascarilla en nidos. Añade con H.';
+  if(S.coops.some(c=>c.drinkersDirty>50)) return 'Consejo: bebederos sucios. Lava con W (+2 €).';
+  if(S.coops.some(c=>c.screensDirty>50)) return 'Consejo: mallas sucias. Barre con N (+2 €).';
+  if(S.coops.some(c=>c.nestHusk<30)) return 'Consejo: poca cascarilla. Añade con H (+2 €).';
   if(alive.some(h=>h.thirst>72)) return 'Consejo: sed. Renueva agua (A).';
   if(alive.some(h=>h.hunger>75)) return 'Consejo: hambre. Riega pienso (E).';
   return 'Consejo: el peón hace todas las tareas. Recoge huevos a diario.';
@@ -1635,6 +1618,21 @@ function drawWorker(w){
   ctx.fillText(WORKERS[w.role].icon,w.x,iconY+4);
   ctx.fillStyle = 'rgba(240,232,216,.85)'; ctx.font = 'bold 9px system-ui';
   ctx.fillText(w.name,w.x,iconY-15); ctx.textAlign = 'left';
+  if(w.actionFx){
+    const progress = 1 - (w.actionFx.t / w.actionFx.maxT);
+    const fxY = w.y - 55*s - progress*20;
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, w.actionFx.t/0.5) * Math.min(1, progress*4 + 0.3));
+    ctx.font = 'bold 22px system-ui';
+    ctx.textAlign = 'center';
+    ctx.strokeStyle = 'rgba(0,0,0,.7)';
+    ctx.lineWidth = 3;
+    ctx.strokeText(w.actionFx.icon, w.x, fxY);
+    ctx.fillStyle = '#fff';
+    ctx.fillText(w.actionFx.icon, w.x, fxY);
+    ctx.textAlign = 'left';
+    ctx.restore();
+  }
 }
 function drawCoop(c){
   const r = c.rect, f = floorOf(c);
@@ -1666,7 +1664,6 @@ function drawCoop(c){
   c.nests.forEach(nst=>{
     ctx.fillStyle = '#5a4228'; rr(nst.x,nst.y,nst.w,nst.h,4); ctx.fill();
     ctx.fillStyle = '#2a1e10'; rr(nst.x+3,nst.y+3,nst.w-6,nst.h-7,3); ctx.fill();
-    // Cascarilla visible
     ctx.fillStyle = c.nestHusk>50?'#c9a86a':'#7a5a30';
     for(let k=0;k*9<nst.w-8;k++) ctx.fillRect(nst.x+5+k*9,nst.y+nst.h-10,7,3);
     nst.eggs.slice(0,5).forEach((e,i)=>{ drawEgg(nst.x+nst.w/2-22+i*11,nst.y+nst.h-8,e,0.7); });
@@ -1678,7 +1675,6 @@ function drawCoop(c){
   c.floor.forEach(e=>drawEgg(e.x,e.y,e,1));
   ctx.strokeStyle = '#5a3f22'; ctx.lineWidth = 2.5; rr(r.x,r.y,r.w,r.h,12); ctx.stroke();
   ctx.strokeStyle = 'rgba(255,220,150,.08)'; ctx.lineWidth = 1; rr(r.x+2,r.y+2,r.w-4,r.h-4,10); ctx.stroke();
-  // Cortinas visuales
   if(c.curtainsClosed){
     ctx.fillStyle = 'rgba(90,40,30,.35)';
     for(let i=0;i<5;i++){
@@ -1773,6 +1769,25 @@ function render(){
   for(const w of S.workers) drawWorker(w);
   for(const h of S.hens) if(!h.alive) drawHen(h);
   drawRain();
+  if(coopFx){
+    const c = S.coops.find(co=>co.id===coopFx.coopId);
+    if(c){
+      const progress = 1 - (coopFx.t/coopFx.maxT);
+      const cx = c.rect.x + c.rect.w/2;
+      const cy = c.rect.y + c.rect.h/2 - 20 - progress*40;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, Math.min(1, coopFx.t/0.6) * Math.min(1, progress*4 + 0.3));
+      ctx.font = 'bold 36px system-ui';
+      ctx.textAlign = 'center';
+      ctx.strokeStyle = 'rgba(0,0,0,.7)';
+      ctx.lineWidth = 4;
+      ctx.strokeText(coopFx.icon, cx, cy);
+      ctx.fillStyle = '#fff';
+      ctx.fillText(coopFx.icon, cx, cy);
+      ctx.textAlign = 'left';
+      ctx.restore();
+    }
+  }
   drawNightOverlay();
   drawTopBar();
 }
@@ -1836,22 +1851,18 @@ function updateUI(force){
     feedPct<30, feedPct<10);
   g('gVent','vVent',c.vent*100, Math.round(c.vent*100)+'%',
     c.vent>0.5?'#5aa9d6':'#8d7a55','gaugeVent',false,false);
-  // Cortinas
   const curPct = c.curtainsClosed ? 100 : 0;
   g('gCurtains','vCurtains', curPct, c.curtainsClosed?'Cerradas':'Abiertas',
     c.curtainsClosed?'#c9a86a':'#5aa9d6','gaugeCurtains',
     false, (S.weather.isRain && !c.curtainsClosed) || (c.temp<8 && !c.curtainsClosed));
-  // Bebederos limpios
   const ddClean = 100 - c.drinkersDirty;
   g('gDrinkersDirty','vDrinkersDirty', ddClean, Math.round(ddClean)+'%',
     ddClean<30?'#d9663f':ddClean<60?'#e2a03c':'#6dbb83','gaugeDrinkersDirty',
     ddClean<50, ddClean<25);
-  // Mallas limpias
   const sdClean = 100 - c.screensDirty;
   g('gScreensDirty','vScreensDirty', sdClean, Math.round(sdClean)+'%',
     sdClean<30?'#d9663f':sdClean<60?'#e2a03c':'#6dbb83','gaugeScreensDirty',
     sdClean<50, sdClean<25);
-  // Cascarilla
   g('gHusk','vHusk', c.nestHusk, Math.round(c.nestHusk)+'%',
     c.nestHusk<30?'#d9663f':c.nestHusk<60?'#e2a03c':'#6dbb83','gaugeHusk',
     c.nestHusk<50, c.nestHusk<25);
@@ -1871,11 +1882,15 @@ function updateUI(force){
       <button class="btn sm" data-hire="${k}" title="${d.desc}">${d.icon} ${d.name}<br><span class="p">${d.cost} € · ${d.salary} €/d</span></button>
     `).join('');
     document.getElementById('workerList').innerHTML = S.workers.length
-      ? S.workers.map(w=>`<li><span>${WORKERS[w.role].icon} <b style="color:var(--text-primary)">${w.name}</b> · ${WORKERS[w.role].name} <em style="color:var(--text-muted);font-style:normal">(${coopById(w.coop).name.replace('Galpón ','')})</em></span>
-          <span>${WORKERS[w.role].salary} €/d</span></li>`).join('')
+      ? S.workers.map(w=>`<li style="gap:6px;">
+          <span style="flex:1;min-width:0;">${WORKERS[w.role].icon} <b style="color:var(--text-primary)">${w.name}</b> · ${WORKERS[w.role].name} <em style="color:var(--text-muted);font-style:normal">(${coopById(w.coop).name.replace('Galpón ','')})</em></span>
+          <span style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+            <span style="color:var(--text-muted);font-size:10px;">${WORKERS[w.role].salary} €/d</span>
+            <button class="btn sm" data-fire="${w.id}" title="Despedir a ${w.name}" style="padding:4px 7px;min-width:auto;font-size:13px;color:#f0b8b0;border-color:rgba(217,95,74,.6);">🚪</button>
+          </span>
+        </li>`).join('')
       : '<li><span>Sin trabajadores contratados</span></li>';
   }
-  // Parvada - rebuild cada vez para mostrar enfermedades actualizadas
   const list = document.getElementById('henList');
   list.innerHTML = S.hens.map(h=>{
     const bad = !h.alive;
@@ -2123,6 +2138,11 @@ document.getElementById('hireList').addEventListener('click', ev=>{
   if(!b) return;
   hireWorker(b.dataset.hire);
 });
+document.getElementById('workerList').addEventListener('click', ev=>{
+  const b = ev.target.closest('[data-fire]');
+  if(!b) return;
+  fireWorker(+b.dataset.fire);
+});
 document.getElementById('henList').addEventListener('click', ev=>{
   const li = ev.target.closest('li');
   if(!li) return;
@@ -2234,6 +2254,10 @@ let last = performance.now();
 function frame(now){
   const dtReal = Math.min(0.06,(now-last)/1000);
   last = now;
+  if(coopFx){ coopFx.t -= dtReal; if(coopFx.t<=0) coopFx = null; }
+  for(const w of S.workers){
+    if(w.actionFx){ w.actionFx.t -= dtReal; if(w.actionFx.t<=0) w.actionFx = null; }
+  }
   if(!S.paused && !S.over && !S.sorting){
     const dm = dtReal * REAL_MINS_PER_SEC * S.speed;
     for(const h of S.hens) if(h.alive) tickLay(h,dm);
