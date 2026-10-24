@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gallinero Cuidadoso 4.0</title>
+<title>Gallinero Cuidadoso 5.0</title>
 <style>
   :root{
     --bg0:#0f1410; --bg1:#141a14;
@@ -17,6 +17,10 @@
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-track{background:#0f0c07}
+  ::-webkit-scrollbar-thumb{background:#3a3022;border-radius:4px}
+  ::-webkit-scrollbar-thumb:hover{background:#52442e}
   body{
     background:
       radial-gradient(1400px 800px at 15% -10%, #2a2418 0%, transparent 60%),
@@ -26,174 +30,216 @@
     font:15px/1.5 "Inter","Segoe UI",system-ui,-apple-system,sans-serif;
     -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:1440px;margin:0 auto;padding:14px}
+  .wrap{max-width:1460px;margin:0 auto;padding:14px}
   .hidden{display:none!important}
 
   /* ================= Header ================= */
   .top{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;margin-bottom:10px}
   .brand{display:flex;gap:14px;align-items:center}
-  .logo{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;
-    font-size:32px;background:linear-gradient(160deg,#3a2e1c,#241c10);
+  .logo{width:58px;height:58px;border-radius:16px;display:grid;place-items:center;
+    font-size:33px;background:linear-gradient(160deg,#3a2e1c,#241c10);
     border:1px solid var(--line2);box-shadow:0 8px 22px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,220,150,.15);
-    animation:bob 3s ease-in-out infinite}
+    animation:bob 3s ease-in-out infinite;cursor:pointer;transition:transform .2s}
+  .logo:hover{transform:scale(1.08) rotate(-5deg)}
   @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-  h1{margin:0;font-size:23px;letter-spacing:.4px;font-weight:800;color:var(--gold2)}
+  h1{margin:0;font-size:24px;letter-spacing:.4px;font-weight:800;color:var(--gold2)}
   h1 .ver{font-size:10.5px;background:linear-gradient(135deg,var(--gold),#b07a2a);
     color:#1a1208;padding:2px 8px;border-radius:20px;vertical-align:middle;font-weight:900;letter-spacing:.6px;margin-left:4px}
   .sub{margin:0;font-size:12px;color:var(--faint)}
 
   .chips{display:flex;gap:7px;flex-wrap:wrap}
   .chip{background:linear-gradient(180deg,#2a2318,#1a160e);border:1px solid var(--line);
-    border-radius:12px;padding:7px 12px;text-align:center;min-width:82px;
+    border-radius:12px;padding:7px 12px;text-align:center;min-width:84px;
     box-shadow:0 3px 10px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,220,150,.06);
-    transition:transform .15s,border-color .15s}
-  .chip:hover{transform:translateY(-1px);border-color:var(--line2)}
+    transition:transform .15s,border-color .15s,box-shadow .15s;position:relative}
+  .chip:hover{transform:translateY(-2px);border-color:var(--line2);
+    box-shadow:0 6px 16px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,220,150,.1)}
   .chip b{display:block;font-size:15px;font-weight:800;color:var(--txt)}
   .chip small{color:var(--faint);font-size:9px;text-transform:uppercase;letter-spacing:.8px;font-weight:700}
   .chip.level b{color:var(--violet)}
   .chip.day b{color:var(--gold2)}
   .chip.money.bad b{color:var(--red)}
   .chip.money b{color:var(--green2)}
-  .chip.eggs.old b{color:var(--amber)}
+  .chip.eggs.has-eggs{border-color:var(--gold);animation:chipPulse 2s ease-in-out infinite}
+  @keyframes chipPulse{0%,100%{box-shadow:0 3px 10px rgba(0,0,0,.35)}
+    50%{box-shadow:0 0 0 3px rgba(232,184,92,.2), 0 6px 16px rgba(232,184,92,.3)}}
 
-  .dayBar{position:relative;height:24px;background:#15120c;border-radius:12px;overflow:hidden;
+  .dayBar{position:relative;height:26px;background:#15120c;border-radius:13px;overflow:hidden;
     margin-bottom:12px;border:1px solid var(--line);box-shadow:inset 0 2px 6px rgba(0,0,0,.5)}
   .dayFill{position:absolute;inset:0 auto 0 0;
     background:linear-gradient(90deg,#c08a30,#e8b85c 50%,#ffd47a);
     transition:width .4s ease;box-shadow:0 0 18px rgba(232,184,92,.55)}
-  .dayLabel{position:absolute;inset:0;display:grid;place-items:center;font-size:11.5px;
+  .dayFill::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(90deg,transparent 30%,rgba(255,255,255,.25) 50%,transparent 70%);
+    animation:shine 3s linear infinite}
+  @keyframes shine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+  .dayLabel{position:absolute;inset:0;display:grid;place-items:center;font-size:12px;
     font-weight:800;letter-spacing:.6px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.9)}
 
   /* ================= Layout ================= */
-  .board{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:14px;align-items:start}
+  .board{display:grid;grid-template-columns:minmax(0,1fr) 372px;gap:14px;align-items:start}
   .stage{position:relative;background:linear-gradient(180deg,#1d1810,#14100a);
     border:1px solid var(--line);border-radius:18px;padding:8px;box-shadow:var(--shadow)}
   canvas{display:block;width:100%;height:auto;border-radius:12px;background:#1a1812}
   .side{display:flex;flex-direction:column;gap:11px}
 
-  /* ================= Panels (mejorados) ================= */
+  /* ================= Panels ================= */
   .panel{
-    background:linear-gradient(180deg,#261f16 0%,#1a1510 100%);
-    border:1px solid var(--line);border-radius:15px;padding:12px 13px;
+    background:linear-gradient(180deg,#28211a 0%,#1a1510 100%);
+    border:1px solid var(--line);border-radius:16px;padding:13px 14px;
     box-shadow:0 4px 16px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,220,150,.06);
-    position:relative;
+    position:relative;transition:transform .2s,box-shadow .2s,border-color .2s;
+  }
+  .panel:hover{
+    border-color:var(--line2);
+    box-shadow:0 8px 24px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,220,150,.1);
   }
   .panel::before{
-    content:"";position:absolute;inset:0;border-radius:15px;pointer-events:none;
-    background:linear-gradient(180deg,rgba(255,220,150,.04),transparent 30%);
+    content:"";position:absolute;inset:0;border-radius:16px;pointer-events:none;
+    background:linear-gradient(180deg,rgba(255,220,150,.05),transparent 30%);
   }
-  .panel h2{margin:0 0 10px;font-size:11.5px;text-transform:uppercase;letter-spacing:1.1px;
+  .panel h2{margin:0 0 11px;font-size:11.5px;text-transform:uppercase;letter-spacing:1.2px;
     color:var(--gold);font-weight:800;display:flex;justify-content:space-between;align-items:center;
-    padding-bottom:6px;border-bottom:1px solid rgba(232,184,92,.15)}
-  .panel h2 small{text-transform:none;letter-spacing:0;color:var(--dim);font-size:10.5px;font-weight:600}
-  .panel h2 .ico{margin-right:6px;font-size:13px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
+    padding-bottom:7px;border-bottom:1px solid rgba(232,184,92,.15)}
+  .panel h2 small{text-transform:none;letter-spacing:0;color:var(--dim);font-size:10.5px;font-weight:700}
+  .panel h2 .ico{margin-right:6px;font-size:14px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
 
   /* ================= Buttons ================= */
   .btn{
     background:linear-gradient(180deg,#342b1e 0%,#221b12 100%);
     color:var(--txt);border:1px solid var(--line2);border-radius:10px;
-    padding:9px 10px;font-size:12.5px;cursor:pointer;text-align:left;
-    font-family:inherit;font-weight:600;position:relative;
+    padding:10px 11px;font-size:12.5px;cursor:pointer;text-align:left;
+    font-family:inherit;font-weight:600;position:relative;overflow:hidden;
     transition:background .15s,border-color .15s,transform .06s,box-shadow .15s;
-    display:flex;align-items:center;gap:6px;
+    display:flex;align-items:center;gap:7px;
+  }
+  .btn::before{
+    content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,220,150,.15),transparent 40%);
+    opacity:0;transition:opacity .3s;pointer-events:none;
   }
   .btn:hover{background:linear-gradient(180deg,#43371f 0%,#2e2518 100%);
-    border-color:var(--line3);box-shadow:0 3px 10px rgba(232,184,92,.15)}
-  .btn:active{transform:translateY(1px)}
-  .btn .bico{font-size:14px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))}
+    border-color:var(--line3);box-shadow:0 3px 12px rgba(232,184,92,.2);transform:translateY(-1px)}
+  .btn:hover::before{opacity:1}
+  .btn:active{transform:translateY(1px) scale(.99)}
+  .btn .bico{font-size:15px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4));transition:transform .2s}
+  .btn:hover .bico{transform:scale(1.15) rotate(-3deg)}
   .btn.primary{background:linear-gradient(180deg,#5a9a4a,#3f7532);border-color:#7ac06a;
     color:#fff;font-weight:700}
-  .btn.primary:hover{background:linear-gradient(180deg,#6aaa5a,#4a853a);box-shadow:0 4px 14px rgba(120,192,106,.3)}
-  .btn.wide{width:100%;margin-top:8px;justify-content:center}
-  .btn.sm{font-size:11.5px;padding:7px 8px;justify-content:center}
+  .btn.primary:hover{background:linear-gradient(180deg,#6aaa5a,#4a853a);
+    box-shadow:0 5px 18px rgba(120,192,106,.4)}
+  .btn.wide{width:100%;margin-top:9px;justify-content:center}
+  .btn.sm{font-size:11.5px;padding:8px 9px;justify-content:center}
   .btn.spd.on{background:linear-gradient(180deg,#5a9a4a,#3f7532);border-color:#7ac06a;
-    color:#fff;font-weight:700;box-shadow:0 0 12px rgba(120,192,106,.4)}
+    color:#fff;font-weight:700;box-shadow:0 0 14px rgba(120,192,106,.5)}
   .btn .p{color:var(--gold);font-size:10.5px;font-weight:700}
+  .btn.alert{border-color:var(--amber);animation:btnAlert 1.5s ease-in-out infinite}
+  @keyframes btnAlert{0%,100%{box-shadow:0 0 0 0 rgba(224,164,74,0)}
+    50%{box-shadow:0 0 0 4px rgba(224,164,74,.2)}}
   kbd{float:right;background:#0f0c07;border:1px solid #3a3022;border-radius:4px;padding:0 5px;
     font-size:9px;color:#8a7d62;font-family:inherit;margin-left:auto;font-weight:700}
-  .acts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .acts{display:grid;grid-template-columns:1fr 1fr;gap:7px}
   .foot{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .speeds{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}
 
   /* ================= Coop selector ================= */
   .coopList{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
   .coopBtn{background:linear-gradient(180deg,#1a1610,#120e08);border:1.5px solid var(--line2);
-    border-radius:9px;padding:7px 4px;cursor:pointer;text-align:center;font-family:inherit;
-    color:var(--txt);transition:.15s}
-  .coopBtn:hover{border-color:var(--line3);background:#241e14}
+    border-radius:10px;padding:8px 4px;cursor:pointer;text-align:center;font-family:inherit;
+    color:var(--txt);transition:.15s;position:relative}
+  .coopBtn:hover{border-color:var(--line3);background:#241e14;transform:translateY(-1px)}
   .coopBtn.on{border-color:#7ac06a;background:linear-gradient(180deg,#243a1c,#1a2814);
     box-shadow:0 0 0 2px rgba(124,184,106,.2)}
-  .coopBtn b{display:block;font-size:12.5px;font-weight:800;color:var(--gold2)}
+  .coopBtn b{display:block;font-size:13px;font-weight:800;color:var(--gold2)}
   .coopBtn small{font-size:9px;color:var(--dim);font-weight:700}
   .coopBtn.on b{color:var(--green2)}
 
   /* ================= Gauges ================= */
-  .gauge{display:grid;grid-template-columns:auto 1fr auto;gap:3px 8px;align-items:center;
-    margin-bottom:8px;font-size:11.5px;color:var(--dim)}
-  .gauge .gico{font-size:12px}
-  .gauge b{font-size:11.5px;color:var(--txt);min-width:56px;text-align:right;font-weight:800}
-  .gauge .bar{grid-column:1/-1;height:7px;background:#0d0b07;border-radius:5px;overflow:hidden;
-    box-shadow:inset 0 1px 2px rgba(0,0,0,.6)}
+  .gauge{display:grid;grid-template-columns:auto 1fr auto;gap:4px 8px;align-items:center;
+    margin-bottom:9px;font-size:11.5px;color:var(--dim)}
+  .gauge .gico{font-size:13px;transition:transform .2s}
+  .gauge:hover .gico{transform:scale(1.2)}
+  .gauge b{font-size:11.5px;color:var(--txt);min-width:58px;text-align:right;font-weight:800}
+  .gauge .bar{grid-column:1/-1;height:8px;background:#0d0b07;border-radius:5px;overflow:hidden;
+    box-shadow:inset 0 1px 2px rgba(0,0,0,.6);position:relative}
   .gauge .bar i{display:block;height:100%;width:0;border-radius:5px;
     transition:width .3s,background .3s;box-shadow:0 0 8px currentColor}
+  .gauge.warn .bar i{animation:gaugePulse 1.2s ease-in-out infinite}
+  @keyframes gaugePulse{0%,100%{opacity:1}50%{opacity:.65}}
 
   /* ================= Lists ================= */
   .hens{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px;
-    max-height:230px;overflow:auto}
+    max-height:240px;overflow:auto}
   .hens li{display:grid;grid-template-columns:12px 1fr auto;gap:7px;align-items:center;
-    padding:6px 8px;border-radius:8px;background:linear-gradient(180deg,#16120c,#100c08);
-    cursor:pointer;font-size:11.5px;border:1px solid transparent;transition:.12s}
-  .hens li:hover{background:#1c1810;border-color:var(--line)}
-  .hens li.sel{border-color:#7ac06a;background:linear-gradient(180deg,#243a1c,#1a2814)}
+    padding:7px 9px;border-radius:9px;background:linear-gradient(180deg,#16120c,#100c08);
+    cursor:pointer;font-size:11.5px;border:1px solid transparent;transition:.15s}
+  .hens li:hover{background:#1c1810;border-color:var(--line);transform:translateX(2px)}
+  .hens li.sel{border-color:#7ac06a;background:linear-gradient(180deg,#243a1c,#1a2814);
+    box-shadow:0 0 0 1px rgba(124,184,106,.3)}
   .hens li .dot{width:11px;height:11px;border-radius:50%;box-shadow:0 0 0 1px #0006 inset}
   .hens li .nm{display:flex;justify-content:space-between;gap:6px}
   .hens li .nm em{font-style:normal;color:var(--faint);font-size:9.5px}
-  .hens li .bars{display:flex;gap:3px;margin-top:3px}
+  .hens li .bars{display:flex;gap:3px;margin-top:4px}
   .hens li .bars i{height:4px;flex:1;border-radius:3px;background:#252018;overflow:hidden;position:relative}
-  .hens li .bars i em{position:absolute;inset:0 auto 0 0;display:block}
+  .hens li .bars i em{position:absolute;inset:0 auto 0 0;display:block;transition:width .3s}
   .hens li .tag{font-size:9.5px;color:var(--amber);white-space:nowrap;font-weight:800}
   .hens li.ded{opacity:.4}
   .log{list-style:none;margin:0;padding:0;font-size:11px;color:var(--dim);display:flex;
-    flex-direction:column;gap:3px;max-height:140px;overflow:auto}
-  .log li{border-left:2px solid var(--line2);padding-left:7px;line-height:1.35}
+    flex-direction:column;gap:3px;max-height:150px;overflow:auto}
+  .log li{border-left:2px solid var(--line2);padding-left:8px;line-height:1.4;
+    animation:logIn .3s ease}
+  @keyframes logIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
   .log li.warn{border-color:#c9762f;color:#e8b884}
   .log li.bad{border-color:#b0413e;color:#e79a97}
   .log li.good{border-color:#55a069;color:#a9d9b6}
 
   .workers{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
   .workers li{display:flex;justify-content:space-between;gap:6px;font-size:11px;
-    background:linear-gradient(180deg,#16120c,#100c08);padding:6px 8px;border-radius:7px;
-    align-items:center;border:1px solid var(--line)}
+    background:linear-gradient(180deg,#16120c,#100c08);padding:6px 9px;border-radius:8px;
+    align-items:center;border:1px solid var(--line);transition:.15s}
+  .workers li:hover{border-color:var(--line2);background:#1c1810}
   .workers li span{color:var(--faint);font-size:10px}
   .hireList{display:grid;grid-template-columns:1fr 1fr;gap:5px}
 
   /* ================= Layers / modals ================= */
-  .layer{position:absolute;inset:8px;background:rgba(8,6,4,.92);border-radius:12px;
-    display:grid;place-items:center;padding:10px;z-index:5;backdrop-filter:blur(5px)}
-  .sheet{width:min(900px,100%);max-height:100%;overflow:auto;
+  .layer{position:absolute;inset:8px;background:rgba(8,6,4,.94);border-radius:12px;
+    display:grid;place-items:center;padding:10px;z-index:5;backdrop-filter:blur(6px)}
+  .sheet{width:min(1000px,100%);max-height:100%;overflow:auto;
     background:linear-gradient(180deg,#2c2418 0%,#1c1810 100%);
-    border:1px solid var(--line2);border-radius:16px;padding:18px;
+    border:1px solid var(--line2);border-radius:18px;padding:20px;
     box-shadow:0 20px 60px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,220,150,.08);
     animation:sheetIn .25s cubic-bezier(.2,.9,.3,1.2)}
   @keyframes sheetIn{from{opacity:0;transform:scale(.96) translateY(8px)}to{opacity:1;transform:none}}
-  .sheet.small{width:min(580px,100%)}
-  .sheet h2{margin:0 0 8px;font-size:20px;color:var(--gold2);font-weight:800;
+  .sheet.small{width:min(600px,100%)}
+  .sheet h2{margin:0 0 10px;font-size:21px;color:var(--gold2);font-weight:800;
     display:flex;align-items:center;gap:8px}
   .hint{font-size:12.5px;color:var(--faint);margin:0 0 12px;line-height:1.5}
+  .hint b{color:var(--gold2)}
   .kv{display:grid;grid-template-columns:auto auto;gap:4px 18px;font-size:13px;margin:10px 0}
   .kv span:nth-child(odd){color:var(--dim)}
   .kv b{text-align:right;color:var(--txt)}
 
-  .eggBed{min-height:88px;background:#0f0c07;border:1px dashed var(--line3);border-radius:10px;
-    padding:10px;position:relative;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  /* ================= Sort panel ================= */
+  .sortBar{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;
+    background:rgba(15,12,7,.6);padding:9px 12px;border-radius:10px;border:1px solid var(--line)}
+  .sortBar .selInfo{flex:1;font-size:12.5px;color:var(--dim);font-weight:600}
+  .sortBar .selInfo b{color:var(--gold2);font-size:13px}
+  .eggBed{min-height:100px;background:#0f0c07;border:2px dashed var(--line3);border-radius:12px;
+    padding:12px;position:relative;display:flex;flex-wrap:wrap;gap:9px;align-items:center;
+    transition:.2s}
+  .eggBed.empty{border-color:#2a2418}
+  .eggBed::before{content:"Suelta aquí";position:absolute;inset:0;display:grid;place-items:center;
+    font-size:11px;color:var(--faint);opacity:0;pointer-events:none;letter-spacing:1px;
+    text-transform:uppercase;font-weight:700}
+  .eggBed:empty::before{opacity:1}
   .eggToken{border-radius:50%/58%;background:linear-gradient(160deg,#fff8ea,#e6d7bd);
-    border:1px solid #b9a887;cursor:grab;position:relative;touch-action:none;
-    box-shadow:0 2px 5px rgba(0,0,0,.5)}
-  .eggToken.S{width:18px;height:24px}
-  .eggToken.M{width:24px;height:32px}
-  .eggToken.L{width:30px;height:40px}
-  .eggToken.XL{width:36px;height:48px}
-  .eggToken.XXL{width:42px;height:56px;box-shadow:0 2px 8px rgba(232,184,92,.6), 0 0 0 1px rgba(232,184,92,.4)}
+    border:1px solid #b9a887;cursor:pointer;position:relative;
+    box-shadow:0 2px 5px rgba(0,0,0,.5);transition:.15s;user-select:none}
+  .eggToken:hover{transform:scale(1.08) translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,.6)}
+  .eggToken.S{width:20px;height:26px}
+  .eggToken.M{width:26px;height:34px}
+  .eggToken.L{width:32px;height:42px}
+  .eggToken.XL{width:38px;height:50px}
+  .eggToken.XXL{width:44px;height:58px;box-shadow:0 2px 8px rgba(232,184,92,.6), 0 0 0 1px rgba(232,184,92,.4)}
   .eggToken.dirty{background:linear-gradient(160deg,#ded0b4,#b7a382)}
   .eggToken.dirty::after{content:"";position:absolute;inset:20% 25%;
     background:radial-gradient(2px 2px at 20% 30%,#6b5a3a 99%,transparent),
@@ -201,45 +247,64 @@
                radial-gradient(3px 3px at 45% 80%,#7a6742 99%,transparent)}
   .eggToken.crack::before{content:"";position:absolute;left:45%;top:12%;width:2px;height:74%;
     background:#8d7554;transform:rotate(12deg);box-shadow:-3px 6px 0 -1px #8d7554,3px 14px 0 -1px #8d7554}
-  .eggToken.placed{cursor:default}
-  .crates{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:14px 0}
+  .eggToken.selected{box-shadow:0 0 0 3px var(--gold), 0 6px 18px rgba(232,184,92,.6);
+    transform:scale(1.12) translateY(-3px);animation:selPulse 1s ease-in-out infinite}
+  @keyframes selPulse{0%,100%{box-shadow:0 0 0 3px var(--gold), 0 6px 18px rgba(232,184,92,.6)}
+    50%{box-shadow:0 0 0 5px rgba(232,184,92,.5), 0 8px 22px rgba(232,184,92,.8)}}
+  .eggToken.placed{opacity:.9}
+  .eggToken.placed:hover{transform:scale(1.05)}
+
+  .crates{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:14px 0}
   .crate{background:linear-gradient(180deg,#2a2418,#1e1a12);border:2px solid #55472e;
-    border-radius:11px;padding:8px;font-size:11.5px;transition:.15s;text-align:center}
-  .crate.over{transform:scale(1.04);box-shadow:0 0 0 3px rgba(124,184,106,.35)}
-  .crate h3{margin:0;font-size:12px;font-weight:800;letter-spacing:.3px}
-  .crate p{margin:2px 0 5px;color:var(--dim);font-size:10px;min-height:24px}
-  .crate b{font-size:13px;font-weight:900}
-  .crate .slot{min-height:70px;margin-top:6px;display:flex;flex-wrap:wrap;gap:5px;
-    align-content:flex-start;justify-content:center;background:#0f0c07;border-radius:8px;padding:6px}
-  .crate.A{border-color:#5aa8d0} .crate.A h3{color:#7ac8f0} .crate.A b{color:#7ac8f0}
-  .crate.AA{border-color:#7cb86a} .crate.AA h3{color:#9ee08a} .crate.AA b{color:#9ee08a}
-  .crate.EX{border-color:#e8b85c} .crate.EX h3{color:#ffd47a} .crate.EX b{color:#ffd47a}
+    border-radius:12px;padding:10px;font-size:11.5px;transition:.15s;text-align:center;
+    cursor:pointer;position:relative;overflow:hidden}
+  .crate::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(circle at center,transparent 30%,rgba(0,0,0,.2) 100%)}
+  .crate:hover{transform:translateY(-3px)}
+  .crate.armed{cursor:pointer;animation:crateArmed 1.8s ease-in-out infinite}
+  @keyframes crateArmed{0%,100%{box-shadow:0 0 0 0 currentColor}
+    50%{box-shadow:0 0 0 5px rgba(232,184,92,.15)}}
+  .crate.over{transform:scale(1.06);box-shadow:0 0 0 4px rgba(124,184,106,.4), 0 8px 20px rgba(0,0,0,.4)}
+  .crate h3{margin:0;font-size:12.5px;font-weight:800;letter-spacing:.3px;position:relative;z-index:1}
+  .crate p{margin:3px 0 6px;color:var(--dim);font-size:10px;min-height:26px;position:relative;z-index:1}
+  .crate b{font-size:14px;font-weight:900;position:relative;z-index:1}
+  .crate .slot{min-height:74px;margin-top:8px;display:flex;flex-wrap:wrap;gap:5px;
+    align-content:flex-start;justify-content:center;background:#0f0c07;border-radius:9px;
+    padding:7px;position:relative;z-index:1}
+  .crate .gradeTag{position:absolute;top:4px;right:6px;font-size:8.5px;font-weight:900;
+    letter-spacing:.6px;opacity:.5;z-index:1}
+  .crate.B{border-color:#c9762f} .crate.B h3{color:#e8a04a} .crate.B b{color:#e8a04a} .crate.B .gradeTag{color:#e8a04a}
+  .crate.A{border-color:#5aa8d0} .crate.A h3{color:#7ac8f0} .crate.A b{color:#7ac8f0} .crate.A .gradeTag{color:#7ac8f0}
+  .crate.AA{border-color:#7cb86a} .crate.AA h3{color:#9ee08a} .crate.AA b{color:#9ee08a} .crate.AA .gradeTag{color:#9ee08a}
+  .crate.EX{border-color:#e8b85c} .crate.EX h3{color:#ffd47a} .crate.EX b{color:#ffd47a} .crate.EX .gradeTag{color:#ffd47a}
   .crate.Yumbo{border-color:#a890e0;background:linear-gradient(180deg,#2e2440,#1e1a2c)}
-  .crate.Yumbo h3{color:#c8b0ff} .crate.Yumbo b{color:#c8b0ff}
-  .crate.B{border-color:#c9762f} .crate.B h3{color:#e8a04a} .crate.B b{color:#e8a04a}
-  .sheetFoot{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+  .crate.Yumbo h3{color:#c8b0ff} .crate.Yumbo b{color:#c8b0ff} .crate.Yumbo .gradeTag{color:#c8b0ff}
+
+  .sheetFoot{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:8px}
   .sheetFoot .btn{text-align:center;justify-content:center}
   .info{flex:1;font-size:12.5px;color:var(--dim);font-weight:600}
+  .info b{color:var(--gold2)}
 
   /* ================= Toasts ================= */
   .toasts{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:200;
     display:flex;flex-direction:column;gap:7px;align-items:center;pointer-events:none;max-width:92vw}
   .toast{background:linear-gradient(180deg,#2a2318,#1c1810);color:var(--txt);
-    padding:10px 18px;border-radius:11px;border:1px solid var(--line2);
+    padding:11px 20px;border-radius:12px;border:1px solid var(--line2);
     box-shadow:0 12px 32px rgba(0,0,0,.65);font-size:12.5px;font-weight:600;
-    animation:toastIn .3s ease;max-width:100%}
+    animation:toastIn .35s cubic-bezier(.2,.9,.3,1.2);max-width:100%}
   .toast.good{border-color:var(--green);color:#c8e8c0}
   .toast.warn{border-color:var(--amber);color:#f0d8a8}
   .toast.bad{border-color:var(--red);color:#f0b8b0}
-  @keyframes toastIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  @keyframes toastIn{from{opacity:0;transform:translateY(20px) scale(.95)}to{opacity:1;transform:none}}
 
-  .henQtyRow{display:flex;align-items:center;gap:8px;margin:14px 0;
-    background:#14110c;padding:12px 14px;border-radius:11px;border:1px solid var(--line)}
+  .henQtyRow{display:flex;align-items:center;gap:9px;margin:14px 0;
+    background:#14110c;padding:14px 16px;border-radius:12px;border:1px solid var(--line)}
   .henQtyRow label{font-size:12.5px;color:var(--dim);font-weight:700}
-  .henQtyRow input{width:64px;text-align:center;font-size:16px;font-weight:800;
-    background:#0f0c07;border:1px solid var(--line2);border-radius:7px;color:var(--gold2);
-    padding:6px;font-family:inherit}
-  .henQtyRow .total{margin-left:auto;font-size:17px;font-weight:900;color:var(--gold2)}
+  .henQtyRow input{width:70px;text-align:center;font-size:17px;font-weight:800;
+    background:#0f0c07;border:1px solid var(--line2);border-radius:8px;color:var(--gold2);
+    padding:7px;font-family:inherit;transition:.15s}
+  .henQtyRow input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(232,184,92,.2)}
+  .henQtyRow .total{margin-left:auto;font-size:18px;font-weight:900;color:var(--gold2)}
 
   @media (max-width:1100px){
     .board{grid-template-columns:1fr}
@@ -251,7 +316,7 @@
     .acts{grid-template-columns:1fr}
     .hireList{grid-template-columns:1fr}
     .crates{grid-template-columns:1fr}
-    h1{font-size:18px}
+    h1{font-size:19px}
   }
 </style>
 </head>
@@ -261,8 +326,8 @@
     <div class="brand">
       <div class="logo">🐔</div>
       <div>
-        <h1>Gallinero Cuidadoso <span class="ver">4.0</span></h1>
-        <p class="sub">Huevos a salvo · 5 grados (B · A · AA · EX · Yumbo) · gallinas realistas</p>
+        <h1>Gallinero Cuidadoso <span class="ver">5.0</span></h1>
+        <p class="sub">Comederos repartidos · clasificación clic-a-clic · 5 grados (B · A · AA · EX · Yumbo)</p>
       </div>
     </div>
     <div class="chips">
@@ -285,30 +350,41 @@
     <section class="stage">
       <canvas id="cv" width="1000" height="620" aria-label="Vista de la granja"></canvas>
 
+      <!-- SORT MODAL -->
       <div id="sortLayer" class="layer hidden">
         <div class="sheet">
           <h2>📦 Clasificar la puesta</h2>
-          <p class="hint">Arrastra cada huevo a su caja. <b>Los huevos recogidos están a salvo</b>: ya no se estropean. Solo envejecen los que dejas en nidos o en el suelo. Acertar da <b style="color:#7cb86a">+0,30 €</b>, fallar resta <b style="color:#d05a4a">−0,10 €</b>.</p>
+          <p class="hint">Haz <b>clic en un huevo</b> para seleccionarlo (se ilumina), luego <b>clic en la caja</b> correcta. Haz clic en un huevo colocado para devolverlo. Atajos: <b>1-5</b> para B · A · AA · EX · Yumbo. Los huevos recogidos <b>están a salvo</b>: no envejecen.</p>
+          <div class="sortBar">
+            <div class="selInfo" id="selInfo">Selecciona un huevo para empezar</div>
+            <button class="btn sm" id="btnAutoSort"><span class="bico">⚡</span> Auto-ordenar</button>
+            <button class="btn sm" id="btnClearCrates"><span class="bico">↩️</span> Vaciar cajas</button>
+          </div>
           <div id="eggBed" class="eggBed"></div>
           <div class="crates">
             <div class="crate B" data-crate="B">
-              <h3>B · Descarte</h3><p>Sucio, agrietado o pequeño</p><b>0,50 €/u</b>
+              <span class="gradeTag">#1</span>
+              <h3>B · Descarte</h3><p>Sucio, agrietado o S</p><b>0,50 €/u</b>
               <div class="slot"></div>
             </div>
             <div class="crate A" data-crate="A">
+              <span class="gradeTag">#2</span>
               <h3>A · Pequeño</h3><p>Mediano limpio</p><b>1,20 €/u</b>
               <div class="slot"></div>
             </div>
             <div class="crate AA" data-crate="AA">
+              <span class="gradeTag">#3</span>
               <h3>AA · Normal</h3><p>Grande limpio</p><b>2,00 €/u</b>
               <div class="slot"></div>
             </div>
             <div class="crate EX" data-crate="EX">
+              <span class="gradeTag">#4</span>
               <h3>EX · Extra</h3><p>Muy grande limpio</p><b>3,00 €/u</b>
               <div class="slot"></div>
             </div>
             <div class="crate Yumbo" data-crate="Yumbo">
-              <h3>Yumbo ⭐</h3><p>El más grande y limpio</p><b>4,50 €/u</b>
+              <span class="gradeTag">#5</span>
+              <h3>Yumbo ⭐</h3><p>El más grande</p><b>4,50 €/u</b>
               <div class="slot"></div>
             </div>
           </div>
@@ -320,6 +396,7 @@
         </div>
       </div>
 
+      <!-- MODAL GENERAL -->
       <div id="modal" class="layer hidden">
         <div class="sheet small">
           <h2 id="mTitle"></h2>
@@ -331,15 +408,16 @@
         </div>
       </div>
 
+      <!-- MODAL COMPRAR GALLINAS -->
       <div id="henModal" class="layer hidden">
         <div class="sheet small">
           <h2>🐔 Comprar gallinas</h2>
           <p class="hint" id="henHint"></p>
           <div class="henQtyRow">
             <label>Cantidad:</label>
-            <button class="btn sm" id="henMinus" style="width:34px;padding:6px 0">−</button>
+            <button class="btn sm" id="henMinus" style="width:36px;padding:7px 0">−</button>
             <input type="number" id="henQty" value="1" min="1" max="10">
-            <button class="btn sm" id="henPlus" style="width:34px;padding:6px 0">+</button>
+            <button class="btn sm" id="henPlus" style="width:36px;padding:7px 0">+</button>
             <span class="total" id="henTotal">35 €</span>
           </div>
           <div class="sheetFoot">
@@ -390,11 +468,12 @@
 
       <div class="panel">
         <h2><span><span class="ico">🌡️</span>Condiciones</span><small id="coopTag">Galpón A</small></h2>
-        <div class="gauge"><span class="gico">🌡️</span><span>Temperatura</span><b id="vTemp">22 °C</b><div class="bar"><i id="gTemp"></i></div></div>
-        <div class="gauge"><span class="gico">💨</span><span>Amoníaco</span><b id="vAir">10/100</b><div class="bar"><i id="gAir"></i></div></div>
-        <div class="gauge"><span class="gico">🛏️</span><span>Cama limpia</span><b id="vBed">100%</b><div class="bar"><i id="gBed"></i></div></div>
-        <div class="gauge"><span class="gico">💧</span><span>Bebedero</span><b id="vWater">100%</b><div class="bar"><i id="gWater"></i></div></div>
-        <div class="gauge"><span class="gico">🪟</span><span>Ventilación</span><b id="vVent">25%</b><div class="bar"><i id="gVent"></i></div></div>
+        <div class="gauge" id="gaugeTemp"><span class="gico">🌡️</span><span>Temperatura</span><b id="vTemp">22 °C</b><div class="bar"><i id="gTemp"></i></div></div>
+        <div class="gauge" id="gaugeAir"><span class="gico">💨</span><span>Amoníaco</span><b id="vAir">10/100</b><div class="bar"><i id="gAir"></i></div></div>
+        <div class="gauge" id="gaugeBed"><span class="gico">🛏️</span><span>Cama</span><b id="vBed">100%</b><div class="bar"><i id="gBed"></i></div></div>
+        <div class="gauge" id="gaugeWater"><span class="gico">💧</span><span>Bebedero</span><b id="vWater">100%</b><div class="bar"><i id="gWater"></i></div></div>
+        <div class="gauge" id="gaugeFeed"><span class="gico">🌾</span><span>Pienso</span><b id="vFeed">0%</b><div class="bar"><i id="gFeed"></i></div></div>
+        <div class="gauge" id="gaugeVent"><span class="gico">🪟</span><span>Ventilación</span><b id="vVent">25%</b><div class="bar"><i id="gVent"></i></div></div>
       </div>
 
       <div class="panel">
@@ -436,14 +515,13 @@ const eur = v => v.toFixed(2).replace('.', ',') + ' €';
 const REAL_MINS_PER_SEC = 1 / 60;
 const UNITS_PER_KG = 40;
 const PRICE = { B: 0.5, A: 1.2, AA: 2.0, EX: 3.0, Yumbo: 4.5 };
-const GRADES = ['B', 'A', 'AA', 'EX', 'Yumbo'];
 const LETTERS = 'ABCDEF';
 
 const SPEEDS = [1, 10, 60, 600, 3600];
 const SPEED_LABELS = { 1: '1×', 10: '10×', 60: '60×', 600: '600×', 3600: '3600×' };
 const DAY_MINUTES = 1440;
 
-/* Envejecimiento de huevos SOLO en nidos/suelo. En almacén se congelan. */
+/* Envejecimiento de huevos solo en nido/suelo */
 const EGG_DIRTY_AGE = 700;
 const EGG_CRACK_AGE = 1400;
 
@@ -500,6 +578,7 @@ const WORKER_COLORS = {
 const WORKER_NAMES = ['Ana', 'Bruno', 'Carmen', 'Diego', 'Elena', 'Fidel', 'Gloria', 'Hugo', 'Irene', 'Julián', 'Kira', 'Leo', 'Marta', 'Nico'];
 
 let S, hid = 0, eggId = 0, coopSeq = 0, SCALE = 1, uiLast = 0, uiSig = '';
+let selectedEggId = null;
 
 const coopById = id => S.coops.find(c => c.id === id) || S.coops[0];
 const curCoop  = () => coopById(S.selCoop);
@@ -510,6 +589,8 @@ const coopCap  = c => 5 + c.amp * 2;
 const totalCap = () => S.coops.reduce((a, c) => a + coopCap(c), 0);
 const coopPrice = () => 150 + 120 * (S.coops.length - 1);
 const ampPrice  = c => 100 + 60 * c.amp;
+const totalFeedInCoop = c => c.feeders.reduce((a, f) => a + f.food, 0);
+const maxFeedInCoop = c => c.feeders.reduce((a, f) => a + f.max, 0);
 
 function floorOf(c) {
   return { x: c.rect.x + 10, y: c.rect.y + 44, w: c.rect.w - 20, h: c.rect.h - 54 };
@@ -519,12 +600,6 @@ function troughOf(c) {
   const w = Math.min(120, f.w * 0.28);
   return { x: f.x + 8, y: f.y + f.h - 30, w, h: 22 };
 }
-/* Comedero: colocación fija junto al bebedero */
-function feederOf(c) {
-  const f = floorOf(c);
-  const w = 44;
-  return { x: f.x + f.w - w - 12, y: f.y + f.h - 30, w, h: 24 };
-}
 
 function makeCoop() {
   return {
@@ -532,10 +607,11 @@ function makeCoop() {
     name: 'Galpón ' + LETTERS[S.coops.length % 6],
     nests: [], floor: [],
     water: 100, bedding: 100, ammonia: 10, temp: 22, vent: 0.25, lamp: false,
-    feed: 0, feedMax: 100,  /* pienso en el comedero del galpón */
+    feeders: [],
     amp: 0, rect: { x: 0, y: 0, w: 0, h: 0 }
   };
 }
+
 function ensureNests(c) {
   const want = 4 + c.amp * 2;
   while (c.nests.length < want) c.nests.push({ owner: null, eggs: [], x: 0, y: 0, w: 0, h: 0, cx: 0, cy: 0 });
@@ -565,6 +641,15 @@ function layoutCoops() {
       nst.cx = nst.x + nst.w / 2;
       nst.cy = c.rect.y + 52;
     });
+
+    /* Comederos repartidos: preservar comida total al reubicar */
+    const oldTotal = c.feeders ? totalFeedInCoop(c) : 0;
+    const f = floorOf(c);
+    c.feeders = [
+      { x: f.x + f.w * 0.24, y: f.y + f.h * 0.30, food: oldTotal / 3, max: 35 },
+      { x: f.x + f.w * 0.76, y: f.y + f.h * 0.34, food: oldTotal / 3, max: 35 },
+      { x: f.x + f.w * 0.50, y: f.y + f.h * 0.76, food: oldTotal / 3, max: 35 }
+    ];
   });
   SCALE = cols === 1 ? 1.12 : cols === 2 ? 0.94 : 0.80;
   for (const w of S.workers) {
@@ -612,7 +697,7 @@ function newWorker(role, coopId) {
 
 function startLevel(li) {
   const L = LEVELS[li];
-  hid = 0; eggId = 0; coopSeq = 0; uiSig = '';
+  hid = 0; eggId = 0; coopSeq = 0; uiSig = ''; selectedEggId = null;
   S = {
     level: li, day: 1, t: 8 * 60,
     money: L.money, feed: L.feed,
@@ -621,7 +706,8 @@ function startLevel(li) {
     log: [], sel: 0, selCoop: 0,
     paused: true, over: false, speed: 600, sorting: false,
     event: null, laying: 0, sold: 0, cart: 0,
-    dayIncome: 0, dayFeed: 0, lvlSold: 0
+    dayIncome: 0, dayFeed: 0, lvlSold: 0,
+    hoverCoop: null, hoverHen: null
   };
   for (let i = 0; i < L.coops; i++) S.coops.push(makeCoop());
   layoutCoops();
@@ -656,7 +742,7 @@ function showLevelIntro() {
     <div class="kv">${goals}</div>
     <p class="hint"><b>Ratón:</b> clic en una gallina o un galpón para seleccionar.
       <b>1-6</b> cambia de galpón · <b>B</b> construye · <b>K</b> amplía · <b>G</b> compra gallinas ·
-      <b>Espacio</b> pausa. Velocidad por defecto <b>600×</b>.</p>`,
+      <b>Espacio</b> pausa. En clasificar: <b>clic huevo + clic caja</b> o teclas <b>1-5</b>.</p>`,
     '¡A cuidar!', () => { S.paused = false; updateUI(true); });
 }
 
@@ -744,8 +830,9 @@ function feedCoop(c) {
   S.feed = Math.round((S.feed - kg) * 10) / 10;
   S.dayFeed += kg;
   const units = kg * UNITS_PER_KG;
-  c.feed = Math.min(c.feedMax, c.feed + units);
-  logMsg(`${c.name}: ${kg} kg de pienso en el comedero.`, 'good', true);
+  const per = units / c.feeders.length;
+  c.feeders.forEach(fd => { fd.food = Math.min(fd.max, fd.food + per); });
+  logMsg(`${c.name}: ${kg} kg repartidos en ${c.feeders.length} comederos.`, 'good', true);
   updateUI(true);
 }
 
@@ -946,7 +1033,7 @@ function doWork(w) {
   if (role === 'peon') {
     const dry = S.coops.find(c => c.water < 45 && hensIn(c.id).length > 0);
     if (dry) { dry.water = 100; logMsg(`${w.name} (peón) rellenó el agua del ${dry.name}.`); return; }
-    const hungry = S.coops.find(c => hensIn(c.id).length && c.feed < 20);
+    const hungry = S.coops.find(c => hensIn(c.id).length && totalFeedInCoop(c) < 15);
     if (hungry) feedCoop(hungry);
     return;
   }
@@ -1057,7 +1144,6 @@ function sim(dm) {
     behavior(h, c, dm);
   }
 
-  /* Solo envejecen los huevos en nido y suelo */
   for (const c of S.coops) {
     const ageEggs = list => list.forEach(e => {
       e.age += dm;
@@ -1071,7 +1157,6 @@ function sim(dm) {
       logMsg(`${c.name}: un huevo del suelo se rompió por pisadas.`, 'warn');
     }
   }
-  /* ⚠ Los huevos en S.pending NO envejecen. Ya están a salvo. */
 
   tickWorkers(dm);
 
@@ -1096,18 +1181,29 @@ function move(h, tx, ty, sp, dm) {
   if (Math.abs(dx) > 3) h.face = dx > 0 ? 1 : -1;
 }
 
+function nearestFeeder(h, c) {
+  let best = null, bestD = Infinity;
+  for (const fd of c.feeders) {
+    if (fd.food < 1) continue;
+    const d = Math.hypot(h.x - fd.x, h.y - fd.y);
+    if (d < bestD) { bestD = d; best = fd; }
+  }
+  return { feeder: best, dist: bestD };
+}
+
 function behavior(h, c, dm) {
   const speed = 52 * (h.health > 50 ? 1 : 0.7) * (c.temp > 30 ? 0.78 : 1);
-  const fd = feederOf(c);
   const fdr = troughOf(c);
 
   if (h.mode === 'eat') {
-    if (c.feed < 1) { h.mode = 'walk'; choose(h, c); return; }
-    if (Math.hypot(h.x - (fd.x + fd.w/2), h.y - (fd.y + 4)) > 16) {
-      move(h, fd.x + fd.w/2, fd.y + 4, speed, dm); return;
+    const near = nearestFeeder(h, c);
+    if (!near.feeder) { h.mode = 'walk'; choose(h, c); return; }
+    if (near.dist > 16) {
+      move(h, near.feeder.x, near.feeder.y - 4, speed, dm);
+      return;
     }
     h.hunger = clamp(h.hunger - 1.7 * dm, 0, 100);
-    c.feed = Math.max(0, c.feed - 0.62 * dm);
+    near.feeder.food = Math.max(0, near.feeder.food - 0.62 * dm);
     if (h.hunger < 6) choose(h, c);
     return;
   }
@@ -1140,7 +1236,8 @@ function behavior(h, c, dm) {
 
 function choose(h, c) {
   if (h.thirst > 58 && c.water > 3) { h.mode = 'drink'; h.wait = 0; return; }
-  if (h.hunger > 45 && c.feed > 2) {
+  const hasFood = c.feeders.some(fd => fd.food > 2);
+  if (h.hunger > 45 && hasFood) {
     h.mode = 'eat'; h.wait = 0; return;
   }
   if (h.layT <= 0) {
@@ -1176,7 +1273,6 @@ function tickLay(h, dm) {
   if (h.mode !== 'lay') h.layT -= dm * fert;
 }
 
-/* Tamaños según salud y edad: XXL = Yumbo */
 function makeEgg(h, c) {
   const health = h.health;
   const age = h.age;
@@ -1203,7 +1299,6 @@ function makeEgg(h, c) {
            crack: false, age: 0, by: h.name };
 }
 
-/* ============ Fin de día ============ */
 function endDay() {
   S.t = 0; S.event = null;
   const L = LEVELS[S.level];
@@ -1214,7 +1309,6 @@ function endDay() {
   if (lampCost) logMsg(`Caleones encendidos: −${lampCost} €.`);
   if (salaries) logMsg(`Salarios del equipo: −${salaries} €.`);
 
-  /* Los pendientes NO se venden ni se estropean: siguen a salvo */
   if (S.pending.length) {
     logMsg(`${S.pending.length} huevo(s) sin clasificar permanecen a salvo en almacén.`, 'warn');
   }
@@ -1272,7 +1366,6 @@ function tips() {
   return 'Consejo: recoge los huevos a diario para que no envejezcan en el nido.';
 }
 
-/* ============ Modales ============ */
 function showModal(title, html, btnText, onBtn) {
   document.getElementById('mTitle').textContent = title;
   document.getElementById('mBody').innerHTML = html;
@@ -1367,125 +1460,96 @@ function drawBackground() {
   ctx.lineTo(W, H * 0.55); ctx.lineTo(0, H * 0.55); ctx.closePath(); ctx.fill();
 }
 
-/* ============ COMEDERO REALISTA (tolva + bandeja) ============ */
-function drawFeeder(c) {
-  const fd = feederOf(c);
-  const cx = fd.x + fd.w / 2;
-  const baseY = fd.y + fd.h;
-  const fill = c.feed / c.feedMax;
+/* -------- COMEDERO PEQUEÑO (tolva compacta) -------- */
+function drawSmallFeeder(fd) {
+  const fill = fd.food / fd.max;
+  const cx = fd.x, baseY = fd.y;
 
   // Sombra
-  ctx.fillStyle = 'rgba(0,0,0,.35)';
-  ctx.beginPath(); ctx.ellipse(cx, baseY + 3, fd.w * 0.65, 5, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = 'rgba(0,0,0,.3)';
+  ctx.beginPath(); ctx.ellipse(cx, baseY + 3, 14, 4, 0, 0, Math.PI * 2); ctx.fill();
 
-  // Bandeja base (aro metálico)
-  const trayGrad = ctx.createLinearGradient(cx - fd.w/2, baseY - 8, cx + fd.w/2, baseY + 4);
+  // Bandeja base
+  const trayGrad = ctx.createLinearGradient(cx - 14, baseY - 6, cx + 14, baseY + 4);
   trayGrad.addColorStop(0, '#8a8a8a');
-  trayGrad.addColorStop(0.5, '#5a5a5a');
-  trayGrad.addColorStop(1, '#2e2e2e');
+  trayGrad.addColorStop(1, '#3a3a3a');
   ctx.fillStyle = trayGrad;
-  ctx.beginPath();
-  ctx.ellipse(cx, baseY - 2, fd.w / 2, 7, 0, 0, Math.PI * 2);
-  ctx.fill();
-  // Interior bandeja
-  ctx.fillStyle = '#1e1e1e';
-  ctx.beginPath();
-  ctx.ellipse(cx, baseY - 3, fd.w / 2 - 3, 5, 0, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.beginPath(); ctx.ellipse(cx, baseY - 2, 14, 5, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#1a1a1a';
+  ctx.beginPath(); ctx.ellipse(cx, baseY - 3, 11, 3.5, 0, 0, Math.PI * 2); ctx.fill();
 
-  // Pienso en la bandeja
+  // Pienso en bandeja
   if (fill > 0) {
     ctx.fillStyle = '#d4a850';
-    ctx.beginPath();
-    ctx.ellipse(cx, baseY - 4, (fd.w / 2 - 4) * fill, 4 * fill, 0, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.beginPath(); ctx.ellipse(cx, baseY - 3, 10 * fill, 2.5 * fill, 0, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#e8c870';
-    ctx.beginPath();
-    ctx.ellipse(cx - 3, baseY - 5, (fd.w / 2 - 8) * fill, 2 * fill, 0, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.beginPath(); ctx.ellipse(cx - 2, baseY - 4, 6 * fill, 1.5 * fill, 0, 0, Math.PI * 2); ctx.fill();
   }
 
-  // Tolva cilíndrica (metal, con pienso visible)
-  const tubeW = 18, tubeH = 34;
+  // Tolva cilíndrica
+  const tubeW = 14, tubeH = 22;
   const tubeX = cx - tubeW / 2, tubeY = baseY - 8 - tubeH;
-  // Cuerpo tolva
   const tubeGrad = ctx.createLinearGradient(tubeX, 0, tubeX + tubeW, 0);
   tubeGrad.addColorStop(0, '#9a9a9a');
   tubeGrad.addColorStop(0.5, '#c8c8c8');
   tubeGrad.addColorStop(1, '#7a7a7a');
   ctx.fillStyle = tubeGrad;
-  rr(tubeX, tubeY, tubeW, tubeH, 3); ctx.fill();
-  // Contorno
-  ctx.strokeStyle = '#4a4a4a'; ctx.lineWidth = 1;
-  rr(tubeX, tubeY, tubeW, tubeH, 3); ctx.stroke();
+  rr(tubeX, tubeY, tubeW, tubeH, 2); ctx.fill();
+  ctx.strokeStyle = '#4a4a4a'; ctx.lineWidth = 0.8;
+  rr(tubeX, tubeY, tubeW, tubeH, 2); ctx.stroke();
 
-  // Pienso dentro de la tolva (visible)
+  // Pienso dentro visible
   const feedH = tubeH * fill;
   if (feedH > 2) {
     ctx.fillStyle = '#d4a850';
-    ctx.fillRect(tubeX + 2, tubeY + tubeH - feedH, tubeW - 4, feedH - 2);
-    // Detalle de granos
+    ctx.fillRect(tubeX + 1.5, tubeY + tubeH - feedH, tubeW - 3, feedH - 1);
     ctx.fillStyle = '#b88830';
-    for (let k = 0; k < 12; k++) {
-      const gx = tubeX + 3 + (k * 5) % (tubeW - 6);
-      const gy = tubeY + tubeH - 3 - ((k * 4) % Math.max(1, feedH - 4));
-      ctx.fillRect(gx, gy, 2, 1.5);
+    for (let k = 0; k < 8; k++) {
+      const gx = tubeX + 3 + (k * 4) % (tubeW - 5);
+      const gy = tubeY + tubeH - 2 - ((k * 3) % Math.max(1, feedH - 3));
+      ctx.fillRect(gx, gy, 1.5, 1);
     }
   }
 
-  // Tapa superior
+  // Tapa
   ctx.fillStyle = '#6a6a6a';
-  rr(tubeX - 1, tubeY - 3, tubeW + 2, 5, 2); ctx.fill();
-  ctx.strokeStyle = '#3a3a3a'; ctx.lineWidth = 1;
-  rr(tubeX - 1, tubeY - 3, tubeW + 2, 5, 2); ctx.stroke();
-  // Asa de la tapa
-  ctx.strokeStyle = '#4a4a4a'; ctx.lineWidth = 1.5;
-  ctx.beginPath(); ctx.arc(cx, tubeY - 4, 3, Math.PI, 0); ctx.stroke();
+  rr(tubeX - 1, tubeY - 2, tubeW + 2, 4, 1.5); ctx.fill();
+  ctx.strokeStyle = '#3a3a3a'; ctx.lineWidth = 0.8;
+  rr(tubeX - 1, tubeY - 2, tubeW + 2, 4, 1.5); ctx.stroke();
 
-  // Cinta reflectante
-  ctx.fillStyle = 'rgba(232,184,92,.55)';
-  ctx.fillRect(tubeX + 2, tubeY + 8, tubeW - 4, 2);
+  // Aro reflectante
+  ctx.fillStyle = 'rgba(232,184,92,.5)';
+  ctx.fillRect(tubeX + 1.5, tubeY + 5, tubeW - 3, 1.5);
 
-  // Etiqueta con % pienso (pequeño)
-  ctx.fillStyle = 'rgba(10,6,2,.75)';
-  rr(cx - 14, tubeY - 16, 28, 12, 3); ctx.fill();
-  ctx.fillStyle = '#e8c870'; ctx.font = 'bold 8.5px system-ui'; ctx.textAlign = 'center';
-  ctx.fillText(`${Math.round(fill * 100)}%`, cx, tubeY - 7);
-  ctx.textAlign = 'left';
+  // Aviso si está vacío o casi
+  if (fill < 0.15) {
+    ctx.fillStyle = 'rgba(224,120,60,.85)';
+    ctx.beginPath(); ctx.arc(cx + 12, tubeY - 6, 4, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 7px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('!', cx + 12, tubeY - 3.5); ctx.textAlign = 'left';
+  }
 }
 
-/* ============ BEBEDERO REALISTA (campana) ============ */
+/* -------- BEBEDERO -------- */
 function drawDrinker(c) {
   const t = troughOf(c);
   const cx = t.x + t.w / 2;
   const baseY = t.y + t.h;
   const fill = c.water / 100;
 
-  // Sombra base
   ctx.fillStyle = 'rgba(0,0,0,.35)';
   ctx.beginPath(); ctx.ellipse(cx, baseY + 2, t.w * 0.55, 5, 0, 0, Math.PI * 2); ctx.fill();
 
-  // Bandeja base (anillo metálico)
   const trayGrad = ctx.createLinearGradient(0, baseY - 10, 0, baseY + 4);
   trayGrad.addColorStop(0, '#8a8a8a');
   trayGrad.addColorStop(1, '#3a3a3a');
   ctx.fillStyle = trayGrad;
-  ctx.beginPath();
-  ctx.ellipse(cx, baseY - 3, t.w / 2, 8, 0, 0, Math.PI * 2);
-  ctx.fill();
-  // Borde superior
+  ctx.beginPath(); ctx.ellipse(cx, baseY - 3, t.w / 2, 8, 0, 0, Math.PI * 2); ctx.fill();
   ctx.strokeStyle = '#b0b0b0'; ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.ellipse(cx, baseY - 6, t.w / 2, 5, 0, 0, Math.PI * 2);
-  ctx.stroke();
-
-  // Interior bandeja
+  ctx.beginPath(); ctx.ellipse(cx, baseY - 6, t.w / 2, 5, 0, 0, Math.PI * 2); ctx.stroke();
   ctx.fillStyle = '#141414';
-  ctx.beginPath();
-  ctx.ellipse(cx, baseY - 5, t.w / 2 - 3, 5, 0, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.beginPath(); ctx.ellipse(cx, baseY - 5, t.w / 2 - 3, 5, 0, 0, Math.PI * 2); ctx.fill();
 
-  // Agua en la bandeja
   if (fill > 0) {
     const wg = ctx.createLinearGradient(0, baseY - 8, 0, baseY - 2);
     wg.addColorStop(0, c.water < 20 ? '#9a7a4a' : '#6ac8f0');
@@ -1494,19 +1558,14 @@ function drawDrinker(c) {
     ctx.beginPath();
     ctx.ellipse(cx, baseY - 5, (t.w / 2 - 4) * fill, 3.5 * fill, 0, 0, Math.PI * 2);
     ctx.fill();
-    // Brillo
     ctx.fillStyle = 'rgba(255,255,255,.45)';
-    ctx.beginPath();
-    ctx.ellipse(cx - 6, baseY - 6, 4, 1.2, 0, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.beginPath(); ctx.ellipse(cx - 6, baseY - 6, 4, 1.2, 0, 0, Math.PI * 2); ctx.fill();
   }
 
-  // Domo tipo campana (arriba)
   const domeH = 32;
   const domeW = t.w * 0.7;
   const domeY = baseY - 10 - domeH;
 
-  // Cuerpo del domo (metálico azul)
   const domeGrad = ctx.createLinearGradient(cx - domeW/2, domeY, cx + domeW/2, domeY + domeH);
   domeGrad.addColorStop(0, '#7ab8d8');
   domeGrad.addColorStop(0.5, '#4a90b8');
@@ -1520,8 +1579,6 @@ function drawDrinker(c) {
   ctx.lineTo(cx + domeW / 2, domeY + domeH);
   ctx.closePath();
   ctx.fill();
-
-  // Contorno
   ctx.strokeStyle = 'rgba(0,0,0,.4)'; ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.moveTo(cx - domeW / 2, domeY + domeH);
@@ -1530,19 +1587,13 @@ function drawDrinker(c) {
   ctx.quadraticCurveTo(cx + domeW / 2, domeY, cx + domeW / 2, domeY + 8);
   ctx.lineTo(cx + domeW / 2, domeY + domeH);
   ctx.stroke();
-
-  // Brillo lateral
   ctx.fillStyle = 'rgba(255,255,255,.35)';
-  ctx.beginPath();
-  ctx.ellipse(cx - domeW / 2 + 5, domeY + 12, 3, 8, 0, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.beginPath(); ctx.ellipse(cx - domeW / 2 + 5, domeY + 12, 3, 8, 0, 0, Math.PI * 2); ctx.fill();
 
-  // Nivel de agua dentro (visible a través del domo)
   const innerFill = domeH * fill * 0.6;
   if (innerFill > 1) {
     ctx.fillStyle = 'rgba(90,168,208,.5)';
     ctx.fillRect(cx - domeW / 2 + 3, domeY + domeH - innerFill - 2, domeW - 6, innerFill);
-    // Línea de nivel
     ctx.strokeStyle = 'rgba(180,230,255,.8)'; ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(cx - domeW / 2 + 3, domeY + domeH - innerFill - 2);
@@ -1550,36 +1601,26 @@ function drawDrinker(c) {
     ctx.stroke();
   }
 
-  // Aro de sujeción en la base del domo
   ctx.strokeStyle = '#3a3a3a'; ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(cx - domeW / 2 - 2, domeY + domeH);
   ctx.lineTo(cx + domeW / 2 + 2, domeY + domeH);
   ctx.stroke();
 
-  // Tapón superior (rojo)
   ctx.fillStyle = '#c84040';
-  ctx.beginPath();
-  ctx.ellipse(cx, domeY - 4, domeW / 2 - 4, 3, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.strokeStyle = '#8a2828'; ctx.lineWidth = 1;
-  ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(cx, domeY - 4, domeW / 2 - 4, 3, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = '#8a2828'; ctx.lineWidth = 1; ctx.stroke();
 
-  // Gancho de cuelgue
-  ctx.strokeStyle = '#5a5a5a'; ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.arc(cx, domeY - 8, 4, Math.PI * 0.8, Math.PI * 2.2);
-  ctx.stroke();
-
-  // Etiqueta % agua
-  ctx.fillStyle = 'rgba(10,6,2,.75)';
-  rr(cx - 14, domeY - 24, 28, 12, 3); ctx.fill();
-  ctx.fillStyle = '#a0d8f0'; ctx.font = 'bold 8.5px system-ui'; ctx.textAlign = 'center';
-  ctx.fillText(`${Math.round(fill * 100)}%`, cx, domeY - 15);
-  ctx.textAlign = 'left';
+  // Aviso si está bajo
+  if (fill < 0.2) {
+    ctx.fillStyle = 'rgba(224,120,60,.85)';
+    ctx.beginPath(); ctx.arc(cx + domeW/2 + 6, domeY + 8, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 8px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('!', cx + domeW/2 + 6, domeY + 11); ctx.textAlign = 'left';
+  }
 }
 
-/* ============ GALLINA REALISTA ============ */
+/* -------- GALLINA -------- */
 function drawHen(h) {
   const s = SCALE;
   if (!h.alive) {
@@ -1599,8 +1640,17 @@ function drawHen(h) {
 
   const bob = Math.sin(h.bob) * (h.mode === 'walk' ? 1.8 : 0.5);
   const walkPhase = Math.sin(h.bob * 2) * (h.mode === 'walk' ? 1 : 0);
+  const isHover = S.hoverHen === h.id;
 
-  // Sombra
+  // Halo de hover
+  if (isHover) {
+    const glow = ctx.createRadialGradient(h.x, h.y, 0, h.x, h.y, 30 * s);
+    glow.addColorStop(0, 'rgba(255,220,150,.35)');
+    glow.addColorStop(1, 'rgba(255,220,150,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath(); ctx.arc(h.x, h.y, 30 * s, 0, Math.PI * 2); ctx.fill();
+  }
+
   ctx.fillStyle = 'rgba(0,0,0,.3)';
   ctx.beginPath(); ctx.ellipse(h.x + 2, h.y + 20 * s, 16 * s, 4 * s, 0, 0, Math.PI * 2); ctx.fill();
 
@@ -1612,7 +1662,7 @@ function drawHen(h) {
   const wingColor = h.plume[1];
   const combColor = h.sick ? '#8a4a4a' : '#d8423a';
 
-  /* -------- COLA (5 plumas curvadas) -------- */
+  // Cola
   ctx.fillStyle = wingColor;
   const tailFeathers = [
     { a: -0.55, len: 26, w: 5 },
@@ -1631,15 +1681,8 @@ function drawHen(h) {
     ctx.quadraticCurveTo(-f.len * 0.6, f.w/2 + 3, 0, f.w/2);
     ctx.closePath();
     ctx.fill();
-    // Línea central de la pluma
-    ctx.strokeStyle = 'rgba(0,0,0,.3)'; ctx.lineWidth = 0.6;
-    ctx.beginPath();
-    ctx.moveTo(-2, 0);
-    ctx.quadraticCurveTo(-f.len * 0.6, 0, -f.len + 2, 0);
-    ctx.stroke();
     ctx.restore();
   }
-  // Pluma central larga
   ctx.fillStyle = h.sick ? '#7a6a5a' : '#2a2828';
   ctx.save();
   ctx.translate(-14, -6);
@@ -1652,7 +1695,7 @@ function drawHen(h) {
   ctx.fill();
   ctx.restore();
 
-  /* -------- CUERPO (forma de gota horizontal) -------- */
+  // Cuerpo
   ctx.fillStyle = bodyColor;
   ctx.beginPath();
   ctx.moveTo(-12, bob - 8);
@@ -1664,7 +1707,6 @@ function drawHen(h) {
   ctx.closePath();
   ctx.fill();
 
-  // Gradiente de volumen (pecho más claro)
   const bodyGrad = ctx.createRadialGradient(8, bob - 2, 2, 0, bob, 20);
   bodyGrad.addColorStop(0, 'rgba(255,255,255,.5)');
   bodyGrad.addColorStop(0.6, 'rgba(255,255,255,.15)');
@@ -1674,16 +1716,7 @@ function drawHen(h) {
   ctx.ellipse(0, bob, 15, 12, 0, 0, Math.PI * 2);
   ctx.fill();
 
-  // Plumas del pecho (líneas de textura)
-  ctx.strokeStyle = 'rgba(0,0,0,.12)'; ctx.lineWidth = 0.7;
-  for (let i = 0; i < 5; i++) {
-    const px = 4 + i * 2;
-    ctx.beginPath();
-    ctx.arc(px, bob + 2 - i * 1.5, 3, 0.3, Math.PI - 0.3);
-    ctx.stroke();
-  }
-
-  /* -------- ALA (capas de plumas) -------- */
+  // Ala
   ctx.fillStyle = wingColor;
   ctx.beginPath();
   ctx.moveTo(-8, bob - 4);
@@ -1692,7 +1725,6 @@ function drawHen(h) {
   ctx.quadraticCurveTo(-6, bob + 8, -10, bob + 2);
   ctx.closePath();
   ctx.fill();
-  // Plumas internas (3 capas)
   ctx.strokeStyle = 'rgba(0,0,0,.35)'; ctx.lineWidth = 0.9;
   for (let i = 0; i < 3; i++) {
     ctx.beginPath();
@@ -1700,13 +1732,12 @@ function drawHen(h) {
     ctx.quadraticCurveTo(0, bob + i * 2, 4 + i * 1.5, bob + 3 + i * 2);
     ctx.stroke();
   }
-  // Brillo del ala
   ctx.fillStyle = 'rgba(255,255,255,.15)';
   ctx.beginPath();
   ctx.ellipse(-3, bob - 2, 5, 3, 0.3, 0, Math.PI * 2);
   ctx.fill();
 
-  /* -------- CUELLO (curva S) -------- */
+  // Cuello
   ctx.fillStyle = bodyColor;
   ctx.beginPath();
   ctx.moveTo(7, bob - 8);
@@ -1715,29 +1746,19 @@ function drawHen(h) {
   ctx.quadraticCurveTo(18, bob - 10, 12, bob - 2);
   ctx.closePath();
   ctx.fill();
-  // Sombra del cuello
-  ctx.fillStyle = 'rgba(0,0,0,.15)';
-  ctx.beginPath();
-  ctx.moveTo(13, bob - 18);
-  ctx.quadraticCurveTo(16, bob - 12, 12, bob - 6);
-  ctx.lineTo(14, bob - 5);
-  ctx.quadraticCurveTo(17, bob - 11, 15, bob - 18);
-  ctx.closePath();
-  ctx.fill();
 
-  /* -------- CABEZA -------- */
+  // Cabeza
   const headX = 14, headY = bob - 22;
   ctx.fillStyle = bodyColor;
   ctx.beginPath();
   ctx.arc(headX, headY, 7, 0, Math.PI * 2);
   ctx.fill();
-  // Brillo cabeza
   ctx.fillStyle = 'rgba(255,255,255,.35)';
   ctx.beginPath();
   ctx.arc(headX - 2, headY - 2, 3, 0, Math.PI * 2);
   ctx.fill();
 
-  /* -------- CRESTA (4 bultos) -------- */
+  // Cresta
   ctx.fillStyle = combColor;
   const crestBumps = [
     { dx: -4, dy: -6, r: 2.2 },
@@ -1750,13 +1771,8 @@ function drawHen(h) {
     ctx.arc(headX + b.dx, headY + b.dy, b.r, 0, Math.PI * 2);
     ctx.fill();
   }
-  // Brillo cresta
-  ctx.fillStyle = 'rgba(255,255,255,.3)';
-  ctx.beginPath();
-  ctx.arc(headX - 1, headY - 8, 1, 0, Math.PI * 2);
-  ctx.fill();
 
-  /* -------- BARBILLA (2 lóbulos) -------- */
+  // Barbilla
   ctx.fillStyle = combColor;
   ctx.beginPath();
   ctx.ellipse(headX + 5, headY + 5, 2.5, 3.5, 0.2, 0, Math.PI * 2);
@@ -1765,7 +1781,7 @@ function drawHen(h) {
   ctx.ellipse(headX + 3, headY + 7, 2, 2.5, 0.2, 0, Math.PI * 2);
   ctx.fill();
 
-  /* -------- PICO (triangular cerrado) -------- */
+  // Pico
   ctx.fillStyle = '#f0b040';
   ctx.beginPath();
   ctx.moveTo(headX + 6, headY - 1);
@@ -1773,22 +1789,13 @@ function drawHen(h) {
   ctx.lineTo(headX + 6, headY + 2.5);
   ctx.closePath();
   ctx.fill();
-  // Línea divisoria del pico
   ctx.strokeStyle = 'rgba(0,0,0,.3)'; ctx.lineWidth = 0.7;
   ctx.beginPath();
   ctx.moveTo(headX + 6, headY + 0.7);
   ctx.lineTo(headX + 11, headY + 0.7);
   ctx.stroke();
-  // Punta oscura
-  ctx.fillStyle = 'rgba(0,0,0,.2)';
-  ctx.beginPath();
-  ctx.moveTo(headX + 11, headY - 0.5);
-  ctx.lineTo(headX + 12, headY + 0.5);
-  ctx.lineTo(headX + 11, headY + 1.5);
-  ctx.closePath();
-  ctx.fill();
 
-  /* -------- OJO (con brillo y ceja) -------- */
+  // Ojo
   ctx.fillStyle = '#1a1a1a';
   ctx.beginPath();
   ctx.arc(headX + 2.5, headY - 1, 1.8, 0, Math.PI * 2);
@@ -1797,31 +1804,17 @@ function drawHen(h) {
   ctx.beginPath();
   ctx.arc(headX + 3, headY - 1.5, 0.6, 0, Math.PI * 2);
   ctx.fill();
-  // Ceja suave
-  ctx.strokeStyle = 'rgba(0,0,0,.25)'; ctx.lineWidth = 0.6;
-  ctx.beginPath();
-  ctx.arc(headX + 2.5, headY - 2.5, 2.5, Math.PI + 0.3, -0.3);
-  ctx.stroke();
 
-  // Orejuela (pequeña mancha)
-  ctx.fillStyle = 'rgba(255,255,255,.4)';
-  ctx.beginPath();
-  ctx.ellipse(headX - 1, headY + 2, 1.5, 2, 0.2, 0, Math.PI * 2);
-  ctx.fill();
-
-  /* -------- PATAS (con dedos animados) -------- */
+  // Patas
   const legY = bob + 10;
   ctx.strokeStyle = '#d49030'; ctx.lineWidth = 2.2; ctx.lineCap = 'round';
   const lx = -3 + walkPhase * 2;
   const rx = 4 - walkPhase * 2;
-  // Muslos
   ctx.fillStyle = bodyColor;
   ctx.beginPath(); ctx.ellipse(-3, legY - 2, 3, 4, 0.2, 0, Math.PI * 2); ctx.fill();
   ctx.beginPath(); ctx.ellipse(4, legY - 2, 3, 4, -0.2, 0, Math.PI * 2); ctx.fill();
-  // Patas
   ctx.beginPath(); ctx.moveTo(-3, legY); ctx.lineTo(lx, legY + 9); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(4, legY); ctx.lineTo(rx, legY + 9); ctx.stroke();
-  // Dedos (3 cada pata)
   ctx.lineWidth = 1.5;
   for (const [fx, fw] of [[lx, -1], [lx, 0], [lx, 1], [rx, -1], [rx, 0], [rx, 1]]) {
     ctx.beginPath();
@@ -1829,20 +1822,14 @@ function drawHen(h) {
     ctx.lineTo(fx + fw * 2.2, legY + 11.5);
     ctx.stroke();
   }
-  // Espolón
-  ctx.lineWidth = 1.2;
-  ctx.beginPath(); ctx.moveTo(lx, legY + 9); ctx.lineTo(lx - 2, legY + 8); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(rx, legY + 9); ctx.lineTo(rx + 2, legY + 8); ctx.stroke();
 
   ctx.restore();
 
-  /* Anillo de selección */
   if (S.sel === h.id) {
     ctx.strokeStyle = '#8fd6a6'; ctx.lineWidth = 1.8;
     ctx.beginPath(); ctx.ellipse(h.x, h.y + 4, 24 * s, 18 * s, 0, 0, Math.PI * 2); ctx.stroke();
   }
 
-  /* Señales de estado */
   let sign = '';
   const c = coopOf(h);
   if (h.sick) sign = '🤒';
@@ -1864,7 +1851,6 @@ function drawHen(h) {
   }
 }
 
-/* ============ Trabajador ============ */
 function drawWorker(w) {
   const s = SCALE;
   const col = WORKER_COLORS[w.role] || { body: '#5a7a4a', hat: '#8a6a3a' };
@@ -1878,7 +1864,6 @@ function drawWorker(w) {
   ctx.translate(w.x, w.y);
   ctx.scale(w.face * s, s);
 
-  // Piernas
   ctx.fillStyle = '#2a3a4a';
   ctx.fillRect(-4 + walkPhase * 1, bob + 8, 3, 12);
   ctx.fillRect(2 - walkPhase * 1, bob + 8, 3, 12);
@@ -1886,15 +1871,11 @@ function drawWorker(w) {
   ctx.fillRect(-5 + walkPhase * 1, bob + 18, 5, 3);
   ctx.fillRect(1 - walkPhase * 1, bob + 18, 5, 3);
 
-  // Cuerpo (mono de trabajo)
   ctx.fillStyle = col.body;
   rr(-9, bob - 8, 18, 18, 4); ctx.fill();
   ctx.fillStyle = 'rgba(255,255,255,.15)';
   rr(-8, bob - 7, 6, 15, 3); ctx.fill();
-  ctx.fillStyle = 'rgba(255,255,255,.12)';
-  rr(-5, bob - 4, 10, 12, 2); ctx.fill();
 
-  // Brazos
   ctx.fillStyle = col.body;
   ctx.fillRect(-11, bob - 10, 3, 12);
   ctx.fillRect(8, bob - 10, 3, 12);
@@ -1902,34 +1883,25 @@ function drawWorker(w) {
   ctx.fillRect(-11, bob + 2, 3, 3);
   ctx.fillRect(8, bob + 2, 3, 3);
 
-  // Cuello + cabeza
   ctx.fillStyle = '#e8c8a0';
   ctx.fillRect(-2, bob - 13, 4, 5);
   ctx.beginPath(); ctx.arc(0, bob - 18, 6.5, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = 'rgba(0,0,0,.12)';
-  ctx.beginPath(); ctx.arc(2, bob - 18, 6.5, -Math.PI / 2, Math.PI / 2); ctx.fill();
 
-  // Pelo
   ctx.fillStyle = '#5a3a20';
   ctx.beginPath(); ctx.arc(0, bob - 20, 6, Math.PI, 0); ctx.fill();
 
-  // Sombrero
   ctx.fillStyle = col.hat;
   ctx.beginPath(); ctx.ellipse(0, bob - 22, 9, 2.5, 0, 0, Math.PI * 2); ctx.fill();
   rr(-5, bob - 29, 10, 6, 2); ctx.fill();
   ctx.fillStyle = 'rgba(0,0,0,.3)';
   ctx.fillRect(-5, bob - 25, 10, 1.5);
 
-  // Ojos + sonrisa
   ctx.fillStyle = '#1a1a1a';
   ctx.beginPath(); ctx.arc(-2, bob - 18, 1, 0, Math.PI * 2); ctx.fill();
   ctx.beginPath(); ctx.arc(2.5, bob - 18, 1, 0, Math.PI * 2); ctx.fill();
-  ctx.strokeStyle = '#8a5a3a'; ctx.lineWidth = 0.8;
-  ctx.beginPath(); ctx.arc(0, bob - 15, 2, 0.2, Math.PI - 0.2); ctx.stroke();
 
   ctx.restore();
 
-  // Icono + nombre
   const iconY = w.y - 40 * s;
   ctx.fillStyle = 'rgba(12,16,20,.78)';
   ctx.beginPath(); ctx.arc(w.x, iconY, 11, 0, Math.PI * 2); ctx.fill();
@@ -1942,12 +1914,18 @@ function drawWorker(w) {
   ctx.textAlign = 'left';
 }
 
-/* ============ Galpón ============ */
 function drawCoop(c) {
   const r = c.rect, f = floorOf(c);
+  const isHover = S.hoverCoop === c.id;
 
   ctx.fillStyle = '#3a2a1a'; rr(r.x, r.y, r.w, r.h, 12); ctx.fill();
   ctx.fillStyle = '#2a1e12'; rr(r.x + 3, r.y + 3, r.w - 6, r.h - 6, 10); ctx.fill();
+
+  // Halo de hover
+  if (isHover) {
+    ctx.strokeStyle = 'rgba(255,220,150,.35)'; ctx.lineWidth = 3;
+    rr(r.x - 3, r.y - 3, r.w + 6, r.h + 6, 14); ctx.stroke();
+  }
 
   ctx.strokeStyle = 'rgba(0,0,0,.25)'; ctx.lineWidth = 1;
   for (let x = r.x + 8; x < r.x + r.w - 8; x += 14) {
@@ -2003,11 +1981,13 @@ function drawCoop(c) {
     ctx.beginPath(); ctx.arc(nst.x + nst.w - 7, nst.y + 7, 3.5, 0, Math.PI * 2); ctx.fill();
   });
 
-  // Bebedero y comedero realistas
+  // Bebedero
   drawDrinker(c);
-  drawFeeder(c);
 
-  // Huevos en el suelo
+  // Comederos repartidos
+  c.feeders.forEach(drawSmallFeeder);
+
+  // Huevos en suelo
   c.floor.forEach(e => drawEgg(e.x, e.y, e, 1));
 
   // Marco
@@ -2056,7 +2036,6 @@ function drawEgg(x, y, e, sc) {
   ctx.save(); ctx.translate(x, y);
   ctx.fillStyle = 'rgba(0,0,0,.25)';
   ctx.beginPath(); ctx.ellipse(1, r * 0.8, r * 0.7, r * 0.3, 0, 0, Math.PI * 2); ctx.fill();
-  // Halo Yumbo
   if (e.size === 'XXL') {
     ctx.fillStyle = 'rgba(232,184,92,.25)';
     ctx.beginPath(); ctx.arc(0, 0, r * 1.4, 0, Math.PI * 2); ctx.fill();
@@ -2148,7 +2127,7 @@ function updateUI(force) {
   moneyEl.parentElement.classList.toggle('bad', S.money < 0);
   document.getElementById('cFeed').textContent = S.feed.toFixed(1) + ' kg';
   document.getElementById('cEggs').textContent = S.pending.length;
-  document.getElementById('chipEggs').classList.remove('old');
+  document.getElementById('chipEggs').classList.toggle('has-eggs', S.pending.length > 0);
   document.getElementById('cWork').textContent = S.workers.length;
 
   document.getElementById('dayFill').style.width = (S.t / DAY_MINUTES * 100) + '%';
@@ -2163,24 +2142,31 @@ function updateUI(force) {
   document.getElementById('wageInfo').textContent =
     S.workers.reduce((a, w) => a + WORKERS[w.role].salary, 0) + ' €/día';
 
-  const g = (bar, txt, v, label, col) => {
+  const g = (bar, txt, v, label, col, gaugeId) => {
     const el = document.getElementById(bar);
     el.style.width = clamp(v, 0, 100) + '%';
     el.style.background = col;
     el.style.color = col;
     document.getElementById(txt).textContent = label;
+    if (gaugeId) {
+      const gEl = document.getElementById(gaugeId);
+      gEl.classList.toggle('warn', (v < 20 || (gaugeId === 'gaugeAir' && v > 55) || (gaugeId === 'gaugeTemp' && (c.temp > 29 || c.temp < 10))));
+    }
   };
   const tempPct = (c.temp / 45) * 100;
   g('gTemp', 'vTemp', tempPct, c.temp.toFixed(1) + ' °C',
-    c.temp > 29 ? '#d9663f' : c.temp < 10 ? '#5aa9d6' : '#6dbb83');
+    c.temp > 29 ? '#d9663f' : c.temp < 10 ? '#5aa9d6' : '#6dbb83', 'gaugeTemp');
   g('gAir', 'vAir', c.ammonia, Math.round(c.ammonia) + '/100',
-    c.ammonia > 55 ? '#d9663f' : c.ammonia > 35 ? '#e2a03c' : '#6dbb83');
+    c.ammonia > 55 ? '#d9663f' : c.ammonia > 35 ? '#e2a03c' : '#6dbb83', 'gaugeAir');
   g('gBed', 'vBed', c.bedding, Math.round(c.bedding) + '%',
-    c.bedding < 40 ? '#d9663f' : '#c9a86a');
+    c.bedding < 40 ? '#d9663f' : '#c9a86a', 'gaugeBed');
   g('gWater', 'vWater', c.water, Math.round(c.water) + '%',
-    c.water < 25 ? '#d9663f' : '#4fa3d1');
+    c.water < 25 ? '#d9663f' : '#4fa3d1', 'gaugeWater');
+  const feedPct = (totalFeedInCoop(c) / maxFeedInCoop(c)) * 100;
+  g('gFeed', 'vFeed', feedPct, Math.round(feedPct) + '%',
+    feedPct < 15 ? '#d9663f' : feedPct < 40 ? '#e2a03c' : '#e8b85c', 'gaugeFeed');
   g('gVent', 'vVent', c.vent * 100, Math.round(c.vent * 100) + '%',
-    c.vent > 0.5 ? '#5aa9d6' : '#8d7a55');
+    c.vent > 0.5 ? '#5aa9d6' : '#8d7a55', 'gaugeVent');
 
   const av = living();
   document.getElementById('avgHealth').textContent = av.length
@@ -2222,40 +2208,164 @@ function updateUI(force) {
   }).join('');
 }
 
-/* ============ Clasificación (5 grados) ============ */
+/* ============ Clasificación (CLIC A CLIC) ============ */
 function openSort() {
   if (S.over) return;
   if (!S.pending.length) return logMsg('No hay huevos recogidos. Recoge con C.', 'warn', true);
   S.sorting = true; S.paused = true;
+  selectedEggId = null;
+  renderSortBed();
+  document.querySelectorAll('.crate .slot').forEach(s => s.innerHTML = '');
+  document.getElementById('sortLayer').classList.remove('hidden');
+  updateSelInfo();
+  sortInfo();
+}
+
+function renderSortBed() {
   const bed = document.getElementById('eggBed');
   bed.innerHTML = '';
   S.pending.forEach(e => {
     const d = document.createElement('div');
     d.className = `eggToken ${e.size}${e.dirty ? ' dirty' : ''}${e.crack ? ' crack' : ''}`;
     d.dataset.id = e.id;
+    d.title = `${sizeLabel(e.size)}${e.dirty ? ' · sucio' : ''}${e.crack ? ' · agrietado' : ''}`;
+    d.addEventListener('click', () => onEggClick(e));
     bed.appendChild(d);
     e.dom = d;
   });
-  document.querySelectorAll('.crate .slot').forEach(s => s.innerHTML = '');
-  document.getElementById('sortLayer').classList.remove('hidden');
+}
+
+function sizeLabel(s) {
+  return { S: 'Pequeño (S)', M: 'Mediano (M)', L: 'Grande (L)', XL: 'Muy grande (XL)', XXL: 'Yumbo (XXL)' }[s] || s;
+}
+
+function onEggClick(e) {
+  // Si ya está colocado, devolverlo a la cama
+  if (ecrate(e)) {
+    unplaceEgg(e);
+    return;
+  }
+  // Si está seleccionado, deseleccionar
+  if (selectedEggId === e.id) {
+    e.dom.classList.remove('selected');
+    selectedEggId = null;
+    updateSelInfo();
+    updateCrateArmed(false);
+    return;
+  }
+  // Deseleccionar el anterior
+  if (selectedEggId) {
+    const prev = S.pending.find(x => x.id === selectedEggId);
+    if (prev && prev.dom) prev.dom.classList.remove('selected');
+  }
+  selectedEggId = e.id;
+  e.dom.classList.add('selected');
+  updateSelInfo();
+  updateCrateArmed(true);
+}
+
+function unplaceEgg(e) {
+  const bed = document.getElementById('eggBed');
+  bed.appendChild(e.dom);
+  e.dom.classList.remove('placed');
+  selectedEggId = null;
+  updateSelInfo();
+  updateCrateArmed(false);
   sortInfo();
 }
 
-function ideal(e) {
+function updateSelInfo() {
+  const el = document.getElementById('selInfo');
+  if (!selectedEggId) {
+    el.innerHTML = 'Selecciona un huevo para empezar · o pulsa <b>Auto-ordenar</b>';
+    return;
+  }
+  const e = S.pending.find(x => x.id === selectedEggId);
+  if (!e) { el.innerHTML = 'Selecciona un huevo para empezar'; return; }
+  const target = ideal(e);
+  el.innerHTML = `Seleccionado: <b>${sizeLabel(e.size)}</b>${e.dirty ? ' · sucio' : ''}${e.crack ? ' · agrietado' : ''} → caja ideal <b>${target}</b>. Haz clic en una caja o pulsa <b>1-5</b>.`;
+}
+
+function updateCrateArmed(armed) {
+  document.querySelectorAll('.crate').forEach(c => c.classList.toggle('armed', armed));
+}
+
+function placeSelectedInCrate(grade) {
+  if (!selectedEggId) {
+    toast('Primero selecciona un huevo', 'warn');
+    return;
+  }
+  const e = S.pending.find(x => x.id === selectedEggId);
+  if (!e) return;
+  const crate = document.querySelector(`.crate[data-crate="${grade}"]`);
+  if (!crate) return;
+  crate.querySelector('.slot').appendChild(e.dom);
+  e.dom.classList.remove('selected');
+  e.dom.classList.add('placed');
+  selectedEggId = null;
+  updateSelInfo();
+  updateCrateArmed(false);
+  sortInfo();
+}
+
+const ideal = e => {
   if (e.dirty || e.crack || e.size === 'S') return 'B';
   if (e.size === 'M') return 'A';
   if (e.size === 'L') return 'AA';
   if (e.size === 'XL') return 'EX';
   if (e.size === 'XXL') return 'Yumbo';
   return 'B';
-}
+};
 const ecrate = e => e.dom && e.dom.closest('.crate') ? e.dom.closest('.crate').dataset.crate : null;
+
+function autoSort() {
+  let moved = 0;
+  for (const e of S.pending) {
+    if (ecrate(e)) continue;
+    const grade = ideal(e);
+    const crate = document.querySelector(`.crate[data-crate="${grade}"]`);
+    if (!crate) continue;
+    crate.querySelector('.slot').appendChild(e.dom);
+    e.dom.classList.add('placed');
+    moved++;
+  }
+  selectedEggId = null;
+  updateSelInfo();
+  updateCrateArmed(false);
+  sortInfo();
+  if (moved) toast(`Auto-ordenados ${moved} huevos`, 'good');
+  else toast('Todos los huevos ya están en sus cajas', '');
+}
+
+function clearCrates() {
+  let moved = 0;
+  for (const e of S.pending) {
+    if (!ecrate(e)) continue;
+    document.getElementById('eggBed').appendChild(e.dom);
+    e.dom.classList.remove('placed');
+    moved++;
+  }
+  selectedEggId = null;
+  updateSelInfo();
+  updateCrateArmed(false);
+  sortInfo();
+  if (moved) toast(`Devueltos ${moved} huevos al almacén`, '');
+}
 
 function sortInfo() {
   const left = S.pending.filter(e => !ecrate(e)).length;
   const good = S.pending.filter(e => ecrate(e) === ideal(e)).length;
-  document.getElementById('sortInfo').textContent =
-    `Sin clasificar: ${left} · aciertos: ${good}/${S.pending.length}`;
+  let totalValue = 0, wrongValue = 0;
+  for (const e of S.pending) {
+    const cr = ecrate(e);
+    if (!cr) continue;
+    const isGood = cr === ideal(e);
+    totalValue += PRICE[cr] + (isGood ? 0.3 : -0.1);
+    if (!isGood) wrongValue++;
+  }
+  document.getElementById('sortInfo').innerHTML =
+    `Sin clasificar: <b>${left}</b> · aciertos: <b>${good}/${S.pending.length}</b> · valor: <b>${eur(totalValue)}</b>` +
+    (wrongValue ? ` · <span style="color:#d05a4a">${wrongValue} mal</span>` : '');
 }
 
 function doSell() {
@@ -2267,6 +2377,10 @@ function doSell() {
     const bonus = cr === ideal(e) ? 0.3 : -0.1;
     if (cr !== ideal(e)) mis++;
     inc += PRICE[cr] + bonus;
+  }
+  if (!moved) {
+    toast('No hay huevos colocados en cajas para vender', 'warn');
+    return;
   }
   S.money += inc;
   S.sold += moved; S.lvlSold += moved; S.dayIncome += inc;
@@ -2280,47 +2394,9 @@ function doSell() {
 function closeSort() {
   document.getElementById('sortLayer').classList.add('hidden');
   S.sorting = false; S.paused = false;
+  selectedEggId = null;
   updateUI(true);
 }
-
-let drag = null, dragOff = [0, 0];
-const layer = document.getElementById('sortLayer');
-
-layer.addEventListener('pointerdown', ev => {
-  const t = ev.target.closest('.eggToken');
-  if (!t || t.classList.contains('placed')) return;
-  drag = t;
-  t.style.position = 'fixed'; t.style.zIndex = 20;
-  const r = t.getBoundingClientRect();
-  dragOff = [ev.clientX - r.left, ev.clientY - r.top];
-  t.style.left = r.left + 'px'; t.style.top = r.top + 'px';
-  try { t.setPointerCapture(ev.pointerId); } catch (e) {}
-  ev.preventDefault();
-});
-layer.addEventListener('pointermove', ev => {
-  if (!drag) return;
-  drag.style.left = ev.clientX - dragOff[0] + 'px';
-  drag.style.top = ev.clientY - dragOff[1] + 'px';
-  const c = crateUnder(ev.clientX, ev.clientY);
-  document.querySelectorAll('.crate').forEach(el => el.classList.toggle('over', el === c));
-});
-function crateUnder(x, y) {
-  let found = null;
-  document.querySelectorAll('.crate').forEach(el => {
-    const r = el.getBoundingClientRect();
-    if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) found = el;
-  });
-  return found;
-}
-layer.addEventListener('pointerup', ev => {
-  if (!drag) return;
-  const c = crateUnder(ev.clientX, ev.clientY);
-  document.querySelectorAll('.crate').forEach(el => el.classList.remove('over'));
-  if (c) { c.querySelector('.slot').appendChild(drag); drag.classList.add('placed'); }
-  drag.style.position = ''; drag.style.left = ''; drag.style.top = ''; drag.style.zIndex = '';
-  drag = null;
-  sortInfo();
-});
 
 function buildSpeedButtons() {
   const row = document.getElementById('speedRow');
@@ -2354,6 +2430,8 @@ on('bRemove', removeDead);
 on('bBuy',   buyFeed);
 on('bHen',   openHenModal);
 on('btnSell', doSell);
+on('btnAutoSort', autoSort);
+on('btnClearCrates', clearCrates);
 on('btnSortClose', () => {
   if (S.pending.length) logMsg(`${S.pending.length} huevo(s) sin clasificar quedan a salvo en almacén.`, 'warn');
   closeSort();
@@ -2401,6 +2479,21 @@ document.getElementById('henList').addEventListener('click', ev => {
   updateUI(true);
 });
 
+/* Click en caja para colocar huevo seleccionado */
+document.querySelectorAll('.crate').forEach(crate => {
+  crate.addEventListener('click', () => placeSelectedInCrate(crate.dataset.crate));
+});
+
+/* Ripple effect + cursor en botones */
+document.querySelectorAll('.btn').forEach(btn => {
+  btn.addEventListener('mousemove', e => {
+    const r = btn.getBoundingClientRect();
+    btn.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    btn.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
+});
+
+/* Canvas: click + hover */
 cv.addEventListener('click', ev => {
   const r = cv.getBoundingClientRect();
   const x = (ev.clientX - r.left) * (W / r.width);
@@ -2423,6 +2516,33 @@ cv.addEventListener('click', ev => {
   updateUI(true);
 });
 
+cv.addEventListener('mousemove', ev => {
+  const r = cv.getBoundingClientRect();
+  const x = (ev.clientX - r.left) * (W / r.width);
+  const y = (ev.clientY - r.top) * (H / r.height);
+
+  let hoverCoop = null;
+  for (const c of S.coops) {
+    if (x >= c.rect.x && x <= c.rect.x + c.rect.w && y >= c.rect.y && y <= c.rect.y + c.rect.h) {
+      hoverCoop = c.id; break;
+    }
+  }
+  let hoverHen = null;
+  for (const h of S.hens) {
+    if (!h.alive) continue;
+    if (Math.hypot(h.x - x, h.y - y) < 20 * SCALE) { hoverHen = h.id; break; }
+  }
+  S.hoverCoop = hoverCoop;
+  S.hoverHen = hoverHen;
+  cv.style.cursor = (hoverCoop || hoverHen) ? 'pointer' : 'default';
+});
+
+cv.addEventListener('mouseleave', () => {
+  S.hoverCoop = null;
+  S.hoverHen = null;
+  cv.style.cursor = 'default';
+});
+
 const KEYS = {
   e: () => feedCoop(curCoop()),
   a: () => waterTrough(curCoop()),
@@ -2443,9 +2563,20 @@ addEventListener('keydown', ev => {
   if (ev.repeat) return;
   const k = ev.key.toLowerCase();
 
+  /* Atajos dentro del modal de clasificación */
+  if (!document.getElementById('sortLayer').classList.contains('hidden')) {
+    const gradeMap = { '1': 'B', '2': 'A', '3': 'AA', '4': 'EX', '5': 'Yumbo' };
+    if (gradeMap[k]) { ev.preventDefault(); placeSelectedInCrate(gradeMap[k]); return; }
+    if (k === 'escape') { closeSort(); return; }
+    if (k === 'enter') { doSell(); return; }
+    if (k === 'a') { autoSort(); return; }
+    if (k === 'delete' || k === 'backspace') { clearCrates(); return; }
+    return;
+  }
+
   if (k === ' ') {
     ev.preventDefault();
-    if (!S.over && !S.sorting) { S.paused = !S.paused; updateUI(true); }
+    if (!S.over) { S.paused = !S.paused; updateUI(true); }
     return;
   }
   if (!document.getElementById('modal').classList.contains('hidden')) {
@@ -2457,7 +2588,6 @@ addEventListener('keydown', ev => {
     if (k === 'escape') document.getElementById('henBuyCancel').click();
     return;
   }
-  if (!document.getElementById('sortLayer').classList.contains('hidden')) return;
 
   if (k >= '1' && k <= '6') {
     const i = +k - 1;
