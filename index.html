@@ -15,11 +15,9 @@
     --border-1: #363d45;
     --border-2: #4a525c;
     --border-accent: rgba(240, 192, 96, 0.28);
-    
     --text-primary: #f8f0e0;
     --text-secondary: #c4b898;
     --text-muted: #7a6f58;
-    
     --gold: #f0c060;
     --gold-bright: #ffd880;
     --gold-dark: #c09040;
@@ -30,21 +28,17 @@
     --red: #d95f4a;
     --amber: #e8a850;
     --violet: #b098e8;
-    
     --shadow-sm: 0 2px 8px rgba(0,0,0,.4);
     --shadow-md: 0 8px 24px rgba(0,0,0,.5);
     --shadow-lg: 0 16px 40px rgba(0,0,0,.6);
     --shadow-glow: 0 0 24px rgba(240,192,96,.25);
   }
-  
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
-  
   ::-webkit-scrollbar { width: 9px; height: 9px; }
   ::-webkit-scrollbar-track { background: rgba(10,13,16,.9); }
   ::-webkit-scrollbar-thumb { background: #363d45; border-radius: 5px; }
   ::-webkit-scrollbar-thumb:hover { background: #4a525c; }
-  
   body {
     background:
       radial-gradient(1400px 800px at 15% -10%, #2a2418 0%, transparent 55%),
@@ -56,11 +50,9 @@
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
-  
   .wrap { max-width: 1480px; margin: 0 auto; padding: 16px; }
   .hidden { display: none !important; }
   
-  /* ============ Header ============ */
   .top { display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center; margin-bottom: 12px; }
   .brand { display: flex; gap: 14px; align-items: center; }
   .logo {
@@ -68,48 +60,20 @@
     display: grid; place-items: center; font-size: 34px;
     background: linear-gradient(160deg, #3a2e1c 0%, #241c10 100%);
     border: 1px solid rgba(240, 192, 96, 0.3);
-    box-shadow: 
-      0 10px 28px rgba(0,0,0,.5),
-      inset 0 1px 0 rgba(255, 220, 150, 0.15),
-      inset 0 -2px 0 rgba(0,0,0,.3);
+    box-shadow: 0 10px 28px rgba(0,0,0,.5), inset 0 1px 0 rgba(255, 220, 150, 0.15), inset 0 -2px 0 rgba(0,0,0,.3);
     animation: bob 3.2s ease-in-out infinite;
     cursor: pointer;
     transition: transform .25s cubic-bezier(.2,.9,.3,1.4);
   }
   .logo:hover { transform: scale(1.1) rotate(-6deg); }
   @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-  
   h1 { margin: 0; font-size: 25px; letter-spacing: .3px; font-weight: 900; color: var(--gold-bright); text-shadow: 0 2px 8px rgba(240,192,96,.25); }
-  h1 .ver {
-    font-size: 10.5px; background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-    color: #1a1208; padding: 3px 9px; border-radius: 20px; vertical-align: middle;
-    font-weight: 900; letter-spacing: .8px; margin-left: 6px;
-    box-shadow: 0 2px 8px rgba(240,192,96,.4);
-  }
+  h1 .ver { font-size: 10.5px; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #1a1208; padding: 3px 9px; border-radius: 20px; vertical-align: middle; font-weight: 900; letter-spacing: .8px; margin-left: 6px; box-shadow: 0 2px 8px rgba(240,192,96,.4); }
   .sub { margin: 0; font-size: 12px; color: var(--text-muted); }
-  
   .chips { display: flex; gap: 8px; flex-wrap: wrap; }
-  .chip {
-    background: linear-gradient(180deg, rgba(42, 35, 24, 0.9), rgba(26, 22, 14, 0.95));
-    border: 1px solid var(--border-1);
-    border-radius: 12px; padding: 8px 13px; text-align: center; min-width: 88px;
-    box-shadow: 
-      0 3px 12px rgba(0,0,0,.4),
-      inset 0 1px 0 rgba(255, 220, 150, 0.06);
-    transition: all .2s cubic-bezier(.2,.9,.3,1.2);
-    position: relative; overflow: hidden;
-  }
-  .chip::before {
-    content: ""; position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(255,220,150,.04), transparent 40%);
-    pointer-events: none;
-  }
-  .chip:hover { 
-    transform: translateY(-2px); border-color: var(--border-2);
-    box-shadow: 
-      0 6px 18px rgba(0,0,0,.5),
-      inset 0 1px 0 rgba(255, 220, 150, 0.1);
-  }
+  .chip { background: linear-gradient(180deg, rgba(42, 35, 24, 0.9), rgba(26, 22, 14, 0.95)); border: 1px solid var(--border-1); border-radius: 12px; padding: 8px 13px; text-align: center; min-width: 88px; box-shadow: 0 3px 12px rgba(0,0,0,.4), inset 0 1px 0 rgba(255, 220, 150, 0.06); transition: all .2s cubic-bezier(.2,.9,.3,1.2); position: relative; overflow: hidden; }
+  .chip::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,220,150,.04), transparent 40%); pointer-events: none; }
+  .chip:hover { transform: translateY(-2px); border-color: var(--border-2); box-shadow: 0 6px 18px rgba(0,0,0,.5), inset 0 1px 0 rgba(255, 220, 150, 0.1); }
   .chip b { display: block; font-size: 15.5px; font-weight: 900; color: var(--text-primary); }
   .chip small { color: var(--text-muted); font-size: 9px; text-transform: uppercase; letter-spacing: .9px; font-weight: 700; }
   .chip.level b { color: var(--violet); }
@@ -120,321 +84,128 @@
   .chip.weather b { display: flex; align-items: center; justify-content: center; gap: 5px; }
   .chip.weather b .wico { font-size: 16px; }
   .chip.eggs.has-eggs { border-color: var(--gold); animation: chipPulse 2s ease-in-out infinite; }
-  @keyframes chipPulse {
-    0%,100% { box-shadow: 0 3px 10px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,220,150,.06); }
-    50% { box-shadow: 0 0 0 3px rgba(240,192,96,.25), 0 6px 20px rgba(240,192,96,.35); }
-  }
+  @keyframes chipPulse { 0%,100% { box-shadow: 0 3px 10px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,220,150,.06); } 50% { box-shadow: 0 0 0 3px rgba(240,192,96,.25), 0 6px 20px rgba(240,192,96,.35); } }
   
-  /* ============ Day bar ============ */
-  .dayBar {
-    position: relative; height: 26px; background: rgba(15,12,7,.9);
-    border-radius: 13px; overflow: hidden; margin-bottom: 14px;
-    border: 1px solid var(--border-1);
-    box-shadow: inset 0 2px 8px rgba(0,0,0,.6), 0 2px 8px rgba(0,0,0,.3);
-  }
-  .dayFill {
-    position: absolute; inset: 0 auto 0 0;
-    background: linear-gradient(90deg, #c08a30, var(--gold) 50%, var(--gold-bright));
-    transition: width .4s ease;
-    box-shadow: 0 0 18px rgba(240,192,96,.6);
-  }
-  .dayFill::after {
-    content: ""; position: absolute; inset: 0;
-    background: linear-gradient(90deg, transparent 30%, rgba(255,255,255,.3) 50%, transparent 70%);
-    animation: shine 4s linear infinite;
-  }
+  .dayBar { position: relative; height: 26px; background: rgba(15,12,7,.9); border-radius: 13px; overflow: hidden; margin-bottom: 14px; border: 1px solid var(--border-1); box-shadow: inset 0 2px 8px rgba(0,0,0,.6), 0 2px 8px rgba(0,0,0,.3); }
+  .dayFill { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, #c08a30, var(--gold) 50%, var(--gold-bright)); transition: width .4s ease; box-shadow: 0 0 18px rgba(240,192,96,.6); }
+  .dayFill::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 30%, rgba(255,255,255,.3) 50%, transparent 70%); animation: shine 4s linear infinite; }
   @keyframes shine { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-  .dayLabel {
-    position: absolute; inset: 0; display: grid; place-items: center;
-    font-size: 12px; font-weight: 800; letter-spacing: .7px; color: #fff;
-    text-shadow: 0 1px 3px rgba(0,0,0,.9);
-  }
+  .dayLabel { position: absolute; inset: 0; display: grid; place-items: center; font-size: 12px; font-weight: 800; letter-spacing: .7px; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.9); }
   
-  /* ============ Layout ============ */
   .board { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 16px; align-items: start; }
-  .stage {
-    position: relative;
-    background: linear-gradient(180deg, #1d1810 0%, #14100a 100%);
-    border: 1px solid var(--border-1);
-    border-radius: 20px; padding: 10px;
-    box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255,220,150,.05);
-  }
+  .stage { position: relative; background: linear-gradient(180deg, #1d1810 0%, #14100a 100%); border: 1px solid var(--border-1); border-radius: 20px; padding: 10px; box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255,220,150,.05); }
   canvas { display: block; width: 100%; height: auto; border-radius: 14px; background: #1a1812; }
   .side { display: flex; flex-direction: column; gap: 12px; }
   
-  /* ============ Panels (premium glass) ============ */
-  .panel {
-    background:
-      linear-gradient(180deg, rgba(35, 42, 30, .9) 0%, rgba(22, 26, 18, .95) 100%);
-    border: 1px solid var(--border-accent);
-    border-radius: 16px; padding: 14px 15px;
-    box-shadow:
-      0 6px 20px rgba(0,0,0,.45),
-      inset 0 1px 0 rgba(255, 220, 150, .07),
-      inset 0 -1px 0 rgba(0,0,0,.3);
-    position: relative; overflow: hidden;
-    transition: border-color .25s, box-shadow .25s;
-  }
-  .panel::before {
-    content: ""; position: absolute; inset: 0; border-radius: 16px; pointer-events: none;
-    background: linear-gradient(180deg, rgba(255, 220, 150, .04), transparent 35%);
-  }
-  .panel:hover {
-    border-color: rgba(240, 192, 96, .45);
-    box-shadow:
-      0 10px 28px rgba(0,0,0,.55),
-      0 0 0 1px rgba(240, 192, 96, .08),
-      inset 0 1px 0 rgba(255, 220, 150, .1);
-  }
-  .panel h2 {
-    margin: 0 0 12px; font-size: 11.5px;
-    text-transform: uppercase; letter-spacing: 1.3px;
-    color: var(--gold); font-weight: 900;
-    display: flex; justify-content: space-between; align-items: center;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgba(240, 192, 96, .18);
-    position: relative;
-  }
+  .panel { background: linear-gradient(180deg, rgba(35, 42, 30, .9) 0%, rgba(22, 26, 18, .95) 100%); border: 1px solid var(--border-accent); border-radius: 16px; padding: 14px 15px; box-shadow: 0 6px 20px rgba(0,0,0,.45), inset 0 1px 0 rgba(255, 220, 150, .07), inset 0 -1px 0 rgba(0,0,0,.3); position: relative; overflow: hidden; transition: border-color .25s, box-shadow .25s; }
+  .panel::before { content: ""; position: absolute; inset: 0; border-radius: 16px; pointer-events: none; background: linear-gradient(180deg, rgba(255, 220, 150, .04), transparent 35%); }
+  .panel:hover { border-color: rgba(240, 192, 96, .45); box-shadow: 0 10px 28px rgba(0,0,0,.55), 0 0 0 1px rgba(240, 192, 96, .08), inset 0 1px 0 rgba(255, 220, 150, .1); }
+  .panel h2 { margin: 0 0 12px; font-size: 11.5px; text-transform: uppercase; letter-spacing: 1.3px; color: var(--gold); font-weight: 900; display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 1px solid rgba(240, 192, 96, .18); position: relative; }
   .panel h2 small { text-transform: none; letter-spacing: 0; color: var(--text-secondary); font-size: 10.5px; font-weight: 700; }
   .panel h2 .ico { margin-right: 7px; font-size: 14px; filter: drop-shadow(0 1px 2px rgba(0,0,0,.5)); }
   
-  /* ============ Buttons ============ */
-  .btn {
-    background:
-      linear-gradient(180deg, rgba(58, 50, 32, .95), rgba(34, 28, 18, 1)),
-      radial-gradient(ellipse at top, rgba(240, 192, 96, .1), transparent 60%);
-    color: var(--text-primary);
-    border: 1px solid rgba(74, 82, 92, .9);
-    border-radius: 10px; padding: 10px 12px;
-    font-size: 12.5px; cursor: pointer; text-align: left;
-    font-family: inherit; font-weight: 600;
-    position: relative; overflow: hidden;
-    transition: all .18s cubic-bezier(.2,.9,.3,1.2);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .btn::before {
-    content: ""; position: absolute; inset: 0;
-    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 220, 150, .15), transparent 45%);
-    opacity: 0; transition: opacity .3s; pointer-events: none;
-  }
-  .btn:hover {
-    background:
-      linear-gradient(180deg, rgba(74, 62, 38, 1), rgba(46, 38, 24, 1)),
-      radial-gradient(ellipse at top, rgba(240, 192, 96, .15), transparent 60%);
-    border-color: var(--border-2);
-    box-shadow: 0 3px 14px rgba(240, 192, 96, .2);
-    transform: translateY(-1px);
-  }
+  .btn { background: linear-gradient(180deg, rgba(58, 50, 32, .95), rgba(34, 28, 18, 1)), radial-gradient(ellipse at top, rgba(240, 192, 96, .1), transparent 60%); color: var(--text-primary); border: 1px solid rgba(74, 82, 92, .9); border-radius: 10px; padding: 10px 12px; font-size: 12.5px; cursor: pointer; text-align: left; font-family: inherit; font-weight: 600; position: relative; overflow: hidden; transition: all .18s cubic-bezier(.2,.9,.3,1.2); display: flex; align-items: center; gap: 8px; }
+  .btn::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 220, 150, .15), transparent 45%); opacity: 0; transition: opacity .3s; pointer-events: none; }
+  .btn:hover { background: linear-gradient(180deg, rgba(74, 62, 38, 1), rgba(46, 38, 24, 1)), radial-gradient(ellipse at top, rgba(240, 192, 96, .15), transparent 60%); border-color: var(--border-2); box-shadow: 0 3px 14px rgba(240, 192, 96, .2); transform: translateY(-1px); }
   .btn:hover::before { opacity: 1; }
   .btn:active { transform: translateY(1px) scale(.99); }
   .btn .bico { font-size: 15px; filter: drop-shadow(0 1px 2px rgba(0,0,0,.4)); transition: transform .2s; }
   .btn:hover .bico { transform: scale(1.15) rotate(-3deg); }
-  .btn.primary {
-    background: linear-gradient(180deg, #5a9a4a, #3f7532);
-    border-color: #7ac06a; color: #fff; font-weight: 700;
-  }
-  .btn.primary:hover {
-    background: linear-gradient(180deg, #6aaa5a, #4a853a);
-    box-shadow: 0 5px 18px rgba(120, 192, 106, .4);
-  }
+  .btn.primary { background: linear-gradient(180deg, #5a9a4a, #3f7532); border-color: #7ac06a; color: #fff; font-weight: 700; }
+  .btn.primary:hover { background: linear-gradient(180deg, #6aaa5a, #4a853a); box-shadow: 0 5px 18px rgba(120, 192, 106, .4); }
   .btn.wide { width: 100%; margin-top: 10px; justify-content: center; }
   .btn.sm { font-size: 11.5px; padding: 8px 9px; justify-content: center; }
-  .btn.spd.on {
-    background: linear-gradient(180deg, #5a9a4a, #3f7532);
-    border-color: #7ac06a; color: #fff; font-weight: 700;
-    box-shadow: 0 0 14px rgba(120, 192, 106, .5);
-  }
+  .btn.spd.on { background: linear-gradient(180deg, #5a9a4a, #3f7532); border-color: #7ac06a; color: #fff; font-weight: 700; box-shadow: 0 0 14px rgba(120, 192, 106, .5); }
   .btn .p { color: var(--gold); font-size: 10.5px; font-weight: 700; }
-  .btn.alert { border-color: var(--amber); animation: btnAlert 1.5s ease-in-out infinite; }
-  @keyframes btnAlert {
-    0%,100% { box-shadow: 0 0 0 0 rgba(232, 168, 80, 0); }
-    50% { box-shadow: 0 0 0 4px rgba(232, 168, 80, .2); }
-  }
-  kbd {
-    float: right; background: #0f0c07; border: 1px solid #3a3022;
-    border-radius: 4px; padding: 0 5px; font-size: 9px;
-    color: #8a7d62; font-family: inherit; margin-left: auto; font-weight: 700;
-  }
+  kbd { float: right; background: #0f0c07; border: 1px solid #3a3022; border-radius: 4px; padding: 0 5px; font-size: 9px; color: #8a7d62; font-family: inherit; margin-left: auto; font-weight: 700; }
   .acts { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
   .foot { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
   .speeds { display: flex; gap: 4px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
   
-  /* ============ Coop selector ============ */
   .coopList { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-  .coopBtn {
-    background: linear-gradient(180deg, rgba(26, 22, 16, 1), rgba(18, 14, 8, 1));
-    border: 1.5px solid var(--border-2);
-    border-radius: 10px; padding: 9px 4px; cursor: pointer;
-    text-align: center; font-family: inherit; color: var(--text-primary);
-    transition: all .18s;
-  }
+  .coopBtn { background: linear-gradient(180deg, rgba(26, 22, 16, 1), rgba(18, 14, 8, 1)); border: 1.5px solid var(--border-2); border-radius: 10px; padding: 9px 4px; cursor: pointer; text-align: center; font-family: inherit; color: var(--text-primary); transition: all .18s; }
   .coopBtn:hover { border-color: var(--border-accent); background: #241e14; transform: translateY(-1px); }
-  .coopBtn.on {
-    border-color: #7ac06a;
-    background: linear-gradient(180deg, #243a1c, #1a2814);
-    box-shadow: 0 0 0 2px rgba(124, 184, 106, .25);
-  }
+  .coopBtn.on { border-color: #7ac06a; background: linear-gradient(180deg, #243a1c, #1a2814); box-shadow: 0 0 0 2px rgba(124, 184, 106, .25); }
   .coopBtn b { display: block; font-size: 13px; font-weight: 900; color: var(--gold-bright); }
   .coopBtn small { font-size: 9px; color: var(--text-secondary); font-weight: 700; }
   .coopBtn.on b { color: var(--green-bright); }
   
-  /* ============ Gauges ============ */
-  .gauge {
-    display: grid; grid-template-columns: auto 1fr auto;
-    gap: 4px 8px; align-items: center;
-    margin-bottom: 10px; font-size: 11.5px; color: var(--text-secondary);
-  }
+  .gauge { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 8px; align-items: center; margin-bottom: 10px; font-size: 11.5px; color: var(--text-secondary); }
   .gauge .gico { font-size: 13px; transition: transform .2s; }
   .gauge:hover .gico { transform: scale(1.2) rotate(-3deg); }
   .gauge b { font-size: 11.5px; color: var(--text-primary); min-width: 58px; text-align: right; font-weight: 800; }
-  .gauge .bar {
-    grid-column: 1/-1; height: 8px; background: #0d0b07;
-    border-radius: 5px; overflow: hidden;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,.7);
-    position: relative;
-  }
-  .gauge .bar::before {
-    content: ""; position: absolute; inset: 0; z-index: 1;
-    background: linear-gradient(90deg, transparent 49.5%, rgba(0,0,0,.3) 50%, transparent 50.5%);
-    pointer-events: none;
-  }
-  .gauge .bar i {
-    display: block; height: 100%; width: 0; border-radius: 5px;
-    transition: width .3s, background .3s;
-    box-shadow: 0 0 10px currentColor;
-    position: relative;
-  }
-  .gauge .bar i::after {
-    content: ""; position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(255,255,255,.25), transparent 60%);
-    border-radius: 5px;
-  }
+  .gauge .bar { grid-column: 1/-1; height: 8px; background: #0d0b07; border-radius: 5px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,.7); position: relative; }
+  .gauge .bar::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, transparent 49.5%, rgba(0,0,0,.3) 50%, transparent 50.5%); pointer-events: none; }
+  .gauge .bar i { display: block; height: 100%; width: 0; border-radius: 5px; transition: width .3s, background .3s; box-shadow: 0 0 10px currentColor; position: relative; }
+  .gauge .bar i::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.25), transparent 60%); border-radius: 5px; }
   .gauge.warn .bar i { animation: gaugePulse 1.2s ease-in-out infinite; }
   @keyframes gaugePulse { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
   
-  /* ============ Lists ============ */
   .hens { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 5px; max-height: 240px; overflow: auto; }
-  .hens li {
-    display: grid; grid-template-columns: 12px 1fr auto;
-    gap: 8px; align-items: center;
-    padding: 7px 10px; border-radius: 9px;
-    background: linear-gradient(180deg, #16120c, #100c08);
-    cursor: pointer; font-size: 11.5px;
-    border: 1px solid transparent;
-    transition: all .15s;
-  }
+  .hens li { display: grid; grid-template-columns: 12px 1fr auto; gap: 8px; align-items: center; padding: 7px 10px; border-radius: 9px; background: linear-gradient(180deg, #16120c, #100c08); cursor: pointer; font-size: 11.5px; border: 1px solid transparent; transition: all .15s; }
   .hens li:hover { background: #1c1810; border-color: var(--border-1); transform: translateX(3px); }
-  .hens li.sel {
-    border-color: #7ac06a;
-    background: linear-gradient(180deg, #243a1c, #1a2814);
-    box-shadow: 0 0 0 1px rgba(124, 184, 106, .3);
-  }
+  .hens li.sel { border-color: #7ac06a; background: linear-gradient(180deg, #243a1c, #1a2814); box-shadow: 0 0 0 1px rgba(124, 184, 106, .3); }
+  .hens li.sick { border-color: #b0413e; background: linear-gradient(180deg, #2e1414, #1e0c0c); }
+  .hens li.sick:hover { border-color: #d95f4a; }
   .hens li .dot { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 0 1px #0006 inset; }
   .hens li .nm { display: flex; justify-content: space-between; gap: 6px; }
   .hens li .nm em { font-style: normal; color: var(--text-muted); font-size: 9.5px; }
   .hens li .bars { display: flex; gap: 3px; margin-top: 4px; }
-  .hens li .bars i {
-    height: 4px; flex: 1; border-radius: 3px; background: #252018;
-    overflow: hidden; position: relative;
-  }
+  .hens li .bars i { height: 4px; flex: 1; border-radius: 3px; background: #252018; overflow: hidden; position: relative; }
   .hens li .bars i em { position: absolute; inset: 0 auto 0 0; display: block; transition: width .3s; }
   .hens li .tag { font-size: 9.5px; color: var(--amber); white-space: nowrap; font-weight: 800; }
   .hens li.ded { opacity: .4; }
   
-  .log {
-    list-style: none; margin: 0; padding: 0;
-    font-size: 11px; color: var(--text-secondary);
-    display: flex; flex-direction: column; gap: 4px;
-    max-height: 150px; overflow: auto;
-  }
-  .log li {
-    border-left: 2px solid var(--border-1); padding-left: 9px;
-    line-height: 1.45; animation: logIn .3s ease;
-  }
+  .log { list-style: none; margin: 0; padding: 0; font-size: 11px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px; max-height: 150px; overflow: auto; }
+  .log li { border-left: 2px solid var(--border-1); padding-left: 9px; line-height: 1.45; animation: logIn .3s ease; }
   @keyframes logIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
   .log li.warn { border-color: #c9762f; color: #e8b884; }
   .log li.bad { border-color: #b0413e; color: #e79a97; }
   .log li.good { border-color: #55a069; color: #a9d9b6; }
   
   .workers { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
-  .workers li {
-    display: flex; justify-content: space-between; gap: 6px;
-    font-size: 11px;
-    background: linear-gradient(180deg, #16120c, #100c08);
-    padding: 7px 10px; border-radius: 8px;
-    align-items: center; border: 1px solid var(--border-1);
-    transition: all .15s;
-  }
+  .workers li { display: flex; justify-content: space-between; gap: 6px; font-size: 11px; background: linear-gradient(180deg, #16120c, #100c08); padding: 7px 10px; border-radius: 8px; align-items: center; border: 1px solid var(--border-1); transition: all .15s; }
   .workers li:hover { border-color: var(--border-2); background: #1c1810; }
   .workers li span { color: var(--text-muted); font-size: 10px; }
   .hireList { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
   
-  /* ============ Layers / modals ============ */
+  /* ============ Layers + Efecto cortina ============ */
   .layer {
     position: absolute; inset: 10px;
     background: rgba(8, 6, 4, .94); border-radius: 14px;
     display: grid; place-items: center; padding: 12px; z-index: 5;
     backdrop-filter: blur(8px);
+    clip-path: inset(0 0 0 0);
+    will-change: clip-path;
   }
-  .sheet {
-    width: min(1020px, 100%); max-height: 100%; overflow: auto;
-    background: linear-gradient(180deg, #2c2418 0%, #1c1810 100%);
-    border: 1px solid var(--border-accent);
-    border-radius: 20px; padding: 22px;
-    box-shadow:
-      0 24px 72px rgba(0, 0, 0, .8),
-      inset 0 1px 0 rgba(255, 220, 150, .08),
-      0 0 0 1px rgba(240, 192, 96, .05);
-    animation: sheetIn .3s cubic-bezier(.2,.9,.3,1.3);
+  @keyframes curtainIn {
+    from { clip-path: inset(100% 0 0 0); opacity: 0.3; }
+    to   { clip-path: inset(0 0 0 0);    opacity: 1; }
   }
-  @keyframes sheetIn { from { opacity: 0; transform: scale(.96) translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes curtainOut {
+    from { clip-path: inset(0 0 0 0);    opacity: 1; }
+    to   { clip-path: inset(100% 0 0 0); opacity: 0.3; }
+  }
+  .layer.curtain-in  { animation: curtainIn .4s cubic-bezier(.4, 0, .2, 1); }
+  .layer.curtain-out { animation: curtainOut .38s cubic-bezier(.4, 0, .2, 1) forwards; }
+  
+  .sheet { width: min(1020px, 100%); max-height: 100%; overflow: auto; background: linear-gradient(180deg, #2c2418 0%, #1c1810 100%); border: 1px solid var(--border-accent); border-radius: 20px; padding: 22px; box-shadow: 0 24px 72px rgba(0, 0, 0, .8), inset 0 1px 0 rgba(255, 220, 150, .08), 0 0 0 1px rgba(240, 192, 96, .05); }
   .sheet.small { width: min(620px, 100%); }
-  .sheet h2 {
-    margin: 0 0 10px; font-size: 22px; color: var(--gold-bright);
-    font-weight: 900; display: flex; align-items: center; gap: 8px;
-    text-shadow: 0 2px 8px rgba(240, 192, 96, .25);
-  }
+  .sheet h2 { margin: 0 0 10px; font-size: 22px; color: var(--gold-bright); font-weight: 900; display: flex; align-items: center; gap: 8px; text-shadow: 0 2px 8px rgba(240, 192, 96, .25); }
   .hint { font-size: 12.5px; color: var(--text-muted); margin: 0 0 12px; line-height: 1.55; }
   .hint b { color: var(--gold-bright); }
   .kv { display: grid; grid-template-columns: auto auto; gap: 5px 20px; font-size: 13px; margin: 12px 0; }
   .kv span:nth-child(odd) { color: var(--text-secondary); }
   .kv b { text-align: right; color: var(--text-primary); }
   
-  /* ============ Sort panel ============ */
-  .sortBar {
-    display: flex; gap: 10px; align-items: center; margin-bottom: 14px;
-    flex-wrap: wrap; background: rgba(15, 12, 7, .7);
-    padding: 11px 14px; border-radius: 12px;
-    border: 1px solid var(--border-1);
-  }
+  .sortBar { display: flex; gap: 10px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; background: rgba(15, 12, 7, .7); padding: 11px 14px; border-radius: 12px; border: 1px solid var(--border-1); }
   .sortBar .selInfo { flex: 1; font-size: 12.5px; color: var(--text-secondary); font-weight: 600; }
   .sortBar .selInfo b { color: var(--gold-bright); font-size: 13px; }
-  .eggBed {
-    min-height: 100px; background: #0f0c07;
-    border: 2px dashed var(--border-2);
-    border-radius: 12px; padding: 14px;
-    position: relative; display: flex; flex-wrap: wrap;
-    gap: 10px; align-items: center;
-    transition: all .2s;
-  }
+  .eggBed { min-height: 100px; background: #0f0c07; border: 2px dashed var(--border-2); border-radius: 12px; padding: 14px; position: relative; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; transition: all .2s; }
   .eggBed.empty { border-color: #2a2418; }
-  .eggBed::before {
-    content: "Suelta aquí los huevos"; position: absolute; inset: 0;
-    display: grid; place-items: center;
-    font-size: 11px; color: var(--text-muted); opacity: 0;
-    pointer-events: none; letter-spacing: 1.2px;
-    text-transform: uppercase; font-weight: 800;
-  }
+  .eggBed::before { content: "Suelta aquí los huevos"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 11px; color: var(--text-muted); opacity: 0; pointer-events: none; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 800; }
   .eggBed:empty::before { opacity: 1; }
-  .eggToken {
-    border-radius: 50% / 58%;
-    background: linear-gradient(160deg, #fff8ea, #e6d7bd);
-    border: 1px solid #b9a887;
-    cursor: pointer; position: relative;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, .5);
-    transition: all .18s cubic-bezier(.2,.9,.3,1.2);
-    user-select: none;
-  }
+  .eggToken { border-radius: 50% / 58%; background: linear-gradient(160deg, #fff8ea, #e6d7bd); border: 1px solid #b9a887; cursor: pointer; position: relative; box-shadow: 0 2px 6px rgba(0, 0, 0, .5); transition: all .18s cubic-bezier(.2,.9,.3,1.2); user-select: none; }
   .eggToken:hover { transform: scale(1.1) translateY(-3px); box-shadow: 0 8px 20px rgba(0, 0, 0, .7); }
   .eggToken.S { width: 22px; height: 28px; }
   .eggToken.M { width: 28px; height: 36px; }
@@ -442,66 +213,24 @@
   .eggToken.XL { width: 40px; height: 52px; }
   .eggToken.XXL { width: 46px; height: 60px; box-shadow: 0 2px 10px rgba(240, 192, 96, .7), 0 0 0 1px rgba(240, 192, 96, .5); }
   .eggToken.dirty { background: linear-gradient(160deg, #ded0b4, #b7a382); }
-  .eggToken.dirty::after {
-    content: ""; position: absolute; inset: 20% 25%;
-    background:
-      radial-gradient(2px 2px at 20% 30%, #6b5a3a 99%, transparent),
-      radial-gradient(2px 2px at 70% 60%, #6b5a3a 99%, transparent),
-      radial-gradient(3px 3px at 45% 80%, #7a6742 99%, transparent);
-  }
-  .eggToken.crack::before {
-    content: ""; position: absolute; left: 45%; top: 12%;
-    width: 2px; height: 74%; background: #8d7554;
-    transform: rotate(12deg);
-    box-shadow: -3px 6px 0 -1px #8d7554, 3px 14px 0 -1px #8d7554;
-  }
-  .eggToken.selected {
-    box-shadow: 0 0 0 3px var(--gold), 0 8px 22px rgba(240, 192, 96, .7);
-    transform: scale(1.15) translateY(-4px);
-    animation: selPulse 1s ease-in-out infinite;
-  }
-  @keyframes selPulse {
-    0%,100% { box-shadow: 0 0 0 3px var(--gold), 0 8px 22px rgba(240, 192, 96, .7); }
-    50% { box-shadow: 0 0 0 5px rgba(240, 192, 96, .5), 0 10px 28px rgba(240, 192, 96, .9); }
-  }
+  .eggToken.dirty::after { content: ""; position: absolute; inset: 20% 25%; background: radial-gradient(2px 2px at 20% 30%, #6b5a3a 99%, transparent), radial-gradient(2px 2px at 70% 60%, #6b5a3a 99%, transparent), radial-gradient(3px 3px at 45% 80%, #7a6742 99%, transparent); }
+  .eggToken.crack::before { content: ""; position: absolute; left: 45%; top: 12%; width: 2px; height: 74%; background: #8d7554; transform: rotate(12deg); box-shadow: -3px 6px 0 -1px #8d7554, 3px 14px 0 -1px #8d7554; }
+  .eggToken.selected { box-shadow: 0 0 0 3px var(--gold), 0 8px 22px rgba(240, 192, 96, .7); transform: scale(1.15) translateY(-4px); animation: selPulse 1s ease-in-out infinite; }
+  @keyframes selPulse { 0%,100% { box-shadow: 0 0 0 3px var(--gold), 0 8px 22px rgba(240, 192, 96, .7); } 50% { box-shadow: 0 0 0 5px rgba(240, 192, 96, .5), 0 10px 28px rgba(240, 192, 96, .9); } }
   .eggToken.placed { opacity: .9; }
   .eggToken.placed:hover { transform: scale(1.06); }
   
   .crates { display: grid; grid-template-columns: repeat(5, 1fr); gap: 9px; margin: 16px 0; }
-  .crate {
-    background: linear-gradient(180deg, #2a2418, #1e1a12);
-    border: 2px solid #55472e;
-    border-radius: 13px; padding: 11px;
-    font-size: 11.5px; transition: all .2s;
-    text-align: center; cursor: pointer;
-    position: relative; overflow: hidden;
-  }
-  .crate::before {
-    content: ""; position: absolute; inset: 0; pointer-events: none;
-    background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, .25) 100%);
-  }
+  .crate { background: linear-gradient(180deg, #2a2418, #1e1a12); border: 2px solid #55472e; border-radius: 13px; padding: 11px; font-size: 11.5px; transition: all .2s; text-align: center; cursor: pointer; position: relative; overflow: hidden; }
+  .crate::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, .25) 100%); }
   .crate:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0, 0, 0, .5); }
   .crate.armed { animation: crateArmed 1.8s ease-in-out infinite; }
-  @keyframes crateArmed {
-    0%,100% { box-shadow: 0 0 0 0 currentColor; }
-    50% { box-shadow: 0 0 0 5px rgba(240, 192, 96, .18); }
-  }
-  .crate.over { transform: scale(1.06); box-shadow: 0 0 0 4px rgba(124, 184, 106, .4), 0 8px 20px rgba(0, 0, 0, .4); }
+  @keyframes crateArmed { 0%,100% { box-shadow: 0 0 0 0 currentColor; } 50% { box-shadow: 0 0 0 5px rgba(240, 192, 96, .18); } }
   .crate h3 { margin: 0; font-size: 13px; font-weight: 900; letter-spacing: .3px; position: relative; z-index: 1; }
   .crate p { margin: 3px 0 6px; color: var(--text-secondary); font-size: 10px; min-height: 26px; position: relative; z-index: 1; }
   .crate b { font-size: 14px; font-weight: 900; position: relative; z-index: 1; }
-  .crate .slot {
-    min-height: 76px; margin-top: 8px;
-    display: flex; flex-wrap: wrap; gap: 5px;
-    align-content: flex-start; justify-content: center;
-    background: #0f0c07; border-radius: 9px; padding: 7px;
-    position: relative; z-index: 1;
-  }
-  .crate .gradeTag {
-    position: absolute; top: 5px; right: 7px;
-    font-size: 8.5px; font-weight: 900; letter-spacing: .7px;
-    opacity: .55; z-index: 1;
-  }
+  .crate .slot { min-height: 76px; margin-top: 8px; display: flex; flex-wrap: wrap; gap: 5px; align-content: flex-start; justify-content: center; background: #0f0c07; border-radius: 9px; padding: 7px; position: relative; z-index: 1; }
+  .crate .gradeTag { position: absolute; top: 5px; right: 7px; font-size: 8.5px; font-weight: 900; letter-spacing: .7px; opacity: .55; z-index: 1; }
   .crate.B { border-color: #c9762f; } .crate.B h3 { color: #e8a04a; } .crate.B b { color: #e8a04a; } .crate.B .gradeTag { color: #e8a04a; }
   .crate.A { border-color: #5aa8d0; } .crate.A h3 { color: #7ac8f0; } .crate.A b { color: #7ac8f0; } .crate.A .gradeTag { color: #7ac8f0; }
   .crate.AA { border-color: #7cb86a; } .crate.AA h3 { color: #9ee08a; } .crate.AA b { color: #9ee08a; } .crate.AA .gradeTag { color: #9ee08a; }
@@ -514,40 +243,16 @@
   .info { flex: 1; font-size: 12.5px; color: var(--text-secondary); font-weight: 600; }
   .info b { color: var(--gold-bright); }
   
-  /* ============ Toasts ============ */
-  .toasts {
-    position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
-    z-index: 200; display: flex; flex-direction: column;
-    gap: 8px; align-items: center; pointer-events: none; max-width: 92vw;
-  }
-  .toast {
-    background: linear-gradient(180deg, #2a2318, #1c1810);
-    color: var(--text-primary);
-    padding: 12px 22px; border-radius: 13px;
-    border: 1px solid var(--border-2);
-    box-shadow: 0 14px 40px rgba(0, 0, 0, .7), inset 0 1px 0 rgba(255, 220, 150, .1);
-    font-size: 12.5px; font-weight: 600;
-    animation: toastIn .4s cubic-bezier(.2,.9,.3,1.3);
-    max-width: 100%;
-  }
+  .toasts { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 200; display: flex; flex-direction: column; gap: 8px; align-items: center; pointer-events: none; max-width: 92vw; }
+  .toast { background: linear-gradient(180deg, #2a2318, #1c1810); color: var(--text-primary); padding: 12px 22px; border-radius: 13px; border: 1px solid var(--border-2); box-shadow: 0 14px 40px rgba(0, 0, 0, .7), inset 0 1px 0 rgba(255, 220, 150, .1); font-size: 12.5px; font-weight: 600; animation: toastIn .4s cubic-bezier(.2,.9,.3,1.3); max-width: 100%; }
   .toast.good { border-color: var(--green); color: #c8e8c0; }
   .toast.warn { border-color: var(--amber); color: #f0d8a8; }
   .toast.bad { border-color: var(--red); color: #f0b8b0; }
   @keyframes toastIn { from { opacity: 0; transform: translateY(24px) scale(.92); } to { opacity: 1; transform: none; } }
   
-  .henQtyRow {
-    display: flex; align-items: center; gap: 10px;
-    margin: 16px 0; background: #14110c;
-    padding: 14px 16px; border-radius: 13px;
-    border: 1px solid var(--border-1);
-  }
+  .henQtyRow { display: flex; align-items: center; gap: 10px; margin: 16px 0; background: #14110c; padding: 14px 16px; border-radius: 13px; border: 1px solid var(--border-1); }
   .henQtyRow label { font-size: 12.5px; color: var(--text-secondary); font-weight: 700; }
-  .henQtyRow input {
-    width: 76px; text-align: center; font-size: 17px; font-weight: 900;
-    background: #0f0c07; border: 1px solid var(--border-2);
-    border-radius: 8px; color: var(--gold-bright); padding: 8px;
-    font-family: inherit; transition: all .15s;
-  }
+  .henQtyRow input { width: 76px; text-align: center; font-size: 17px; font-weight: 900; background: #0f0c07; border: 1px solid var(--border-2); border-radius: 8px; color: var(--gold-bright); padding: 8px; font-family: inherit; transition: all .15s; }
   .henQtyRow input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(240, 192, 96, .25); }
   .henQtyRow .total { margin-left: auto; font-size: 18px; font-weight: 900; color: var(--gold-bright); }
   
@@ -599,7 +304,7 @@
       <div id="sortLayer" class="layer hidden">
         <div class="sheet">
           <h2>📦 Clasificar la puesta</h2>
-          <p class="hint">Haz <b>clic en un huevo</b> para seleccionarlo, luego <b>clic en la caja</b> correcta. Clic en un huevo colocado lo devuelve. Atajos: <b>1-5</b> para B · A · AA · EX · Yumbo. ⚠ Un huevo mal clasificado se paga como <b>dañado (0,20 €)</b>.</p>
+          <p class="hint">Haz <b>clic en un huevo</b> para seleccionarlo, luego <b>clic en la caja</b> correcta. Clic en un huevo colocado lo devuelve. Atajos: <b>1-5</b> para B · A · AA · EX · Yumbo. ⚠ Los huevos <b>recogidos están a salvo en almacén</b> (no envejecen ni se dañan). ⚠ Un huevo <b>mal clasificado</b> se paga a <b>1 €</b> (menos si está muy lejos de su caja ideal).</p>
           <div class="sortBar">
             <div class="selInfo" id="selInfo">Selecciona un huevo para empezar</div>
             <button class="btn sm" id="btnClearCrates"><span class="bico">↩️</span> Vaciar cajas</button>
@@ -678,6 +383,17 @@
         <button class="btn wide" id="bCoop"><span class="bico">🏗️</span> Construir · <span id="coopCost">150 €</span> <kbd>B</kbd></button>
       </div>
 
+      <!-- ✅ CONDICIONES MOVIDAS ARRIBA -->
+      <div class="panel">
+        <h2><span><span class="ico">🌡️</span>Condiciones</span><small id="coopTag">Galpón A</small></h2>
+        <div class="gauge" id="gaugeTemp"><span class="gico">🌡️</span><span>Temperatura</span><b id="vTemp">22 °C</b><div class="bar"><i id="gTemp"></i></div></div>
+        <div class="gauge" id="gaugeAir"><span class="gico">💨</span><span>Amoníaco</span><b id="vAir">10/100</b><div class="bar"><i id="gAir"></i></div></div>
+        <div class="gauge" id="gaugeBed"><span class="gico">🛏️</span><span>Cama</span><b id="vBed">100%</b><div class="bar"><i id="gBed"></i></div></div>
+        <div class="gauge" id="gaugeWater"><span class="gico">💧</span><span>Bebederos</span><b id="vWater">100%</b><div class="bar"><i id="gWater"></i></div></div>
+        <div class="gauge" id="gaugeFeed"><span class="gico">🌾</span><span>Comederos</span><b id="vFeed">0%</b><div class="bar"><i id="gFeed"></i></div></div>
+        <div class="gauge" id="gaugeVent"><span class="gico">🪟</span><span>Ventilación</span><b id="vVent">25%</b><div class="bar"><i id="gVent"></i></div></div>
+      </div>
+
       <div class="panel">
         <h2><span><span class="ico">🥣</span><span id="coopTitle">Cuidados · Galpón A</span></span></h2>
         <div class="acts">
@@ -706,16 +422,6 @@
         <h2><span><span class="ico">👥</span>Equipo</span><small id="wageInfo">0 €/día</small></h2>
         <div id="hireList" class="hireList"></div>
         <ul id="workerList" class="workers"></ul>
-      </div>
-
-      <div class="panel">
-        <h2><span><span class="ico">🌡️</span>Condiciones</span><small id="coopTag">Galpón A</small></h2>
-        <div class="gauge" id="gaugeTemp"><span class="gico">🌡️</span><span>Temperatura</span><b id="vTemp">22 °C</b><div class="bar"><i id="gTemp"></i></div></div>
-        <div class="gauge" id="gaugeAir"><span class="gico">💨</span><span>Amoníaco</span><b id="vAir">10/100</b><div class="bar"><i id="gAir"></i></div></div>
-        <div class="gauge" id="gaugeBed"><span class="gico">🛏️</span><span>Cama</span><b id="vBed">100%</b><div class="bar"><i id="gBed"></i></div></div>
-        <div class="gauge" id="gaugeWater"><span class="gico">💧</span><span>Bebederos</span><b id="vWater">100%</b><div class="bar"><i id="gWater"></i></div></div>
-        <div class="gauge" id="gaugeFeed"><span class="gico">🌾</span><span>Comederos</span><b id="vFeed">0%</b><div class="bar"><i id="gFeed"></i></div></div>
-        <div class="gauge" id="gaugeVent"><span class="gico">🪟</span><span>Ventilación</span><b id="vVent">25%</b><div class="bar"><i id="gVent"></i></div></div>
       </div>
 
       <div class="panel">
@@ -757,7 +463,7 @@ const eur = v => v.toFixed(2).replace('.', ',') + ' €';
 const REAL_MINS_PER_SEC = 1 / 60;
 const UNITS_PER_KG = 40;
 const PRICE = { B: 1.5, A: 3.0, AA: 4.5, EX: 6.5, Yumbo: 10.0 };
-const DAMAGED_PRICE = 0.20;   // precio de huevo mal clasificado
+const GRADE_ORDER = ['B', 'A', 'AA', 'EX', 'Yumbo'];
 const LETTERS = 'ABCDEF';
 
 const SPEEDS = [1, 10, 60, 600, 3600];
@@ -767,61 +473,64 @@ const DAY_MINUTES = 1440;
 const EGG_DIRTY_AGE = 700;
 const EGG_CRACK_AGE = 1400;
 
+/* ============ ENFERMEDADES ============ */
+const DISEASES = {
+  frio: [
+    { name: 'Resfriado', icon: '🤧' },
+    { name: 'Pulmonía', icon: '🫁' },
+    { name: 'Bronquitis', icon: '😷' }
+  ],
+  sed: [
+    { name: 'Deshidratación', icon: '💧' },
+    { name: 'Cólico', icon: '🤢' },
+    { name: 'Gastroenteritis', icon: '🤮' }
+  ],
+  hambre: [
+    { name: 'Anemia', icon: '🩸' },
+    { name: 'Debilidad', icon: '💀' },
+    { name: 'Caquexia', icon: '🦴' }
+  ],
+  amoniaco: [
+    { name: 'Conjuntivitis', icon: '👁️' },
+    { name: 'Traqueítis', icon: '🫁' },
+    { name: 'Neumonía', icon: '😷' }
+  ],
+  sucio: [
+    { name: 'Coccidiosis', icon: '🪱' },
+    { name: 'Parásitos', icon: '🐛' },
+    { name: 'Tiña', icon: '🍄' }
+  ],
+  general: [
+    { name: 'Fiebre', icon: '🌡️' },
+    { name: 'Infección', icon: '🦠' },
+    { name: 'Malestar', icon: '🤒' }
+  ]
+};
+
+function pickDisease(trigger) {
+  const pool = DISEASES[trigger] || DISEASES.general;
+  const d = pick(pool);
+  return { name: d.name, icon: d.icon, trigger };
+}
+
 /* ============ CLIMA ============ */
 const WEATHERS = {
-  soleado: {
-    id: 'soleado', name: 'Soleado', icon: '☀️',
-    tempMod: +3, waterAdd: 0, ammoniaWash: 0, isRain: false,
-    skyMod: 'bright', moodBonus: +0.005
-  },
-  nublado: {
-    id: 'nublado', name: 'Nublado', icon: '☁️',
-    tempMod: -1, waterAdd: 0, ammoniaWash: 0, isRain: false,
-    skyMod: 'dim', moodBonus: 0
-  },
-  lluvioso: {
-    id: 'lluvioso', name: 'Lluvioso', icon: '🌧️',
-    tempMod: -6, waterAdd: 0.045, ammoniaWash: 0.04, isRain: true,
-    skyMod: 'dark', moodBonus: -0.02
-  }
+  soleado: { id: 'soleado', name: 'Soleado', icon: '☀️', tempMod: +3, waterAdd: 0, ammoniaWash: 0, isRain: false, skyMod: 'bright', moodBonus: +0.005 },
+  nublado: { id: 'nublado', name: 'Nublado', icon: '☁️', tempMod: -1, waterAdd: 0, ammoniaWash: 0, isRain: false, skyMod: 'dim', moodBonus: 0 },
+  lluvioso: { id: 'lluvioso', name: 'Lluvioso', icon: '🌧️', tempMod: -6, waterAdd: 0.045, ammoniaWash: 0.04, isRain: true, skyMod: 'dark', moodBonus: -0.02 }
 };
 
 const LEVELS = [
-  { name: 'Nivel 1 · El primer gallinero', days: 5, money: 120, feed: 35,
-    hens: 4, coops: 1, maxCoops: 1, maxWorkers: 0,
-    goals: [
-      { k: 'money', v: 200, txt: 'Terminar con 200 €' },
-      { k: 'hens',  v: 4,   txt: 'Mantener 4 gallinas vivas' }
-    ] },
-  { name: 'Nivel 2 · Ampliar la granja', days: 6, money: 150, feed: 40,
-    hens: 5, coops: 1, maxCoops: 2, maxWorkers: 0,
-    goals: [
-      { k: 'coops', v: 2,   txt: 'Construir un 2º galpón' },
-      { k: 'sold',  v: 70,  txt: 'Vender 70 huevos' },
-      { k: 'money', v: 320, txt: 'Terminar con 320 €' }
-    ] },
-  { name: 'Nivel 3 · Manos extra', days: 6, money: 180, feed: 40,
-    hens: 6, coops: 2, maxCoops: 3, maxWorkers: 3,
-    goals: [
-      { k: 'workers', v: 2,   txt: 'Contratar 2 trabajadores' },
-      { k: 'sold',    v: 110, txt: 'Vender 110 huevos' },
-      { k: 'money',   v: 420, txt: 'Terminar con 420 €' }
-    ] },
-  { name: 'Nivel 4 · Granja en marcha', days: 7, money: 220, feed: 50,
-    hens: 8, coops: 2, maxCoops: 4, maxWorkers: 5,
-    goals: [
-      { k: 'coops', v: 4,   txt: 'Tener 4 galpones' },
-      { k: 'hens',  v: 16,  txt: 'Tener 16 gallinas vivas' },
-      { k: 'sold',  v: 200, txt: 'Vender 200 huevos' },
-      { k: 'money', v: 700, txt: 'Terminar con 700 €' }
-    ] },
-  { name: 'Nivel 5 · Granja modelo', days: 8, money: 300, feed: 60,
-    hens: 10, coops: 3, maxCoops: 6, maxWorkers: 8,
-    goals: [
-      { k: 'hens',  v: 24,   txt: 'Tener 24 gallinas vivas' },
-      { k: 'sold',  v: 320,  txt: 'Vender 320 huevos' },
-      { k: 'money', v: 1200, txt: 'Terminar con 1.200 €' }
-    ] }
+  { name: 'Nivel 1 · El primer gallinero', days: 5, money: 120, feed: 35, hens: 4, coops: 1, maxCoops: 1, maxWorkers: 0,
+    goals: [{ k: 'money', v: 200, txt: 'Terminar con 200 €' }, { k: 'hens', v: 4, txt: 'Mantener 4 gallinas vivas' }] },
+  { name: 'Nivel 2 · Ampliar la granja', days: 6, money: 150, feed: 40, hens: 5, coops: 1, maxCoops: 2, maxWorkers: 0,
+    goals: [{ k: 'coops', v: 2, txt: 'Construir un 2º galpón' }, { k: 'sold', v: 70, txt: 'Vender 70 huevos' }, { k: 'money', v: 320, txt: 'Terminar con 320 €' }] },
+  { name: 'Nivel 3 · Manos extra', days: 6, money: 180, feed: 40, hens: 6, coops: 2, maxCoops: 3, maxWorkers: 3,
+    goals: [{ k: 'workers', v: 2, txt: 'Contratar 2 trabajadores' }, { k: 'sold', v: 110, txt: 'Vender 110 huevos' }, { k: 'money', v: 420, txt: 'Terminar con 420 €' }] },
+  { name: 'Nivel 4 · Granja en marcha', days: 7, money: 220, feed: 50, hens: 8, coops: 2, maxCoops: 4, maxWorkers: 5,
+    goals: [{ k: 'coops', v: 4, txt: 'Tener 4 galpones' }, { k: 'hens', v: 16, txt: 'Tener 16 gallinas vivas' }, { k: 'sold', v: 200, txt: 'Vender 200 huevos' }, { k: 'money', v: 700, txt: 'Terminar con 700 €' }] },
+  { name: 'Nivel 5 · Granja modelo', days: 8, money: 300, feed: 60, hens: 10, coops: 3, maxCoops: 6, maxWorkers: 8,
+    goals: [{ k: 'hens', v: 24, txt: 'Tener 24 gallinas vivas' }, { k: 'sold', v: 320, txt: 'Vender 320 huevos' }, { k: 'money', v: 1200, txt: 'Terminar con 1.200 €' }] }
 ];
 
 const WORKERS = {
@@ -841,6 +550,7 @@ const WORKER_NAMES = ['Ana', 'Bruno', 'Carmen', 'Diego', 'Elena', 'Fidel', 'Glor
 let S, hid = 0, eggId = 0, coopSeq = 0, SCALE = 1, uiLast = 0, uiSig = '';
 let selectedEggId = null;
 let rainDrops = [], lightning = 0, lightningTimer = 0, puddles = [];
+const layerTimers = {};
 
 const coopById = id => S.coops.find(c => c.id === id) || S.coops[0];
 const curCoop  = () => coopById(S.selCoop);
@@ -853,6 +563,36 @@ const coopPrice = () => 150 + 120 * (S.coops.length - 1);
 const ampPrice  = c => 100 + 60 * c.amp;
 const totalFeedInCoop = c => c.feeders.reduce((a, f) => a + f.food, 0);
 const maxFeedInCoop = c => c.feeders.reduce((a, f) => a + f.max, 0);
+
+/* ============ HELPERS DE CORTINA ============ */
+function showLayer(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (layerTimers[id + '_hide']) { clearTimeout(layerTimers[id + '_hide']); delete layerTimers[id + '_hide']; }
+  if (layerTimers[id + '_show']) { clearTimeout(layerTimers[id + '_show']); delete layerTimers[id + '_show']; }
+  el.classList.remove('hidden', 'curtain-out', 'curtain-in');
+  void el.offsetWidth;
+  el.classList.add('curtain-in');
+  layerTimers[id + '_show'] = setTimeout(() => {
+    el.classList.remove('curtain-in');
+    delete layerTimers[id + '_show'];
+  }, 420);
+}
+function hideLayer(id, callback) {
+  const el = document.getElementById(id);
+  if (!el) { callback && callback(); return; }
+  if (layerTimers[id + '_show']) { clearTimeout(layerTimers[id + '_show']); delete layerTimers[id + '_show']; }
+  el.classList.remove('curtain-in');
+  if (el.classList.contains('hidden')) { callback && callback(); return; }
+  if (el.classList.contains('curtain-out')) return;
+  el.classList.add('curtain-out');
+  layerTimers[id + '_hide'] = setTimeout(() => {
+    el.classList.remove('curtain-out');
+    el.classList.add('hidden');
+    delete layerTimers[id + '_hide'];
+    callback && callback();
+  }, 400);
+}
 
 function floorOf(c) {
   return { x: c.rect.x + 10, y: c.rect.y + 44, w: c.rect.w - 20, h: c.rect.h - 54 };
@@ -898,16 +638,13 @@ function layoutCoops() {
       nst.cx = nst.x + nst.w / 2;
       nst.cy = c.rect.y + 52;
     });
-
     const f = floorOf(c);
     const oldFeedTotal = c.feeders.length ? totalFeedInCoop(c) : 0;
-    /* 3 comederos repartidos (arriba) */
     c.feeders = [
       { x: f.x + f.w * 0.22, y: f.y + f.h * 0.32, food: oldFeedTotal / 3, max: 35 },
       { x: f.x + f.w * 0.50, y: f.y + f.h * 0.26, food: oldFeedTotal / 3, max: 35 },
       { x: f.x + f.w * 0.78, y: f.y + f.h * 0.32, food: oldFeedTotal / 3, max: 35 }
     ];
-    /* 3 bebederos repartidos (abajo) */
     c.drinkers = [
       { x: f.x + f.w * 0.22, y: f.y + f.h * 0.72 },
       { x: f.x + f.w * 0.50, y: f.y + f.h * 0.82 },
@@ -938,7 +675,7 @@ function newHen(coopId) {
     x: rnd(f.x + 30, f.x + f.w - 30), y: rnd(f.y + 30, f.y + f.h - 24),
     tx: 0, ty: 0, mode: 'walk', face: 1, bob: rnd(0, 6.28), wait: rnd(10, 60),
     hunger: rnd(14, 34), thirst: rnd(18, 38), health: 100, mood: 90,
-    sick: false, sickMin: 0, layT: rnd(150, 800), layProg: 0, nest: -1,
+    sick: false, disease: null, sickMin: 0, layT: rnd(150, 800), layProg: 0, nest: -1,
     floorWait: 0, alive: true, deadMin: 0, age: 0, eatPile: null, wet: 0
   };
   h.tx = h.x; h.ty = h.y;
@@ -950,10 +687,8 @@ function newWorker(role, coopId) {
   const c = coopById(coopId);
   const f = floorOf(c);
   return {
-    id: ++hid, role, name: pick(WORKER_NAMES), cd: 20,
-    coop: c.id,
-    x: rnd(f.x + 30, f.x + f.w - 30),
-    y: rnd(f.y + 30, f.y + f.h - 30),
+    id: ++hid, role, name: pick(WORKER_NAMES), cd: 20, coop: c.id,
+    x: rnd(f.x + 30, f.x + f.w - 30), y: rnd(f.y + 30, f.y + f.h - 30),
     tx: 0, ty: 0, face: 1, bob: rnd(0, 6.28), wait: rnd(20, 60)
   };
 }
@@ -962,23 +697,11 @@ function newWorker(role, coopId) {
 function initRain() {
   rainDrops = [];
   for (let i = 0; i < 180; i++) {
-    rainDrops.push({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      len: 8 + Math.random() * 14,
-      speed: 550 + Math.random() * 350,
-      opacity: 0.15 + Math.random() * 0.35
-    });
+    rainDrops.push({ x: Math.random() * W, y: Math.random() * H, len: 8 + Math.random() * 14, speed: 550 + Math.random() * 350, opacity: 0.15 + Math.random() * 0.35 });
   }
   puddles = [];
   for (let i = 0; i < 8; i++) {
-    puddles.push({
-      x: rnd(0, W),
-      y: rnd(TOPBAR + 50, H - 40),
-      w: rnd(40, 100),
-      h: rnd(8, 16),
-      opacity: 0
-    });
+    puddles.push({ x: rnd(0, W), y: rnd(TOPBAR + 50, H - 40), w: rnd(40, 100), h: rnd(8, 16), opacity: 0 });
   }
   lightning = 0;
   lightningTimer = rnd(5, 15);
@@ -992,50 +715,32 @@ function updateRain(dt) {
     if (d.y > H) { d.y = -20; d.x = Math.random() * W * 1.2; }
     if (d.x < -30) { d.x = W + Math.random() * 60; }
   }
-  /* Relámpagos */
   lightningTimer -= dt;
-  if (lightningTimer <= 0) {
-    lightning = 1;
-    lightningTimer = rnd(8, 20);
-  }
+  if (lightningTimer <= 0) { lightning = 1; lightningTimer = rnd(8, 20); }
   if (lightning > 0) lightning -= dt * 2;
-  /* Charcos */
-  for (const p of puddles) {
-    if (p.opacity < 0.35) p.opacity += dt * 0.15;
-  }
+  for (const p of puddles) { if (p.opacity < 0.35) p.opacity += dt * 0.15; }
 }
 
 function drawRain() {
   if (!S.weather.isRain) return;
-  /* Charcos en el suelo */
   for (const p of puddles) {
     ctx.fillStyle = `rgba(100, 140, 180, ${p.opacity})`;
-    ctx.beginPath();
-    ctx.ellipse(p.x, p.y, p.w / 2, p.h / 2, 0, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.beginPath(); ctx.ellipse(p.x, p.y, p.w / 2, p.h / 2, 0, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = `rgba(180, 210, 240, ${p.opacity * 0.5})`;
-    ctx.beginPath();
-    ctx.ellipse(p.x - p.w * 0.15, p.y - p.h * 0.15, p.w * 0.25, p.h * 0.15, 0, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.beginPath(); ctx.ellipse(p.x - p.w * 0.15, p.y - p.h * 0.15, p.w * 0.25, p.h * 0.15, 0, 0, Math.PI * 2); ctx.fill();
   }
-  /* Gotas */
-  ctx.strokeStyle = 'rgba(180, 200, 230, 0.55)';
   ctx.lineWidth = 1.2;
   for (const d of rainDrops) {
     ctx.strokeStyle = `rgba(180, 200, 230, ${d.opacity})`;
-    ctx.beginPath();
-    ctx.moveTo(d.x, d.y);
-    ctx.lineTo(d.x - d.len * 0.25, d.y + d.len);
-    ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x - d.len * 0.25, d.y + d.len); ctx.stroke();
   }
-  /* Relámpago */
   if (lightning > 0) {
     ctx.fillStyle = `rgba(240, 250, 255, ${lightning * 0.5})`;
     ctx.fillRect(0, 0, W, H);
   }
 }
 
-/* ============ Iniciar ============ */
+/* ============ INICIO ============ */
 function startLevel(li) {
   const L = LEVELS[li];
   hid = 0; eggId = 0; coopSeq = 0; uiSig = ''; selectedEggId = null;
@@ -1077,12 +782,12 @@ function goalVal(k) {
 
 function showLevelIntro() {
   const L = LEVELS[S.level];
-  const goals = L.goals.map(g =>
-    `<span>🎯 ${g.txt}</span><b>${g.k === 'money' ? g.v + ' €' : g.v}</b>`).join('');
+  const goals = L.goals.map(g => `<span>🎯 ${g.txt}</span><b>${g.k === 'money' ? g.v + ' €' : g.v}</b>`).join('');
   showModal('🐔 ' + L.name, `
     <p class="hint">Tienes <b>${L.days} días</b> para cumplir los objetivos. Los huevos que <b>recoges quedan a salvo</b>
-      en el almacén. Solo los de nidos y suelo envejecen. Clasifica en 5 grados: <b>B · A · AA · EX · Yumbo</b>.
-      ⚠ Un huevo <b>mal clasificado se paga como dañado (0,20 €)</b>.</p>
+      en el almacén (no envejecen ni se dañan). Solo los de nidos y suelo envejecen. Clasifica en 5 grados: <b>B · A · AA · EX · Yumbo</b>.
+      ⚠ Un huevo <b>mal clasificado</b> se paga a <b>1 €</b> (menos si está muy lejos de su caja ideal).
+      ⚠ Las gallinas <b>enferman</b> con frío, sed, hambre o amoníaco alto: cada una desarrolla una <b>enfermedad aleatoria</b>.</p>
     <div class="kv">${goals}</div>
     <p class="hint"><b>Ratón:</b> clic en una gallina o un galpón para seleccionar.
       <b>1-6</b> cambia de galpón · <b>B</b> construye · <b>K</b> amplía · <b>G</b> compra gallinas ·
@@ -1098,8 +803,7 @@ function finishLevel() {
     return { txt: g.txt, ok: have >= g.v, have, need: g.v, isMoney: g.k === 'money' };
   });
   const all = res.every(r => r.ok);
-  const rows = res.map(r =>
-    `<span>${r.ok ? '✅' : '❌'} ${r.txt}</span><b>${r.isMoney ? eur(r.have) : r.have}</b>`).join('');
+  const rows = res.map(r => `<span>${r.ok ? '✅' : '❌'} ${r.txt}</span><b>${r.isMoney ? eur(r.have) : r.have}</b>`).join('');
   const last = S.level >= LEVELS.length - 1;
 
   if (all && last) {
@@ -1159,12 +863,11 @@ function logMsg(text, kind = '', showToast = false) {
   S.log.unshift({ t: `D${S.day} ${hhmm(S.t)}`, text, kind });
   if (S.log.length > 50) S.log.pop();
   const el = document.getElementById('log');
-  el.innerHTML = S.log.slice(0, 10)
-    .map(l => `<li class="${l.kind}">${l.t} · ${l.text}</li>`).join('');
+  el.innerHTML = S.log.slice(0, 10).map(l => `<li class="${l.kind}">${l.t} · ${l.text}</li>`).join('');
   if (showToast) toast(text, kind);
 }
 
-/* ============ Acciones ============ */
+/* ============ ACCIONES ============ */
 function feedCoop(c) {
   if (S.over) return;
   const n = hensIn(c.id).length;
@@ -1179,7 +882,6 @@ function feedCoop(c) {
   logMsg(`${c.name}: ${kg} kg repartidos en ${c.feeders.length} comederos.`, 'good', true);
   updateUI(true);
 }
-
 function waterTrough(c) {
   if (S.over) return;
   if (c.water > 92) return logMsg(`${c.name}: los bebederos ya están llenos.`, '', true);
@@ -1187,14 +889,12 @@ function waterTrough(c) {
   logMsg(`${c.name}: ${c.drinkers.length} bebederos renovados.`, 'good', true);
   updateUI(true);
 }
-
 function toggleVent(c) {
   if (S.over) return;
   c.vent = c.vent > 0.5 ? 0.15 : 0.85;
   logMsg(`${c.name}: ventanas ${c.vent > 0.5 ? 'abiertas' : 'casi cerradas'}.`, '', true);
   updateUI(true);
 }
-
 function toggleLamp(c) {
   if (S.over) return;
   if (!c.lamp && S.money < 8) return logMsg('Sin dinero para el caleón (8 €/día).', 'warn', true);
@@ -1202,7 +902,6 @@ function toggleLamp(c) {
   logMsg(`${c.name}: caleón ${c.lamp ? 'encendido' : 'apagado'}.`, '', true);
   updateUI(true);
 }
-
 function cleanBedding(c) {
   if (S.over) return;
   if (c.bedding > 88) return logMsg(`${c.name}: la cama aún está limpia.`, '', true);
@@ -1211,7 +910,6 @@ function cleanBedding(c) {
   logMsg(`${c.name}: cama cambiada (−4 €).`, 'good', true);
   updateUI(true);
 }
-
 function amplifyCoop(c) {
   if (S.over) return;
   if (c.amp >= 2) return logMsg(`${c.name}: ya está ampliado al máximo.`, 'warn', true);
@@ -1222,7 +920,6 @@ function amplifyCoop(c) {
   logMsg(`${c.name}: ampliado a ${coopCap(c)} plazas (−${price} €).`, 'good', true);
   updateUI(true);
 }
-
 function buildCoop() {
   if (S.over) return;
   const L = LEVELS[S.level];
@@ -1235,24 +932,21 @@ function buildCoop() {
   logMsg(`¡Nuevo ${S.coops[S.coops.length - 1].name} construido! (−${price} €)`, 'good', true);
   updateUI(true);
 }
-
 function collectCoop(c) {
   let got = 0;
   c.nests.forEach(n => { got += n.eggs.length; S.pending.push(...n.eggs); n.eggs = []; n.owner = null; });
   got += c.floor.length; S.pending.push(...c.floor); c.floor = [];
   return got;
 }
-
 function collectEggs(silent) {
   if (S.over && !silent) return 0;
   let got = 0;
   for (const c of S.coops) got += collectCoop(c);
   if (!got) { if (!silent) logMsg('No había huevos que recoger.', '', true); return 0; }
-  if (!silent) logMsg(`Recogiste ${got} huevos. Ya están a salvo: clasifícalos con O.`, 'good', true);
+  if (!silent) logMsg(`Recogiste ${got} huevos. Están a salvo en almacén (no envejecen). Clasifícalos con O.`, 'good', true);
   updateUI(true);
   return got;
 }
-
 function treatHens() {
   if (S.over) return;
   const sick = living().filter(h => h.sick);
@@ -1260,11 +954,14 @@ function treatHens() {
   const cost = sick.length * 12;
   if (S.money < cost) return logMsg(`El veterinario cuesta ${cost} €.`, 'warn', true);
   S.money -= cost;
-  sick.forEach(h => { h.sick = false; h.sickMin = 0; h.health = clamp(h.health + 18, 0, 100); });
+  sick.forEach(h => {
+    if (h.disease) logMsg(`${h.name} curada de ${h.disease.name} ${h.disease.icon}.`, 'good');
+    h.sick = false; h.sickMin = 0; h.disease = null;
+    h.health = clamp(h.health + 18, 0, 100);
+  });
   logMsg(`Trataste ${sick.length} gallina(s) (−${cost} €).`, 'good', true);
   updateUI(true);
 }
-
 function removeDead() {
   if (S.over) return;
   const dead = S.hens.filter(h => !h.alive);
@@ -1274,7 +971,6 @@ function removeDead() {
   logMsg(`Retiraste ${dead.length} gallina(s).`, 'good', true);
   updateUI(true);
 }
-
 function buyFeed() {
   if (S.over) return;
   if (S.money < 18) return logMsg('No tienes 18 € para un saco de pienso.', 'warn', true);
@@ -1282,7 +978,6 @@ function buyFeed() {
   logMsg('Saco de 35 kg de pienso comprado (−18 €).', '', true);
   updateUI(true);
 }
-
 function openHenModal() {
   if (S.over) return;
   const free = totalCap() - living().length;
@@ -1293,22 +988,19 @@ function openHenModal() {
     else logMsg('No tienes dinero suficiente (35 € por gallina).', 'warn', true);
     return;
   }
-  document.getElementById('henHint').textContent =
-    `Cada gallina cuesta 35 €. Plazas libres: ${free}. Puedes comprar hasta ${max}.`;
+  document.getElementById('henHint').textContent = `Cada gallina cuesta 35 €. Plazas libres: ${free}. Puedes comprar hasta ${max}.`;
   const q = document.getElementById('henQty');
   q.value = 1; q.max = max;
   document.getElementById('henTotal').textContent = '35 €';
   document.getElementById('henInfo').textContent = '';
-  document.getElementById('henModal').classList.remove('hidden');
+  showLayer('henModal');
 }
-
 function updateHenTotal() {
   const q = document.getElementById('henQty');
   let v = Math.max(1, Math.min(+q.value || 1, +q.max));
   q.value = v;
   document.getElementById('henTotal').textContent = (v * 35) + ' €';
 }
-
 function confirmHenBuy() {
   const q = document.getElementById('henQty');
   let qty = Math.max(1, Math.min(+q.value || 1, +q.max));
@@ -1323,18 +1015,16 @@ function confirmHenBuy() {
   }
   if (bought > 0) {
     logMsg(`Compraste ${bought} gallina(s) por ${bought * 35} €.`, 'good', true);
-    document.getElementById('henModal').classList.add('hidden');
+    hideLayer('henModal');
     updateUI(true);
   } else {
     document.getElementById('henInfo').textContent = 'No se pudo comprar.';
   }
 }
-
 function hireWorker(role) {
   if (S.over) return;
   const L = LEVELS[S.level];
-  if (S.workers.length >= L.maxWorkers)
-    return logMsg(`En este nivel puedes tener ${L.maxWorkers} trabajador(es).`, 'warn', true);
+  if (S.workers.length >= L.maxWorkers) return logMsg(`En este nivel puedes tener ${L.maxWorkers} trabajador(es).`, 'warn', true);
   const def = WORKERS[role];
   if (S.money < def.cost) return logMsg(`${def.name} cuesta ${def.cost} €.`, 'warn', true);
   S.money -= def.cost;
@@ -1343,7 +1033,6 @@ function hireWorker(role) {
   logMsg(`Contratado ${def.name.toLowerCase()} por ${def.cost} € (${def.salary} €/día). Aparece en el ${targetCoop.name}.`, 'good', true);
   updateUI(true);
 }
-
 function tickWorkers(dm) {
   for (const w of S.workers) {
     const c = coopById(w.coop);
@@ -1359,8 +1048,7 @@ function tickWorkers(dm) {
         w.wait = rnd(30, 100);
       } else {
         const s = Math.min(d, 45 * dm);
-        w.x += dx / d * s;
-        w.y += dy / d * s;
+        w.x += dx / d * s; w.y += dy / d * s;
         if (Math.abs(dx) > 3) w.face = dx > 0 ? 1 : -1;
       }
     }
@@ -1371,7 +1059,6 @@ function tickWorkers(dm) {
     doWork(w);
   }
 }
-
 function doWork(w) {
   const role = w.role;
   if (role === 'peon') {
@@ -1396,8 +1083,10 @@ function doWork(w) {
   if (role === 'veterinario') {
     const sick = living().find(h => h.sick);
     if (sick) {
-      sick.sick = false; sick.sickMin = 0; sick.health = clamp(sick.health + 22, 0, 100);
-      logMsg(`${w.name} curó a ${sick.name}.`, 'good', true);
+      const dname = sick.disease ? sick.disease.name : 'enfermedad';
+      sick.sick = false; sick.sickMin = 0; sick.disease = null;
+      sick.health = clamp(sick.health + 22, 0, 100);
+      logMsg(`${w.name} curó a ${sick.name} (${dname}).`, 'good', true);
       updateUI(true);
     }
     return;
@@ -1434,16 +1123,13 @@ function sim(dm) {
     if (S.event === 'frio') target -= 7;
     target += (100 - c.bedding) * 0.03;
     c.temp += (target - c.temp) * clamp(0.05 * dm, 0, 1);
-
     c.bedding = clamp(c.bedding - 0.0055 * Math.max(1, n) * dm, 0, 100);
     let am = 0.006 * Math.max(1, n) * dm * (1 + (100 - c.bedding) / 35) - c.vent * 0.05 * dm;
     const dead = S.hens.filter(h => !h.alive && h.coop === c.id).length;
     am += dead * 0.05 * dm;
     c.ammonia = clamp(c.ammonia + am, 0, 100);
-    /* Clima: lluvia llena bebederos y limpia amoníaco */
     if (weather.waterAdd > 0) c.water = clamp(c.water + weather.waterAdd * dm, 0, 100);
     if (weather.ammoniaWash > 0) c.ammonia = clamp(c.ammonia - weather.ammoniaWash * dm, 0, 100);
-    /* Consumo normal de agua */
     c.water = clamp(c.water - 0.006 * n * dm, 0, 100);
   }
 
@@ -1463,15 +1149,10 @@ function sim(dm) {
     if (c.ammonia > 45) dmg += (c.ammonia - 45) * 0.018;
     if (h.sick) { dmg += 0.055; h.sickMin += dm; }
 
-    /* Lluvia: si no está bajo un nido, se moja */
     if (weather.isRain) {
       const nearNest = c.nests.some(n => Math.hypot(h.x - n.cx, h.y - n.cy) < 70);
-      if (!nearNest) {
-        h.wet = clamp((h.wet || 0) + 0.8 * dm, 0, 100);
-        dmg += 0.008;
-      } else {
-        h.wet = clamp((h.wet || 0) - 0.5 * dm, 0, 100);
-      }
+      if (!nearNest) { h.wet = clamp((h.wet || 0) + 0.8 * dm, 0, 100); dmg += 0.008; }
+      else { h.wet = clamp((h.wet || 0) - 0.5 * dm, 0, 100); }
       if (h.wet > 60) dmg += 0.005;
     } else {
       h.wet = clamp((h.wet || 0) - 0.8 * dm, 0, 100);
@@ -1481,25 +1162,65 @@ function sim(dm) {
     h.mood += ((100 - dmg * 90) - h.mood) * clamp(0.02 * dm, 0, 1);
     if (weather.moodBonus) h.mood = clamp(h.mood + weather.moodBonus * dm, 0, 100);
 
-    if (!h.sick && dmg > 0.05) {
-      if (Math.random() < (0.000012 + dmg * 0.00042) * dm) {
+    /* ============ ENFERMEDAD POR CONDICIONES ============ */
+    if (!h.sick) {
+      let newDisease = null;
+
+      /* Frío: temp < 10 */
+      if (c.temp < 10) {
+        const sev = (10 - c.temp) / 10;
+        if (Math.random() < 0.00025 * sev * dm) newDisease = pickDisease('frio');
+      }
+      /* Sed: thirst > 72 */
+      if (!newDisease && h.thirst > 72) {
+        const sev = (h.thirst - 72) / 28;
+        if (Math.random() < 0.00035 * sev * dm) newDisease = pickDisease('sed');
+      }
+      /* Hambre: hunger > 75 */
+      if (!newDisease && h.hunger > 75) {
+        const sev = (h.hunger - 75) / 25;
+        if (Math.random() < 0.00025 * sev * dm) newDisease = pickDisease('hambre');
+      }
+      /* Amoníaco: > 50 */
+      if (!newDisease && c.ammonia > 50) {
+        const sev = (c.ammonia - 50) / 50;
+        if (Math.random() < 0.0003 * sev * dm) newDisease = pickDisease('amoniaco');
+      }
+      /* Cama sucia: < 30 */
+      if (!newDisease && c.bedding < 30) {
+        const sev = (30 - c.bedding) / 30;
+        if (Math.random() < 0.00015 * sev * dm) newDisease = pickDisease('sucio');
+      }
+      /* Fallback por daño general */
+      if (!newDisease && dmg > 0.05 && Math.random() < (0.000012 + dmg * 0.00042) * dm) {
+        newDisease = pickDisease('general');
+      }
+
+      if (newDisease) {
         h.sick = true;
-        logMsg(`${h.name} se ha enfermado. Trátala con T.`, 'bad');
+        h.disease = newDisease;
+        h.sickMin = 0;
+        logMsg(`${h.name} enfermó de ${newDisease.name} ${newDisease.icon}. Trátala con T.`, 'bad', true);
       }
     }
+
     if (!h.sick) {
       for (const o of S.hens) {
         if (o === h || !o.alive || !o.sick || o.coop !== h.coop) continue;
         if (Math.hypot(o.x - h.x, o.y - h.y) < 70 &&
             Math.random() < 0.00009 * dm * (1 + (100 - c.bedding) / 60)) {
-          h.sick = true; logMsg(`${h.name} se contagió de ${o.name}.`, 'bad'); break;
+          h.sick = true;
+          h.disease = pickDisease(o.disease ? o.disease.trigger : 'general');
+          logMsg(`${h.name} se contagió de ${o.name} (${h.disease.name} ${h.disease.icon}).`, 'bad', true);
+          break;
         }
       }
     }
+
     if (h.sick && h.sickMin > 900 && h.health < 25) h.health = Math.min(h.health, 6);
 
     if (h.health <= 0) {
-      h.alive = false; h.sick = false;
+      h.alive = false; h.sick = false; h.disease = null;
       if (h.nest >= 0 && c.nests[h.nest]) { c.nests[h.nest].owner = null; h.nest = -1; }
       S.cart++;
       logMsg(`${h.name} ha muerto. Retírala con R.`, 'bad', true);
@@ -1509,12 +1230,13 @@ function sim(dm) {
     behavior(h, c, dm);
   }
 
+  /* Solo envejecen los huevos en nidos y suelo. Los recogidos (S.pending) están a salvo. */
   for (const c of S.coops) {
     const ageEggs = list => list.forEach(e => {
       e.age += dm;
       if (!e.dirty && (e.age > EGG_DIRTY_AGE || c.bedding < 34)) e.dirty = true;
       if (!e.crack && e.age > EGG_CRACK_AGE) e.crack = true;
-      if (weather.isRain) e.dirty = true; /* la lluvia ensucia huevos al aire */
+      if (weather.isRain) e.dirty = true;
     });
     c.nests.forEach(n => ageEggs(n.eggs));
     ageEggs(c.floor);
@@ -1528,16 +1250,12 @@ function sim(dm) {
 
   if (!S.event && Math.random() < 0.00004 * dm) {
     S.event = pick(['calor', 'frio']);
-    logMsg(S.event === 'calor'
-      ? '⚠ Ola de calor: abre la ventilación.'
-      : '⌛ Golpe de frío nocturno: considera los caleones.', 'warn', true);
+    logMsg(S.event === 'calor' ? '⚠ Ola de calor: abre la ventilación.' : '⌛ Golpe de frío nocturno: considera los caleones.', 'warn', true);
   }
 
   if (S.t >= DAY_MINUTES) endDay();
   updateUI();
 }
-
-const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
 
 function move(h, tx, ty, sp, dm) {
   const dx = tx - h.x, dy = ty - h.y, d = Math.hypot(dx, dy);
@@ -1546,7 +1264,6 @@ function move(h, tx, ty, sp, dm) {
   h.x += dx / d * s; h.y += dy / d * s;
   if (Math.abs(dx) > 3) h.face = dx > 0 ? 1 : -1;
 }
-
 function nearestFeeder(h, c) {
   let best = null, bestD = Infinity;
   for (const fd of c.feeders) {
@@ -1556,7 +1273,6 @@ function nearestFeeder(h, c) {
   }
   return { feeder: best, dist: bestD };
 }
-
 function nearestDrinker(h, c) {
   let best = null, bestD = Infinity;
   for (const d of c.drinkers) {
@@ -1565,18 +1281,12 @@ function nearestDrinker(h, c) {
   }
   return { drinker: best, dist: bestD };
 }
-
 function behavior(h, c, dm) {
   const speed = 52 * (h.health > 50 ? 1 : 0.7) * (c.temp > 30 ? 0.78 : 1) * (h.wet > 40 ? 0.8 : 1);
-  const weather = S.weather;
-
   if (h.mode === 'eat') {
     const near = nearestFeeder(h, c);
     if (!near.feeder) { h.mode = 'walk'; choose(h, c); return; }
-    if (near.dist > 16) {
-      move(h, near.feeder.x, near.feeder.y - 4, speed, dm);
-      return;
-    }
+    if (near.dist > 16) { move(h, near.feeder.x, near.feeder.y - 4, speed, dm); return; }
     h.hunger = clamp(h.hunger - 1.7 * dm, 0, 100);
     near.feeder.food = Math.max(0, near.feeder.food - 0.62 * dm);
     if (h.hunger < 6) choose(h, c);
@@ -1608,27 +1318,19 @@ function behavior(h, c, dm) {
   if (h.wait <= 0) choose(h, c);
   if (h.mode === 'walk') move(h, h.tx, h.ty, speed, dm);
 }
-
 function choose(h, c) {
-  /* Lluvia: buscar refugio bajo nidos */
   if (S.weather.isRain && Math.random() < 0.5) {
     const nst = c.nests[irnd(0, c.nests.length - 1)];
-    h.tx = nst.cx + rnd(-15, 15);
-    h.ty = nst.cy + rnd(3, 15);
+    h.tx = nst.cx + rnd(-15, 15); h.ty = nst.cy + rnd(3, 15);
     h.mode = 'walk'; h.wait = rnd(60, 140);
     return;
   }
   if (h.thirst > 58 && c.water > 3) { h.mode = 'drink'; h.wait = 0; return; }
   const hasFood = c.feeders.some(fd => fd.food > 2);
-  if (h.hunger > 45 && hasFood) {
-    h.mode = 'eat'; h.wait = 0; return;
-  }
+  if (h.hunger > 45 && hasFood) { h.mode = 'eat'; h.wait = 0; return; }
   if (h.layT <= 0) {
     const i = c.nests.findIndex(n => n.owner === null);
-    if (i >= 0) {
-      c.nests[i].owner = h.id; h.nest = i; h.mode = 'lay';
-      h.layProg = 0; h.wait = 0; return;
-    }
+    if (i >= 0) { c.nests[i].owner = h.id; h.nest = i; h.mode = 'lay'; h.layProg = 0; h.wait = 0; return; }
     h.floorWait += 30;
     if (h.floorWait > 100) {
       h.floorWait = 0; h.layT = rnd(900, 1300);
@@ -1646,7 +1348,6 @@ function choose(h, c) {
   h.ty = rnd(f.y + 20, f.y + f.h - 18);
   h.mode = 'walk'; h.wait = rnd(30, 110);
 }
-
 function tickLay(h, dm) {
   const c = coopOf(h);
   const fert = clamp((h.health / 100) *
@@ -1656,10 +1357,8 @@ function tickLay(h, dm) {
     (S.weather.isRain ? 0.85 : 1), 0.05, 1.2);
   if (h.mode !== 'lay') h.layT -= dm * fert;
 }
-
 function makeEgg(h, c) {
-  const health = h.health;
-  const age = h.age;
+  const health = h.health, age = h.age;
   const roll = Math.random();
   let size;
   if (health > 80 && age > 1.2) {
@@ -1679,11 +1378,9 @@ function makeEgg(h, c) {
     else if (roll < 0.55) size = 'M';
     else size = 'S';
   }
-  return { id: ++eggId, size, dirty: c.bedding < 45 && Math.random() < 0.55,
-           crack: false, age: 0, by: h.name };
+  return { id: ++eggId, size, dirty: c.bedding < 45 && Math.random() < 0.55, crack: false, age: 0, by: h.name };
 }
 
-/* ============ CAMBIO DE CLIMA ============ */
 function changeWeather() {
   const roll = Math.random();
   let next;
@@ -1691,32 +1388,21 @@ function changeWeather() {
   else if (roll < 0.78) next = 'nublado';
   else next = 'lluvioso';
   S.weather = WEATHERS[next];
-  if (next === 'lluvioso') {
-    initRain();
-    logMsg('🌧️ Empieza a llover: los bebederos se llenan solos y baja la temperatura.', 'warn', true);
-  } else if (next === 'nublado') {
-    rainDrops = []; puddles = []; lightning = 0;
-    logMsg('☁️ Cielo nublado: día templado.', '', true);
-  } else {
-    rainDrops = []; puddles = []; lightning = 0;
-    logMsg('☀️ Día soleado: sube la temperatura y las gallinas están contentas.', 'good', true);
-  }
+  if (next === 'lluvioso') { initRain(); logMsg('🌧️ Empieza a llover: los bebederos se llenan solos y baja la temperatura.', 'warn', true); }
+  else if (next === 'nublado') { rainDrops = []; puddles = []; lightning = 0; logMsg('☁️ Cielo nublado: día templado.', '', true); }
+  else { rainDrops = []; puddles = []; lightning = 0; logMsg('☀️ Día soleado: sube la temperatura y las gallinas están contentas.', 'good', true); }
   updateUI(true);
 }
 
 function endDay() {
   S.t = 0; S.event = null;
   const L = LEVELS[S.level];
-
   const lampCost = S.coops.filter(c => c.lamp).length * 8;
   const salaries = S.workers.reduce((a, w) => a + WORKERS[w.role].salary, 0);
   S.money -= lampCost + salaries;
   if (lampCost) logMsg(`Caleones encendidos: −${lampCost} €.`);
   if (salaries) logMsg(`Salarios del equipo: −${salaries} €.`);
-
-  if (S.pending.length) {
-    logMsg(`${S.pending.length} huevo(s) sin clasificar permanecen a salvo en almacén.`, 'warn');
-  }
+  if (S.pending.length) logMsg(`${S.pending.length} huevo(s) sin clasificar permanecen a salvo en almacén.`, 'warn');
 
   const rows = `
     <div class="kv">
@@ -1739,7 +1425,6 @@ function endDay() {
   if (S.day > L.days) { finishLevel(); return; }
 
   changeWeather();
-
   showModal(`🌙 Cierre del día ${S.day - 1}`, rows, `Empezar día ${S.day}`, () => {
     S.paused = false; updateUI(true);
   });
@@ -1747,8 +1432,10 @@ function endDay() {
   if (Math.random() < 0.30) {
     const ok = living().filter(h => !h.sick);
     if (ok.length > 1 && Math.random() < 0.4) {
-      const h = pick(ok); h.sick = true;
-      logMsg(`Brote: ${h.name} amaneció enferma.`, 'bad');
+      const h = pick(ok);
+      h.sick = true;
+      h.disease = pickDisease('general');
+      logMsg(`Brote: ${h.name} amaneció enferma (${h.disease.name} ${h.disease.icon}).`, 'bad');
     }
   }
   updateUI(true);
@@ -1760,13 +1447,11 @@ function tips() {
   if (S.money < 0) return 'Consejo: estás en números rojos. Vende huevos clasificados y recorta gastos.';
   if (S.pending.length) return 'Consejo: los huevos en almacén están a salvo, pero no se venden solos. Clasifícalos (O).';
   if (S.weather.isRain) return 'Consejo: con lluvia baja la temperatura y las gallinas se mojan. Enciende caleones (Q) y asegúrate de que tienen nidos secos.';
-  const avgH = alive.reduce((a, h) => a + h.hunger, 0) / alive.length;
-  const avgT = alive.reduce((a, h) => a + h.thirst, 0) / alive.length;
   if (S.coops.some(c => c.ammonia > 50)) return 'Consejo: el amoníaco alto enferma. Ventila (V) y cambia la cama (L).';
-  if (avgT > 60) return 'Consejo: con sed bajan la puesta. Renueva el agua (A).';
-  if (avgH > 60) return 'Consejo: riega pienso (E).';
   if (S.coops.some(c => c.temp > 29)) return 'Consejo: con más de 30 °C hay golpe de calor. Abre la ventilación.';
   if (S.coops.some(c => c.temp < 10)) return 'Consejo: hace frío; enciende caleones (Q).';
+  if (alive.some(h => h.thirst > 72)) return 'Consejo: con sed bajan la puesta. Renueva el agua (A).';
+  if (alive.some(h => h.hunger > 75)) return 'Consejo: riega pienso (E).';
   return 'Consejo: recoge los huevos a diario para que no envejezcan en el nido.';
 }
 
@@ -1776,9 +1461,8 @@ function showModal(title, html, btnText, onBtn) {
   const b = document.getElementById('mBtn');
   b.textContent = btnText;
   document.getElementById('mInfo').textContent = '';
-  const m = document.getElementById('modal');
-  m.classList.remove('hidden');
-  b.onclick = () => { m.classList.add('hidden'); onBtn && onBtn(); };
+  showLayer('modal');
+  b.onclick = () => { hideLayer('modal', onBtn); };
 }
 
 /* ============ DIBUJO ============ */
@@ -1799,37 +1483,26 @@ function drawBackground() {
   const dayP = clamp((t - 5) / 14, 0, 1);
   const weather = S.weather;
 
-  /* Cielo según clima + hora */
   const g = ctx.createLinearGradient(0, 0, 0, H * 0.55);
   if (weather.isRain) {
     if (nf < 0.5) {
       g.addColorStop(0, `rgb(${Math.round(50 + dayP * 20)},${Math.round(60 + dayP * 20)},${Math.round(75 + dayP * 15)})`);
       g.addColorStop(1, `rgb(${Math.round(90 + dayP * 25)},${Math.round(100 + dayP * 25)},${Math.round(110 + dayP * 20)})`);
-    } else {
-      g.addColorStop(0, '#0a1018');
-      g.addColorStop(1, '#141c28');
-    }
+    } else { g.addColorStop(0, '#0a1018'); g.addColorStop(1, '#141c28'); }
   } else if (weather.id === 'nublado') {
     if (nf < 0.5) {
       g.addColorStop(0, `rgb(${Math.round(90 + dayP * 40)},${Math.round(105 + dayP * 40)},${Math.round(125 + dayP * 35)})`);
       g.addColorStop(1, `rgb(${Math.round(180 + dayP * 30)},${Math.round(190 + dayP * 25)},${Math.round(200 + dayP * 20)})`);
-    } else {
-      g.addColorStop(0, '#0c1420');
-      g.addColorStop(1, '#1a2232');
-    }
+    } else { g.addColorStop(0, '#0c1420'); g.addColorStop(1, '#1a2232'); }
   } else {
     if (nf < 0.5) {
       g.addColorStop(0, `rgb(${Math.round(70 + dayP * 60)},${Math.round(130 + dayP * 60)},${Math.round(180 + dayP * 40)})`);
       g.addColorStop(1, `rgb(${Math.round(200 + dayP * 40)},${Math.round(220 + dayP * 20)},${Math.round(230 + dayP * 10)})`);
-    } else {
-      g.addColorStop(0, '#0a1220');
-      g.addColorStop(1, '#1a2438');
-    }
+    } else { g.addColorStop(0, '#0a1220'); g.addColorStop(1, '#1a2438'); }
   }
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, W, H * 0.55);
 
-  /* Estrellas de noche */
   if (nf > 0.3 && !weather.isRain) {
     ctx.fillStyle = `rgba(255,255,255,${nf * 0.8})`;
     for (let i = 0; i < 40; i++) {
@@ -1839,7 +1512,6 @@ function drawBackground() {
     }
   }
 
-  /* Sol o luna */
   if (!weather.isRain) {
     if (nf < 0.5) {
       const sx = 40 + dayP * (W - 80);
@@ -1867,7 +1539,6 @@ function drawBackground() {
     }
   }
 
-  /* Nubes (más densas si está nublado o lluvioso) */
   const cloudCount = weather.isRain ? 7 : weather.id === 'nublado' ? 5 : 4;
   const cloudOpacity = weather.isRain ? 0.7 : weather.id === 'nublado' ? 0.5 : (nf > 0.4 ? 0.15 : 0.5);
   const cloudColor = weather.isRain ? 'rgba(60, 70, 85, ' : weather.id === 'nublado' ? 'rgba(140, 150, 170, ' : 'rgba(255,255,255, ';
@@ -1876,15 +1547,11 @@ function drawBackground() {
     const y = 20 + (i % 3) * 22;
     const scale = weather.isRain ? 1.5 : 1;
     ctx.fillStyle = cloudColor + cloudOpacity + ')';
-    ctx.beginPath();
-    ctx.ellipse(x, y, 38 * scale, 11 * scale, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath();
-    ctx.ellipse(x + 18 * scale, y - 6, 26 * scale, 9 * scale, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath();
-    ctx.ellipse(x - 22 * scale, y - 4, 22 * scale, 8 * scale, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x, y, 38 * scale, 11 * scale, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x + 18 * scale, y - 6, 26 * scale, 9 * scale, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x - 22 * scale, y - 4, 22 * scale, 8 * scale, 0, 0, Math.PI * 2); ctx.fill();
   }
 
-  /* Colinas */
   const hillG = ctx.createLinearGradient(0, H * 0.42, 0, H * 0.55);
   if (weather.isRain) { hillG.addColorStop(0, '#2a3828'); hillG.addColorStop(1, '#354232'); }
   else if (weather.id === 'nublado') { hillG.addColorStop(0, '#3a4a3a'); hillG.addColorStop(1, '#485845'); }
@@ -1899,40 +1566,29 @@ function drawBackground() {
   ctx.lineTo(W, H * 0.55); ctx.lineTo(0, H * 0.55); ctx.closePath(); ctx.fill();
 }
 
-/* Comedero pequeño (tolva) */
 function drawSmallFeeder(fd) {
   const fill = fd.food / fd.max;
   const cx = fd.x, baseY = fd.y;
-
   ctx.fillStyle = 'rgba(0,0,0,.35)';
   ctx.beginPath(); ctx.ellipse(cx, baseY + 3, 14, 4, 0, 0, Math.PI * 2); ctx.fill();
-
   const trayGrad = ctx.createLinearGradient(cx - 14, baseY - 6, cx + 14, baseY + 4);
-  trayGrad.addColorStop(0, '#9a9a9a');
-  trayGrad.addColorStop(1, '#3a3a3a');
+  trayGrad.addColorStop(0, '#9a9a9a'); trayGrad.addColorStop(1, '#3a3a3a');
   ctx.fillStyle = trayGrad;
   ctx.beginPath(); ctx.ellipse(cx, baseY - 2, 14, 5, 0, 0, Math.PI * 2); ctx.fill();
   ctx.fillStyle = '#1a1a1a';
   ctx.beginPath(); ctx.ellipse(cx, baseY - 3, 11, 3.5, 0, 0, Math.PI * 2); ctx.fill();
-
   if (fill > 0) {
     ctx.fillStyle = '#d4a850';
     ctx.beginPath(); ctx.ellipse(cx, baseY - 3, 10 * fill, 2.5 * fill, 0, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#e8c870';
     ctx.beginPath(); ctx.ellipse(cx - 2, baseY - 4, 6 * fill, 1.5 * fill, 0, 0, Math.PI * 2); ctx.fill();
   }
-
   const tubeW = 14, tubeH = 22;
   const tubeX = cx - tubeW / 2, tubeY = baseY - 8 - tubeH;
   const tubeGrad = ctx.createLinearGradient(tubeX, 0, tubeX + tubeW, 0);
-  tubeGrad.addColorStop(0, '#9a9a9a');
-  tubeGrad.addColorStop(0.5, '#d0d0d0');
-  tubeGrad.addColorStop(1, '#7a7a7a');
-  ctx.fillStyle = tubeGrad;
-  rr(tubeX, tubeY, tubeW, tubeH, 2); ctx.fill();
-  ctx.strokeStyle = '#4a4a4a'; ctx.lineWidth = 0.8;
-  rr(tubeX, tubeY, tubeW, tubeH, 2); ctx.stroke();
-
+  tubeGrad.addColorStop(0, '#9a9a9a'); tubeGrad.addColorStop(0.5, '#d0d0d0'); tubeGrad.addColorStop(1, '#7a7a7a');
+  ctx.fillStyle = tubeGrad; rr(tubeX, tubeY, tubeW, tubeH, 2); ctx.fill();
+  ctx.strokeStyle = '#4a4a4a'; ctx.lineWidth = 0.8; rr(tubeX, tubeY, tubeW, tubeH, 2); ctx.stroke();
   const feedH = tubeH * fill;
   if (feedH > 2) {
     ctx.fillStyle = '#d4a850';
@@ -1944,42 +1600,28 @@ function drawSmallFeeder(fd) {
       ctx.fillRect(gx, gy, 1.5, 1);
     }
   }
-
-  ctx.fillStyle = '#6a6a6a';
-  rr(tubeX - 1, tubeY - 2, tubeW + 2, 4, 1.5); ctx.fill();
-  ctx.strokeStyle = '#3a3a3a'; ctx.lineWidth = 0.8;
-  rr(tubeX - 1, tubeY - 2, tubeW + 2, 4, 1.5); ctx.stroke();
-
-  ctx.fillStyle = 'rgba(232,184,92,.6)';
-  ctx.fillRect(tubeX + 1.5, tubeY + 5, tubeW - 3, 1.5);
-
+  ctx.fillStyle = '#6a6a6a'; rr(tubeX - 1, tubeY - 2, tubeW + 2, 4, 1.5); ctx.fill();
+  ctx.strokeStyle = '#3a3a3a'; ctx.lineWidth = 0.8; rr(tubeX - 1, tubeY - 2, tubeW + 2, 4, 1.5); ctx.stroke();
+  ctx.fillStyle = 'rgba(232,184,92,.6)'; ctx.fillRect(tubeX + 1.5, tubeY + 5, tubeW - 3, 1.5);
   if (fill < 0.15) {
-    ctx.fillStyle = 'rgba(224,120,60,.9)';
-    ctx.beginPath(); ctx.arc(cx + 12, tubeY - 6, 4, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = 'rgba(224,120,60,.9)'; ctx.beginPath(); ctx.arc(cx + 12, tubeY - 6, 4, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#fff'; ctx.font = 'bold 7px system-ui'; ctx.textAlign = 'center';
     ctx.fillText('!', cx + 12, tubeY - 3.5); ctx.textAlign = 'left';
   }
 }
 
-/* Bebedero pequeño (campana) */
 function drawSmallDrinker(d, water) {
   const fill = water / 100;
   const cx = d.x, baseY = d.y;
-  const domeW = 22;
-  const domeH = 20;
-
+  const domeW = 22, domeH = 20;
   ctx.fillStyle = 'rgba(0,0,0,.35)';
   ctx.beginPath(); ctx.ellipse(cx, baseY + 4, 14, 4, 0, 0, Math.PI * 2); ctx.fill();
-
-  /* Bandeja */
   const trayGrad = ctx.createLinearGradient(cx - 14, baseY - 4, cx + 14, baseY + 4);
-  trayGrad.addColorStop(0, '#9a9a9a');
-  trayGrad.addColorStop(1, '#3a3a3a');
+  trayGrad.addColorStop(0, '#9a9a9a'); trayGrad.addColorStop(1, '#3a3a3a');
   ctx.fillStyle = trayGrad;
   ctx.beginPath(); ctx.ellipse(cx, baseY - 1, 14, 6, 0, 0, Math.PI * 2); ctx.fill();
   ctx.fillStyle = '#141414';
   ctx.beginPath(); ctx.ellipse(cx, baseY - 2, 11, 4, 0, 0, Math.PI * 2); ctx.fill();
-
   if (fill > 0) {
     const wg = ctx.createLinearGradient(0, baseY - 4, 0, baseY);
     wg.addColorStop(0, water < 20 ? '#9a7a4a' : '#6ac8f0');
@@ -1989,13 +1631,9 @@ function drawSmallDrinker(d, water) {
     ctx.fillStyle = 'rgba(255,255,255,.5)';
     ctx.beginPath(); ctx.ellipse(cx - 3, baseY - 3, 3, 1, 0, 0, Math.PI * 2); ctx.fill();
   }
-
-  /* Domo */
   const domeY = baseY - 5 - domeH;
   const domeGrad = ctx.createLinearGradient(cx - domeW/2, domeY, cx + domeW/2, domeY + domeH);
-  domeGrad.addColorStop(0, '#8ac8e8');
-  domeGrad.addColorStop(0.5, '#5a90b8');
-  domeGrad.addColorStop(1, '#2a6088');
+  domeGrad.addColorStop(0, '#8ac8e8'); domeGrad.addColorStop(0.5, '#5a90b8'); domeGrad.addColorStop(1, '#2a6088');
   ctx.fillStyle = domeGrad;
   ctx.beginPath();
   ctx.moveTo(cx - domeW / 2, domeY + domeH);
@@ -2003,27 +1641,17 @@ function drawSmallDrinker(d, water) {
   ctx.quadraticCurveTo(cx - domeW / 2, domeY, cx, domeY - 3);
   ctx.quadraticCurveTo(cx + domeW / 2, domeY, cx + domeW / 2, domeY + 6);
   ctx.lineTo(cx + domeW / 2, domeY + domeH);
-  ctx.closePath();
-  ctx.fill();
-  ctx.strokeStyle = 'rgba(0,0,0,.4)'; ctx.lineWidth = 0.8;
-  ctx.stroke();
-
-  /* Brillo */
+  ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = 'rgba(0,0,0,.4)'; ctx.lineWidth = 0.8; ctx.stroke();
   ctx.fillStyle = 'rgba(255,255,255,.4)';
   ctx.beginPath(); ctx.ellipse(cx - domeW / 2 + 4, domeY + 8, 2, 5, 0, 0, Math.PI * 2); ctx.fill();
-
-  /* Nivel interno */
   const innerFill = domeH * fill * 0.6;
   if (innerFill > 1) {
     ctx.fillStyle = 'rgba(90,168,208,.55)';
     ctx.fillRect(cx - domeW / 2 + 2, domeY + domeH - innerFill - 1, domeW - 4, innerFill);
   }
-
-  /* Tapón */
   ctx.fillStyle = '#c84040';
   ctx.beginPath(); ctx.ellipse(cx, domeY - 3, domeW / 2 - 3, 2, 0, 0, Math.PI * 2); ctx.fill();
-
-  /* Aviso */
   if (fill < 0.2) {
     ctx.fillStyle = 'rgba(224,120,60,.9)';
     ctx.beginPath(); ctx.arc(cx + domeW/2 + 4, domeY + 4, 4, 0, Math.PI * 2); ctx.fill();
@@ -2032,7 +1660,6 @@ function drawSmallDrinker(d, water) {
   }
 }
 
-/* Gallina */
 function drawHen(h) {
   const s = SCALE;
   if (!h.alive) {
@@ -2074,40 +1701,27 @@ function drawHen(h) {
   const wingColor = h.plume[1];
   const combColor = h.sick ? '#8a4a4a' : '#d8423a';
 
-  /* Cola */
   ctx.fillStyle = wingColor;
   const tailFeathers = [
-    { a: -0.55, len: 26, w: 5 },
-    { a: -0.40, len: 28, w: 5 },
-    { a: -0.25, len: 26, w: 4.5 },
-    { a: -0.10, len: 22, w: 4 },
-    { a:  0.05, len: 18, w: 3.5 }
+    { a: -0.55, len: 26, w: 5 }, { a: -0.40, len: 28, w: 5 }, { a: -0.25, len: 26, w: 4.5 },
+    { a: -0.10, len: 22, w: 4 }, { a: 0.05, len: 18, w: 3.5 }
   ];
   for (const f of tailFeathers) {
-    ctx.save();
-    ctx.translate(-12, -4);
-    ctx.rotate(f.a);
+    ctx.save(); ctx.translate(-12, -4); ctx.rotate(f.a);
     ctx.beginPath();
     ctx.moveTo(0, -f.w/2);
     ctx.quadraticCurveTo(-f.len * 0.6, -f.w/2 - 3, -f.len, 0);
     ctx.quadraticCurveTo(-f.len * 0.6, f.w/2 + 3, 0, f.w/2);
-    ctx.closePath();
-    ctx.fill();
-    ctx.restore();
+    ctx.closePath(); ctx.fill(); ctx.restore();
   }
   ctx.fillStyle = h.sick ? '#7a6a5a' : '#2a2828';
-  ctx.save();
-  ctx.translate(-14, -6);
-  ctx.rotate(-0.3);
+  ctx.save(); ctx.translate(-14, -6); ctx.rotate(-0.3);
   ctx.beginPath();
   ctx.moveTo(0, -3);
   ctx.quadraticCurveTo(-20, -6, -30, 0);
   ctx.quadraticCurveTo(-20, 4, 0, 3);
-  ctx.closePath();
-  ctx.fill();
-  ctx.restore();
+  ctx.closePath(); ctx.fill(); ctx.restore();
 
-  /* Cuerpo */
   ctx.fillStyle = bodyColor;
   ctx.beginPath();
   ctx.moveTo(-12, bob - 8);
@@ -2116,27 +1730,22 @@ function drawHen(h) {
   ctx.quadraticCurveTo(18, bob + 4, 15, bob - 5);
   ctx.quadraticCurveTo(10, bob - 12, 0, bob - 11);
   ctx.quadraticCurveTo(-8, bob - 12, -12, bob - 8);
-  ctx.closePath();
-  ctx.fill();
+  ctx.closePath(); ctx.fill();
 
   const bodyGrad = ctx.createRadialGradient(8, bob - 2, 2, 0, bob, 20);
   bodyGrad.addColorStop(0, 'rgba(255,255,255,.5)');
   bodyGrad.addColorStop(0.6, 'rgba(255,255,255,.15)');
   bodyGrad.addColorStop(1, 'rgba(0,0,0,.15)');
   ctx.fillStyle = bodyGrad;
-  ctx.beginPath();
-  ctx.ellipse(0, bob, 15, 12, 0, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.beginPath(); ctx.ellipse(0, bob, 15, 12, 0, 0, Math.PI * 2); ctx.fill();
 
-  /* Ala */
   ctx.fillStyle = wingColor;
   ctx.beginPath();
   ctx.moveTo(-8, bob - 4);
   ctx.quadraticCurveTo(-2, bob - 6, 6, bob - 2);
   ctx.quadraticCurveTo(8, bob + 4, 2, bob + 8);
   ctx.quadraticCurveTo(-6, bob + 8, -10, bob + 2);
-  ctx.closePath();
-  ctx.fill();
+  ctx.closePath(); ctx.fill();
   ctx.strokeStyle = 'rgba(0,0,0,.35)'; ctx.lineWidth = 0.9;
   for (let i = 0; i < 3; i++) {
     ctx.beginPath();
@@ -2145,83 +1754,47 @@ function drawHen(h) {
     ctx.stroke();
   }
   ctx.fillStyle = 'rgba(255,255,255,.15)';
-  ctx.beginPath();
-  ctx.ellipse(-3, bob - 2, 5, 3, 0.3, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.beginPath(); ctx.ellipse(-3, bob - 2, 5, 3, 0.3, 0, Math.PI * 2); ctx.fill();
 
-  /* Cuello */
   ctx.fillStyle = bodyColor;
   ctx.beginPath();
   ctx.moveTo(7, bob - 8);
   ctx.quadraticCurveTo(14, bob - 14, 12, bob - 20);
   ctx.lineTo(17, bob - 20);
   ctx.quadraticCurveTo(18, bob - 10, 12, bob - 2);
-  ctx.closePath();
-  ctx.fill();
+  ctx.closePath(); ctx.fill();
 
-  /* Cabeza */
   const headX = 14, headY = bob - 22;
   ctx.fillStyle = bodyColor;
-  ctx.beginPath();
-  ctx.arc(headX, headY, 7, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.beginPath(); ctx.arc(headX, headY, 7, 0, Math.PI * 2); ctx.fill();
   ctx.fillStyle = 'rgba(255,255,255,.35)';
-  ctx.beginPath();
-  ctx.arc(headX - 2, headY - 2, 3, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.beginPath(); ctx.arc(headX - 2, headY - 2, 3, 0, Math.PI * 2); ctx.fill();
 
-  /* Cresta */
   ctx.fillStyle = combColor;
-  const crestBumps = [
-    { dx: -4, dy: -6, r: 2.2 },
-    { dx: -1, dy: -7.5, r: 2.6 },
-    { dx: 2, dy: -7.5, r: 2.6 },
-    { dx: 5, dy: -6, r: 2.2 }
-  ];
-  for (const b of crestBumps) {
-    ctx.beginPath();
-    ctx.arc(headX + b.dx, headY + b.dy, b.r, 0, Math.PI * 2);
-    ctx.fill();
-  }
+  const crestBumps = [{ dx: -4, dy: -6, r: 2.2 }, { dx: -1, dy: -7.5, r: 2.6 }, { dx: 2, dy: -7.5, r: 2.6 }, { dx: 5, dy: -6, r: 2.2 }];
+  for (const b of crestBumps) { ctx.beginPath(); ctx.arc(headX + b.dx, headY + b.dy, b.r, 0, Math.PI * 2); ctx.fill(); }
 
-  /* Barbilla */
   ctx.fillStyle = combColor;
-  ctx.beginPath();
-  ctx.ellipse(headX + 5, headY + 5, 2.5, 3.5, 0.2, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.ellipse(headX + 3, headY + 7, 2, 2.5, 0.2, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.beginPath(); ctx.ellipse(headX + 5, headY + 5, 2.5, 3.5, 0.2, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(headX + 3, headY + 7, 2, 2.5, 0.2, 0, Math.PI * 2); ctx.fill();
 
-  /* Pico */
   ctx.fillStyle = '#f0b040';
   ctx.beginPath();
   ctx.moveTo(headX + 6, headY - 1);
   ctx.lineTo(headX + 12, headY + 0.5);
   ctx.lineTo(headX + 6, headY + 2.5);
-  ctx.closePath();
-  ctx.fill();
+  ctx.closePath(); ctx.fill();
   ctx.strokeStyle = 'rgba(0,0,0,.3)'; ctx.lineWidth = 0.7;
-  ctx.beginPath();
-  ctx.moveTo(headX + 6, headY + 0.7);
-  ctx.lineTo(headX + 11, headY + 0.7);
-  ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(headX + 6, headY + 0.7); ctx.lineTo(headX + 11, headY + 0.7); ctx.stroke();
 
-  /* Ojo */
   ctx.fillStyle = '#1a1a1a';
-  ctx.beginPath();
-  ctx.arc(headX + 2.5, headY - 1, 1.8, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.beginPath(); ctx.arc(headX + 2.5, headY - 1, 1.8, 0, Math.PI * 2); ctx.fill();
   ctx.fillStyle = '#fff';
-  ctx.beginPath();
-  ctx.arc(headX + 3, headY - 1.5, 0.6, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.beginPath(); ctx.arc(headX + 3, headY - 1.5, 0.6, 0, Math.PI * 2); ctx.fill();
 
-  /* Patas */
   const legY = bob + 10;
   ctx.strokeStyle = '#d49030'; ctx.lineWidth = 2.2; ctx.lineCap = 'round';
-  const lx = -3 + walkPhase * 2;
-  const rx = 4 - walkPhase * 2;
+  const lx = -3 + walkPhase * 2, rx = 4 - walkPhase * 2;
   ctx.fillStyle = bodyColor;
   ctx.beginPath(); ctx.ellipse(-3, legY - 2, 3, 4, 0.2, 0, Math.PI * 2); ctx.fill();
   ctx.beginPath(); ctx.ellipse(4, legY - 2, 3, 4, -0.2, 0, Math.PI * 2); ctx.fill();
@@ -2229,15 +1802,11 @@ function drawHen(h) {
   ctx.beginPath(); ctx.moveTo(4, legY); ctx.lineTo(rx, legY + 9); ctx.stroke();
   ctx.lineWidth = 1.5;
   for (const [fx, fw] of [[lx, -1], [lx, 0], [lx, 1], [rx, -1], [rx, 0], [rx, 1]]) {
-    ctx.beginPath();
-    ctx.moveTo(fx, legY + 9);
-    ctx.lineTo(fx + fw * 2.2, legY + 11.5);
-    ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(fx, legY + 9); ctx.lineTo(fx + fw * 2.2, legY + 11.5); ctx.stroke();
   }
 
   ctx.restore();
 
-  /* Efecto mojado (gotitas) */
   if (isWet) {
     ctx.fillStyle = 'rgba(120,170,220,.5)';
     for (let i = 0; i < 4; i++) {
@@ -2254,7 +1823,7 @@ function drawHen(h) {
 
   let sign = '';
   const c = coopOf(h);
-  if (h.sick) sign = '🤒';
+  if (h.sick) sign = h.disease ? h.disease.icon : '🤒';
   else if (h.wet > 50) sign = '💧';
   else if (h.thirst > 62) sign = '💧';
   else if (h.hunger > 62) sign = '🌾';
@@ -2264,13 +1833,15 @@ function drawHen(h) {
   else if (c.ammonia > 50) sign = '😷';
   if (sign) {
     ctx.font = '15px system-ui'; ctx.textAlign = 'center';
-    ctx.fillStyle = 'rgba(12,16,20,.8)';
+    ctx.fillStyle = h.sick ? 'rgba(80,10,10,.85)' : 'rgba(12,16,20,.8)';
     ctx.beginPath(); ctx.arc(h.x, h.y - 32 * s, 12, 0, Math.PI * 2); ctx.fill();
+    if (h.sick) { ctx.strokeStyle = '#d95f4a'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(h.x, h.y - 32 * s, 12, 0, Math.PI * 2); ctx.stroke(); }
     ctx.fillText(sign, h.x, h.y - 27 * s); ctx.textAlign = 'left';
   }
   if (S.sel === h.id) {
     ctx.fillStyle = '#f0e8d8'; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center';
-    ctx.fillText(h.name, h.x, h.y + 34 * s); ctx.textAlign = 'left';
+    const label = h.sick && h.disease ? `${h.name} · ${h.disease.name}` : h.name;
+    ctx.fillText(label, h.x, h.y + 34 * s); ctx.textAlign = 'left';
   }
 }
 
@@ -2279,52 +1850,34 @@ function drawWorker(w) {
   const col = WORKER_COLORS[w.role] || { body: '#5a7a4a', hat: '#8a6a3a' };
   const bob = Math.sin(w.bob) * 1.2;
   const walkPhase = Math.sin(w.bob * 2) * 1;
-
   ctx.fillStyle = 'rgba(0,0,0,.3)';
   ctx.beginPath(); ctx.ellipse(w.x, w.y + 20 * s, 11 * s, 3 * s, 0, 0, Math.PI * 2); ctx.fill();
-
-  ctx.save();
-  ctx.translate(w.x, w.y);
-  ctx.scale(w.face * s, s);
-
+  ctx.save(); ctx.translate(w.x, w.y); ctx.scale(w.face * s, s);
   ctx.fillStyle = '#2a3a4a';
   ctx.fillRect(-4 + walkPhase * 1, bob + 8, 3, 12);
   ctx.fillRect(2 - walkPhase * 1, bob + 8, 3, 12);
   ctx.fillStyle = '#1a1a1a';
   ctx.fillRect(-5 + walkPhase * 1, bob + 18, 5, 3);
   ctx.fillRect(1 - walkPhase * 1, bob + 18, 5, 3);
-
+  ctx.fillStyle = col.body; rr(-9, bob - 8, 18, 18, 4); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,.15)'; rr(-8, bob - 7, 6, 15, 3); ctx.fill();
   ctx.fillStyle = col.body;
-  rr(-9, bob - 8, 18, 18, 4); ctx.fill();
-  ctx.fillStyle = 'rgba(255,255,255,.15)';
-  rr(-8, bob - 7, 6, 15, 3); ctx.fill();
-
-  ctx.fillStyle = col.body;
-  ctx.fillRect(-11, bob - 10, 3, 12);
-  ctx.fillRect(8, bob - 10, 3, 12);
+  ctx.fillRect(-11, bob - 10, 3, 12); ctx.fillRect(8, bob - 10, 3, 12);
   ctx.fillStyle = '#e8c8a0';
-  ctx.fillRect(-11, bob + 2, 3, 3);
-  ctx.fillRect(8, bob + 2, 3, 3);
-
+  ctx.fillRect(-11, bob + 2, 3, 3); ctx.fillRect(8, bob + 2, 3, 3);
   ctx.fillStyle = '#e8c8a0';
   ctx.fillRect(-2, bob - 13, 4, 5);
   ctx.beginPath(); ctx.arc(0, bob - 18, 6.5, 0, Math.PI * 2); ctx.fill();
-
   ctx.fillStyle = '#5a3a20';
   ctx.beginPath(); ctx.arc(0, bob - 20, 6, Math.PI, 0); ctx.fill();
-
   ctx.fillStyle = col.hat;
   ctx.beginPath(); ctx.ellipse(0, bob - 22, 9, 2.5, 0, 0, Math.PI * 2); ctx.fill();
   rr(-5, bob - 29, 10, 6, 2); ctx.fill();
-  ctx.fillStyle = 'rgba(0,0,0,.3)';
-  ctx.fillRect(-5, bob - 25, 10, 1.5);
-
+  ctx.fillStyle = 'rgba(0,0,0,.3)'; ctx.fillRect(-5, bob - 25, 10, 1.5);
   ctx.fillStyle = '#1a1a1a';
   ctx.beginPath(); ctx.arc(-2, bob - 18, 1, 0, Math.PI * 2); ctx.fill();
   ctx.beginPath(); ctx.arc(2.5, bob - 18, 1, 0, Math.PI * 2); ctx.fill();
-
   ctx.restore();
-
   const iconY = w.y - 40 * s;
   ctx.fillStyle = 'rgba(12,16,20,.8)';
   ctx.beginPath(); ctx.arc(w.x, iconY, 11, 0, Math.PI * 2); ctx.fill();
@@ -2340,35 +1893,21 @@ function drawWorker(w) {
 function drawCoop(c) {
   const r = c.rect, f = floorOf(c);
   const isHover = S.hoverCoop === c.id;
-
   ctx.fillStyle = '#3a2a1a'; rr(r.x, r.y, r.w, r.h, 12); ctx.fill();
   ctx.fillStyle = '#2a1e12'; rr(r.x + 3, r.y + 3, r.w - 6, r.h - 6, 10); ctx.fill();
-
-  if (isHover) {
-    ctx.strokeStyle = 'rgba(240,192,96,.4)'; ctx.lineWidth = 3;
-    rr(r.x - 3, r.y - 3, r.w + 6, r.h + 6, 14); ctx.stroke();
-  }
-
+  if (isHover) { ctx.strokeStyle = 'rgba(240,192,96,.4)'; ctx.lineWidth = 3; rr(r.x - 3, r.y - 3, r.w + 6, r.h + 6, 14); ctx.stroke(); }
   ctx.strokeStyle = 'rgba(0,0,0,.25)'; ctx.lineWidth = 1;
-  for (let x = r.x + 8; x < r.x + r.w - 8; x += 14) {
-    ctx.beginPath(); ctx.moveTo(x, r.y + 6); ctx.lineTo(x, r.y + 40); ctx.stroke();
-  }
-
+  for (let x = r.x + 8; x < r.x + r.w - 8; x += 14) { ctx.beginPath(); ctx.moveTo(x, r.y + 6); ctx.lineTo(x, r.y + 40); ctx.stroke(); }
   const dirt = c.bedding / 100;
   ctx.fillStyle = `rgb(${Math.round(155 - dirt * 40)},${Math.round(125 - dirt * 46)},${Math.round(82 - dirt * 30)})`;
   rr(f.x, f.y, f.w, f.h, 8); ctx.fill();
-
   ctx.strokeStyle = 'rgba(120,85,40,.35)'; ctx.lineWidth = 1;
   const count = Math.floor((f.w * f.h) / 900);
   for (let i = 0; i < count; i++) {
     const x = f.x + ((i * 79) % f.w), y = f.y + ((i * 47) % f.h);
     const a = (i * 0.7) % Math.PI;
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + Math.cos(a) * 5, y + Math.sin(a) * 3);
-    ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + Math.cos(a) * 5, y + Math.sin(a) * 3); ctx.stroke();
   }
-
   if (dirt < 0.55) {
     ctx.fillStyle = `rgba(60,44,22,${0.55 - dirt * 0.65})`;
     for (let i = 0; i < 14; i++) {
@@ -2376,62 +1915,31 @@ function drawCoop(c) {
       ctx.beginPath(); ctx.ellipse(x, y, 10, 5, 0, 0, Math.PI * 2); ctx.fill();
     }
   }
-
-  if (c.temp > 30) {
-    ctx.fillStyle = `rgba(220,80,40,${Math.min(.2, (c.temp - 30) * .03)})`;
-    rr(f.x, f.y, f.w, f.h, 8); ctx.fill();
-  }
-  if (c.temp < 10) {
-    ctx.fillStyle = `rgba(90,150,220,${Math.min(.2, (10 - c.temp) * .03)})`;
-    rr(f.x, f.y, f.w, f.h, 8); ctx.fill();
-  }
-
-  /* Nidos */
+  if (c.temp > 30) { ctx.fillStyle = `rgba(220,80,40,${Math.min(.2, (c.temp - 30) * .03)})`; rr(f.x, f.y, f.w, f.h, 8); ctx.fill(); }
+  if (c.temp < 10) { ctx.fillStyle = `rgba(90,150,220,${Math.min(.2, (10 - c.temp) * .03)})`; rr(f.x, f.y, f.w, f.h, 8); ctx.fill(); }
   c.nests.forEach(nst => {
-    ctx.fillStyle = '#5a4228';
-    rr(nst.x, nst.y, nst.w, nst.h, 4); ctx.fill();
-    ctx.fillStyle = '#2a1e10';
-    rr(nst.x + 3, nst.y + 3, nst.w - 6, nst.h - 7, 3); ctx.fill();
+    ctx.fillStyle = '#5a4228'; rr(nst.x, nst.y, nst.w, nst.h, 4); ctx.fill();
+    ctx.fillStyle = '#2a1e10'; rr(nst.x + 3, nst.y + 3, nst.w - 6, nst.h - 7, 3); ctx.fill();
     ctx.fillStyle = '#c9a86a';
-    for (let k = 0; k * 9 < nst.w - 8; k++) {
-      ctx.fillRect(nst.x + 5 + k * 9, nst.y + nst.h - 10, 7, 3);
-    }
-    nst.eggs.slice(0, 5).forEach((e, i) => {
-      drawEgg(nst.x + nst.w / 2 - 22 + i * 11, nst.y + nst.h - 8, e, 0.7);
-    });
+    for (let k = 0; k * 9 < nst.w - 8; k++) ctx.fillRect(nst.x + 5 + k * 9, nst.y + nst.h - 10, 7, 3);
+    nst.eggs.slice(0, 5).forEach((e, i) => { drawEgg(nst.x + nst.w / 2 - 22 + i * 11, nst.y + nst.h - 8, e, 0.7); });
     ctx.fillStyle = nst.owner ? '#7ec493' : '#3a3030';
     ctx.beginPath(); ctx.arc(nst.x + nst.w - 7, nst.y + 7, 3.5, 0, Math.PI * 2); ctx.fill();
   });
-
-  /* Comederos */
   c.feeders.forEach(drawSmallFeeder);
-
-  /* Bebederos */
   c.drinkers.forEach(d => drawSmallDrinker(d, c.water));
-
-  /* Huevos en suelo */
   c.floor.forEach(e => drawEgg(e.x, e.y, e, 1));
-
-  /* Marco */
-  ctx.strokeStyle = '#5a3f22'; ctx.lineWidth = 2.5;
-  rr(r.x, r.y, r.w, r.h, 12); ctx.stroke();
-  ctx.strokeStyle = 'rgba(255,220,150,.08)'; ctx.lineWidth = 1;
-  rr(r.x + 2, r.y + 2, r.w - 4, r.h - 4, 10); ctx.stroke();
-
-  /* Etiqueta */
+  ctx.strokeStyle = '#5a3f22'; ctx.lineWidth = 2.5; rr(r.x, r.y, r.w, r.h, 12); ctx.stroke();
+  ctx.strokeStyle = 'rgba(255,220,150,.08)'; ctx.lineWidth = 1; rr(r.x + 2, r.y + 2, r.w - 4, r.h - 4, 10); ctx.stroke();
   ctx.fillStyle = 'rgba(10,6,2,.75)';
   rr(r.x + r.w - 148, r.y + r.h - 22, 140, 17, 5); ctx.fill();
   ctx.fillStyle = '#e8d0a0'; ctx.font = 'bold 10.5px system-ui'; ctx.textAlign = 'right';
   ctx.fillText(`${c.name} · ${hensIn(c.id).length}/${coopCap(c)}`, r.x + r.w - 12, r.y + r.h - 9);
   ctx.textAlign = 'left';
-
   if (c.id === S.selCoop) {
     const pulse = 0.6 + 0.4 * Math.sin(performance.now() * 0.005);
-    ctx.strokeStyle = `rgba(143,214,166,${pulse})`;
-    ctx.lineWidth = 2.5;
-    rr(r.x - 2, r.y - 2, r.w + 4, r.h + 4, 14); ctx.stroke();
+    ctx.strokeStyle = `rgba(143,214,166,${pulse})`; ctx.lineWidth = 2.5; rr(r.x - 2, r.y - 2, r.w + 4, r.h + 4, 14); ctx.stroke();
   }
-
   if (c.lamp) {
     const glow = ctx.createRadialGradient(r.x + r.w - 26, r.y + 26, 0, r.x + r.w - 26, r.y + 26, 70);
     glow.addColorStop(0, 'rgba(255,200,100,.4)');
@@ -2441,13 +1949,11 @@ function drawCoop(c) {
     ctx.fillStyle = '#ffcf7a';
     ctx.beginPath(); ctx.arc(r.x + r.w - 26, r.y + 26, 6, 0, Math.PI * 2); ctx.fill();
   }
-
   for (let i = 0; i < 3; i++) {
     const vx = r.x + 8 + i * 10, vy = r.y + r.h - 16;
     ctx.fillStyle = c.vent > 0.5 ? '#9fd7ef' : '#3a3a3a';
     ctx.fillRect(vx, vy, 6, 6);
-    ctx.strokeStyle = 'rgba(0,0,0,.4)'; ctx.lineWidth = 0.8;
-    ctx.strokeRect(vx, vy, 6, 6);
+    ctx.strokeStyle = 'rgba(0,0,0,.4)'; ctx.lineWidth = 0.8; ctx.strokeRect(vx, vy, 6, 6);
   }
 }
 
@@ -2467,10 +1973,7 @@ function drawEgg(x, y, e, sc) {
   ctx.strokeStyle = '#9c8a68'; ctx.lineWidth = 0.8; ctx.stroke();
   ctx.fillStyle = 'rgba(255,255,255,.55)';
   ctx.beginPath(); ctx.ellipse(-r * 0.25, -r * 0.35, r * 0.2, r * 0.3, -0.3, 0, Math.PI * 2); ctx.fill();
-  if (e.dirty) {
-    ctx.fillStyle = '#6d5a38';
-    for (let k = 0; k < 3; k++) ctx.fillRect(-r * 0.5 + k * 3, -2 + (k % 2) * 4, 1.6, 1.6);
-  }
+  if (e.dirty) { ctx.fillStyle = '#6d5a38'; for (let k = 0; k < 3; k++) ctx.fillRect(-r * 0.5 + k * 3, -2 + (k % 2) * 4, 1.6, 1.6); }
   if (e.crack) {
     ctx.strokeStyle = '#7a6242'; ctx.lineWidth = 1; ctx.beginPath();
     ctx.moveTo(-3 * sc, -r + 2); ctx.lineTo(1 * sc, 0); ctx.lineTo(-2 * sc, r - 3); ctx.stroke();
@@ -2482,30 +1985,18 @@ function drawTopBar() {
   const nf = nightFactor();
   const weather = S.weather;
   const g = ctx.createLinearGradient(0, 0, 0, TOPBAR);
-  if (weather.isRain) {
-    g.addColorStop(0, 'rgba(20,30,45,.95)');
-    g.addColorStop(1, 'rgba(35,45,60,.85)');
-  } else if (weather.id === 'nublado') {
-    g.addColorStop(0, 'rgba(45,55,70,.95)');
-    g.addColorStop(1, 'rgba(55,65,80,.85)');
-  } else if (nf < 0.5) {
-    g.addColorStop(0, 'rgba(40,60,80,.95)');
-    g.addColorStop(1, 'rgba(50,70,90,.85)');
-  } else {
-    g.addColorStop(0, 'rgba(10,16,28,.95)');
-    g.addColorStop(1, 'rgba(20,28,44,.85)');
-  }
+  if (weather.isRain) { g.addColorStop(0, 'rgba(20,30,45,.95)'); g.addColorStop(1, 'rgba(35,45,60,.85)'); }
+  else if (weather.id === 'nublado') { g.addColorStop(0, 'rgba(45,55,70,.95)'); g.addColorStop(1, 'rgba(55,65,80,.85)'); }
+  else if (nf < 0.5) { g.addColorStop(0, 'rgba(40,60,80,.95)'); g.addColorStop(1, 'rgba(50,70,90,.85)'); }
+  else { g.addColorStop(0, 'rgba(10,16,28,.95)'); g.addColorStop(1, 'rgba(20,28,44,.85)'); }
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, TOPBAR);
   ctx.fillStyle = 'rgba(240,192,96,.4)'; ctx.fillRect(0, TOPBAR - 1, W, 1);
-
   const L = LEVELS[S.level];
   ctx.fillStyle = 'rgba(240,192,96,.15)';
   rr(10, 9, 380, 28, 8); ctx.fill();
   ctx.fillStyle = '#ffd880';
   ctx.font = 'bold 13px system-ui'; ctx.textAlign = 'left';
   ctx.fillText(`Nivel ${S.level + 1} · Día ${S.day}/${L.days} · ${hhmm(S.t)}`, 20, 27);
-
-  /* Clima + estado */
   let tag = `${weather.icon} ${weather.name}`;
   if (S.paused) tag += ' · ⏸ PAUSA';
   if (S.event === 'calor') tag += ' · ⚠ calor';
@@ -2522,14 +2013,8 @@ function drawTopBar() {
 
 function drawNightOverlay() {
   const nf = nightFactor();
-  if (nf > 0.02) {
-    ctx.fillStyle = `rgba(15,22,45,${nf * 0.4})`;
-    ctx.fillRect(0, 0, W, H);
-  }
-  if (S.coops.some(c => c.temp > 30)) {
-    ctx.fillStyle = 'rgba(220,80,40,.04)';
-    ctx.fillRect(0, 0, W, H);
-  }
+  if (nf > 0.02) { ctx.fillStyle = `rgba(15,22,45,${nf * 0.4})`; ctx.fillRect(0, 0, W, H); }
+  if (S.coops.some(c => c.temp > 30)) { ctx.fillStyle = 'rgba(220,80,40,.04)'; ctx.fillRect(0, 0, W, H); }
 }
 
 function render() {
@@ -2544,7 +2029,7 @@ function render() {
   drawTopBar();
 }
 
-/* ============ Actualizar UI ============ */
+/* ============ UPDATE UI ============ */
 function updateUI(force) {
   if (!S) return;
   const now = performance.now();
@@ -2563,11 +2048,8 @@ function updateUI(force) {
   document.getElementById('cEggs').textContent = S.pending.length;
   document.getElementById('chipEggs').classList.toggle('has-eggs', S.pending.length > 0);
   document.getElementById('cWork').textContent = S.workers.length;
-
-  /* Clima */
   document.getElementById('cWeatherIco').textContent = S.weather.icon;
   document.getElementById('cWeather').textContent = S.weather.name;
-
   document.getElementById('dayFill').style.width = (S.t / DAY_MINUTES * 100) + '%';
   document.getElementById('dayLabel').textContent = `${hhmm(S.t)} / 24:00`;
 
@@ -2577,8 +2059,7 @@ function updateUI(force) {
   document.getElementById('coopCount').textContent = `${S.coops.length} / ${L.maxCoops}`;
   document.getElementById('coopCost').textContent = coopPrice() + ' €';
   document.getElementById('ampCost').textContent = ampPrice(c) + ' €';
-  document.getElementById('wageInfo').textContent =
-    S.workers.reduce((a, w) => a + WORKERS[w.role].salary, 0) + ' €/día';
+  document.getElementById('wageInfo').textContent = S.workers.reduce((a, w) => a + WORKERS[w.role].salary, 0) + ' €/día';
 
   const g = (bar, txt, v, label, col, gaugeId) => {
     const el = document.getElementById(bar);
@@ -2592,23 +2073,17 @@ function updateUI(force) {
     }
   };
   const tempPct = (c.temp / 45) * 100;
-  g('gTemp', 'vTemp', tempPct, c.temp.toFixed(1) + ' °C',
-    c.temp > 29 ? '#d9663f' : c.temp < 10 ? '#5aa9d6' : '#6dbb83', 'gaugeTemp');
-  g('gAir', 'vAir', c.ammonia, Math.round(c.ammonia) + '/100',
-    c.ammonia > 55 ? '#d9663f' : c.ammonia > 35 ? '#e2a03c' : '#6dbb83', 'gaugeAir');
-  g('gBed', 'vBed', c.bedding, Math.round(c.bedding) + '%',
-    c.bedding < 40 ? '#d9663f' : '#c9a86a', 'gaugeBed');
-  g('gWater', 'vWater', c.water, Math.round(c.water) + '%',
-    c.water < 25 ? '#d9663f' : '#4fa3d1', 'gaugeWater');
+  g('gTemp', 'vTemp', tempPct, c.temp.toFixed(1) + ' °C', c.temp > 29 ? '#d9663f' : c.temp < 10 ? '#5aa9d6' : '#6dbb83', 'gaugeTemp');
+  g('gAir', 'vAir', c.ammonia, Math.round(c.ammonia) + '/100', c.ammonia > 55 ? '#d9663f' : c.ammonia > 35 ? '#e2a03c' : '#6dbb83', 'gaugeAir');
+  g('gBed', 'vBed', c.bedding, Math.round(c.bedding) + '%', c.bedding < 40 ? '#d9663f' : '#c9a86a', 'gaugeBed');
+  g('gWater', 'vWater', c.water, Math.round(c.water) + '%', c.water < 25 ? '#d9663f' : '#4fa3d1', 'gaugeWater');
   const feedPct = (totalFeedInCoop(c) / maxFeedInCoop(c)) * 100;
-  g('gFeed', 'vFeed', feedPct, Math.round(feedPct) + '%',
-    feedPct < 15 ? '#d9663f' : feedPct < 40 ? '#e2a03c' : '#e8b85c', 'gaugeFeed');
-  g('gVent', 'vVent', c.vent * 100, Math.round(c.vent * 100) + '%',
-    c.vent > 0.5 ? '#5aa9d6' : '#8d7a55', 'gaugeVent');
+  g('gFeed', 'vFeed', feedPct, Math.round(feedPct) + '%', feedPct < 15 ? '#d9663f' : feedPct < 40 ? '#e2a03c' : '#e8b85c', 'gaugeFeed');
+  g('gVent', 'vVent', c.vent * 100, Math.round(c.vent * 100) + '%', c.vent > 0.5 ? '#5aa9d6' : '#8d7a55', 'gaugeVent');
 
   const av = living();
   document.getElementById('avgHealth').textContent = av.length
-    ? `salud media ${Math.round(av.reduce((a, h) => a + h.health, 0) / av.length)} · ${av.filter(h => h.layT < 60).length} poniendo`
+    ? `salud ${Math.round(av.reduce((a, h) => a + h.health, 0) / av.length)} · ${av.filter(h => h.sick).length} 🤒`
     : 'sin gallinas';
 
   const sig = `${S.coops.length}|${S.workers.length}|${S.hens.length}|${S.selCoop}|${S.workers.map(w => w.id).join(',')}|${S.coops.map(c => c.id).join(',')}|${S.weather.id}`;
@@ -2619,11 +2094,9 @@ function updateUI(force) {
         <b>${cc.name.replace('Galpón ', '')}</b>
         <small>${hensIn(cc.id).length}/${coopCap(cc)}</small>
       </button>`).join('');
-
     document.getElementById('hireList').innerHTML = Object.entries(WORKERS).map(([k, d]) => `
       <button class="btn sm" data-hire="${k}" title="${d.desc}">${d.icon} ${d.name}<br><span class="p">${d.cost} € · ${d.salary} €/d</span></button>
     `).join('');
-
     document.getElementById('workerList').innerHTML = S.workers.length
       ? S.workers.map(w => `<li><span>${WORKERS[w.role].icon} <b style="color:var(--text-primary)">${w.name}</b> · ${WORKERS[w.role].name} <em style="color:var(--text-muted);font-style:normal">(${coopById(w.coop).name.replace('Galpón ', '')})</em></span>
           <span>${WORKERS[w.role].salary} €/d</span></li>`).join('')
@@ -2633,10 +2106,16 @@ function updateUI(force) {
   const list = document.getElementById('henList');
   list.innerHTML = S.hens.map(h => {
     const bad = !h.alive;
-    const tag = bad ? 'muerta' : h.sick ? 'enferma' : h.wet > 50 ? 'mojada' : h.health < 55 ? 'débil' : (h.layT < 60 ? 'poniendo' : '');
+    const sick = h.sick;
+    let tag = '';
+    if (bad) tag = 'muerta';
+    else if (sick) tag = h.disease ? `${h.disease.icon} ${h.disease.name}` : 'enferma';
+    else if (h.wet > 50) tag = 'mojada';
+    else if (h.health < 55) tag = 'débil';
+    else if (h.layT < 60) tag = 'poniendo';
     const bar = (v, col) => `<i><em style="width:${clamp(v, 0, 100)}%;background:${col}"></em></i>`;
     const cn = coopById(h.coop).name.replace('Galpón ', '');
-    return `<li class="${bad ? 'ded' : ''} ${S.sel === h.id ? 'sel' : ''}" data-id="${h.id}">
+    return `<li class="${bad ? 'ded' : ''} ${sick ? 'sick' : ''} ${S.sel === h.id ? 'sel' : ''}" data-id="${h.id}" title="${sick && h.disease ? h.disease.name : ''}">
       <span class="dot" style="background:${bad ? '#6a6f75' : h.plume[0]}"></span>
       <div>
         <div class="nm"><span>${h.name} <em>${cn}</em></span><span class="tag">${tag}</span></div>
@@ -2646,7 +2125,7 @@ function updateUI(force) {
   }).join('');
 }
 
-/* ============ Clasificación ============ */
+/* ============ CLASIFICACIÓN ============ */
 function openSort() {
   if (S.over) return;
   if (!S.pending.length) return logMsg('No hay huevos recogidos. Recoge con C.', 'warn', true);
@@ -2654,7 +2133,7 @@ function openSort() {
   selectedEggId = null;
   renderSortBed();
   document.querySelectorAll('.crate .slot').forEach(s => s.innerHTML = '');
-  document.getElementById('sortLayer').classList.remove('hidden');
+  showLayer('sortLayer');
   updateSelInfo();
   sortInfo();
 }
@@ -2672,11 +2151,9 @@ function renderSortBed() {
     e.dom = d;
   });
 }
-
 function sizeLabel(s) {
   return { S: 'Pequeño (S)', M: 'Mediano (M)', L: 'Grande (L)', XL: 'Muy grande (XL)', XXL: 'Yumbo (XXL)' }[s] || s;
 }
-
 function onEggClick(e) {
   if (ecrate(e)) { unplaceEgg(e); return; }
   if (selectedEggId === e.id) {
@@ -2695,7 +2172,6 @@ function onEggClick(e) {
   updateSelInfo();
   updateCrateArmed(true);
 }
-
 function unplaceEgg(e) {
   const bed = document.getElementById('eggBed');
   bed.appendChild(e.dom);
@@ -2705,28 +2181,19 @@ function unplaceEgg(e) {
   updateCrateArmed(false);
   sortInfo();
 }
-
 function updateSelInfo() {
   const el = document.getElementById('selInfo');
-  if (!selectedEggId) {
-    el.innerHTML = 'Selecciona un huevo para empezar.';
-    return;
-  }
+  if (!selectedEggId) { el.innerHTML = 'Selecciona un huevo para empezar.'; return; }
   const e = S.pending.find(x => x.id === selectedEggId);
   if (!e) { el.innerHTML = 'Selecciona un huevo para empezar'; return; }
   const target = ideal(e);
-  el.innerHTML = `Seleccionado: <b>${sizeLabel(e.size)}</b>${e.dirty ? ' · sucio' : ''}${e.crack ? ' · agrietado' : ''} → caja ideal <b>${target}</b>. Haz clic en una caja o pulsa <b>1-5</b>. <span style="color:#d95f4a">⚠ Mal clasificado = 0,20 €</span>`;
+  el.innerHTML = `Seleccionado: <b>${sizeLabel(e.size)}</b>${e.dirty ? ' · sucio' : ''}${e.crack ? ' · agrietado' : ''} → caja ideal <b>${target}</b>. Haz clic en una caja o pulsa <b>1-5</b>. <span style="color:#d95f4a">⚠ Mal clasificado = 1 € (−20% por grado de error)</span>`;
 }
-
 function updateCrateArmed(armed) {
   document.querySelectorAll('.crate').forEach(c => c.classList.toggle('armed', armed));
 }
-
 function placeSelectedInCrate(grade) {
-  if (!selectedEggId) {
-    toast('Primero selecciona un huevo', 'warn');
-    return;
-  }
+  if (!selectedEggId) { toast('Primero selecciona un huevo', 'warn'); return; }
   const e = S.pending.find(x => x.id === selectedEggId);
   if (!e) return;
   const crate = document.querySelector(`.crate[data-crate="${grade}"]`);
@@ -2739,7 +2206,6 @@ function placeSelectedInCrate(grade) {
   updateCrateArmed(false);
   sortInfo();
 }
-
 const ideal = e => {
   if (e.dirty || e.crack || e.size === 'S') return 'B';
   if (e.size === 'M') return 'A';
@@ -2749,6 +2215,19 @@ const ideal = e => {
   return 'B';
 };
 const ecrate = e => e.dom && e.dom.closest('.crate') ? e.dom.closest('.crate').dataset.crate : null;
+
+/* ⚠ Un huevo mal clasificado vale 1 € base, con penalización según cuántos grados se aleje de su caja ideal. */
+function misclassValue(e) {
+  const cr = ecrate(e);
+  if (!cr) return 0;
+  const idealIdx = GRADE_ORDER.indexOf(ideal(e));
+  const actualIdx = GRADE_ORDER.indexOf(cr);
+  const diff = Math.abs(idealIdx - actualIdx);
+  if (diff === 1) return 1.0;
+  if (diff === 2) return 0.7;
+  if (diff === 3) return 0.4;
+  return 0.2;
+}
 
 function clearCrates() {
   let moved = 0;
@@ -2764,7 +2243,6 @@ function clearCrates() {
   sortInfo();
   if (moved) toast(`Devueltos ${moved} huevos al almacén`, '');
 }
-
 function sortInfo() {
   const left = S.pending.filter(e => !ecrate(e)).length;
   const good = S.pending.filter(e => ecrate(e) === ideal(e)).length;
@@ -2773,27 +2251,22 @@ function sortInfo() {
     const cr = ecrate(e);
     if (!cr) continue;
     if (cr === ideal(e)) totalValue += PRICE[cr];
-    else { totalValue += DAMAGED_PRICE; wrongValue++; }
+    else { totalValue += misclassValue(e); wrongValue++; }
   }
   document.getElementById('sortInfo').innerHTML =
-    `Sin clasificar: <b>${left}</b> · aciertos: <b>${good}/${S.pending.length}</b> · valor: <b>${eur(totalValue)}</b>` +
+    `En almacén: <b>${S.pending.length}</b> (a salvo) · Sin clasificar: <b>${left}</b> · aciertos: <b>${good}/${S.pending.length}</b> · valor: <b>${eur(totalValue)}</b>` +
     (wrongValue ? ` · <span style="color:#d95f4a">${wrongValue} dañados</span>` : '');
 }
-
 function doSell() {
   let inc = 0, mis = 0, moved = 0, ok = 0;
   for (const e of S.pending) {
     const cr = ecrate(e);
     if (!cr) continue;
     moved++;
-    const good = cr === ideal(e);
-    if (good) { ok++; inc += PRICE[cr]; }
-    else      { mis++; inc += DAMAGED_PRICE; }
+    if (cr === ideal(e)) { ok++; inc += PRICE[cr]; }
+    else { mis++; inc += misclassValue(e); }
   }
-  if (!moved) {
-    toast('No hay huevos colocados en cajas para vender', 'warn');
-    return;
-  }
+  if (!moved) { toast('No hay huevos colocados en cajas para vender', 'warn'); return; }
   S.money += inc;
   S.sold += moved; S.lvlSold += moved; S.dayIncome += inc;
   S.pending = S.pending.filter(e => !ecrate(e));
@@ -2803,21 +2276,18 @@ function doSell() {
   logMsg(msg, mis ? 'warn' : 'good', true);
   closeSort();
 }
-
 function closeSort() {
-  document.getElementById('sortLayer').classList.add('hidden');
+  hideLayer('sortLayer');
   S.sorting = false; S.paused = false;
   selectedEggId = null;
   updateUI(true);
 }
-
 function buildSpeedButtons() {
   const row = document.getElementById('speedRow');
   row.innerHTML = SPEEDS.map(s => {
     const realMin = Math.round(24 * 60 / s);
     const lbl = realMin >= 60 ? `${(realMin / 60).toFixed(1)} h` : `${realMin} min`;
-    return `<button class="btn sm spd ${s === S.speed ? 'on' : ''}" data-spd="${s}"
-      title="1 día = ${lbl} reales">${SPEED_LABELS[s]}</button>`;
+    return `<button class="btn sm spd ${s === S.speed ? 'on' : ''}" data-spd="${s}" title="1 día = ${lbl} reales">${SPEED_LABELS[s]}</button>`;
   }).join('');
   row.querySelectorAll('.spd').forEach(b => b.addEventListener('click', () => {
     S.speed = +b.dataset.spd;
@@ -2827,7 +2297,7 @@ function buildSpeedButtons() {
   }));
 }
 
-/* ============ Enlaces ============ */
+/* ============ ENLACES ============ */
 const on = (id, fn) => document.getElementById(id).addEventListener('click', fn);
 
 on('bFeed',  () => feedCoop(curCoop()));
@@ -2849,14 +2319,10 @@ on('btnSortClose', () => {
   if (S.pending.length) logMsg(`${S.pending.length} huevo(s) sin clasificar quedan a salvo en almacén.`, 'warn');
   closeSort();
 });
-on('bPause', () => {
-  if (!S.over && !S.sorting) { S.paused = !S.paused; updateUI(true); }
-});
-on('bRestart', () => {
-  if (confirm('¿Reiniciar el nivel actual?')) startLevel(S.level);
-});
+on('bPause', () => { if (!S.over && !S.sorting) { S.paused = !S.paused; updateUI(true); } });
+on('bRestart', () => { if (confirm('¿Reiniciar el nivel actual?')) startLevel(S.level); });
 
-on('henBuyCancel', () => document.getElementById('henModal').classList.add('hidden'));
+on('henBuyCancel', () => hideLayer('henModal'));
 on('henBuyConfirm', confirmHenBuy);
 on('henMinus', () => {
   const q = document.getElementById('henQty');
@@ -2876,13 +2342,11 @@ document.getElementById('coopList').addEventListener('click', ev => {
   S.selCoop = +b.dataset.coop;
   updateUI(true);
 });
-
 document.getElementById('hireList').addEventListener('click', ev => {
   const b = ev.target.closest('[data-hire]');
   if (!b) return;
   hireWorker(b.dataset.hire);
 });
-
 document.getElementById('henList').addEventListener('click', ev => {
   const li = ev.target.closest('li');
   if (!li) return;
@@ -2891,11 +2355,9 @@ document.getElementById('henList').addEventListener('click', ev => {
   if (h && h.alive) S.selCoop = h.coop;
   updateUI(true);
 });
-
 document.querySelectorAll('.crate').forEach(crate => {
   crate.addEventListener('click', () => placeSelectedInCrate(crate.dataset.crate));
 });
-
 document.querySelectorAll('.btn').forEach(btn => {
   btn.addEventListener('mousemove', e => {
     const r = btn.getBoundingClientRect();
@@ -2908,15 +2370,11 @@ cv.addEventListener('click', ev => {
   const r = cv.getBoundingClientRect();
   const x = (ev.clientX - r.left) * (W / r.width);
   const y = (ev.clientY - r.top) * (H / r.height);
-
   let hitCoop = null;
   for (const c of S.coops) {
-    if (x >= c.rect.x && x <= c.rect.x + c.rect.w && y >= c.rect.y && y <= c.rect.y + c.rect.h) {
-      hitCoop = c; break;
-    }
+    if (x >= c.rect.x && x <= c.rect.x + c.rect.w && y >= c.rect.y && y <= c.rect.y + c.rect.h) { hitCoop = c; break; }
   }
   if (hitCoop) S.selCoop = hitCoop.id;
-
   let best = null, bd = 34;
   for (const h of S.hens) {
     const d = Math.hypot(h.x - x, h.y - y);
@@ -2925,17 +2383,13 @@ cv.addEventListener('click', ev => {
   if (best) { S.sel = best.id; S.selCoop = best.coop; }
   updateUI(true);
 });
-
 cv.addEventListener('mousemove', ev => {
   const r = cv.getBoundingClientRect();
   const x = (ev.clientX - r.left) * (W / r.width);
   const y = (ev.clientY - r.top) * (H / r.height);
-
   let hoverCoop = null;
   for (const c of S.coops) {
-    if (x >= c.rect.x && x <= c.rect.x + c.rect.w && y >= c.rect.y && y <= c.rect.y + c.rect.h) {
-      hoverCoop = c.id; break;
-    }
+    if (x >= c.rect.x && x <= c.rect.x + c.rect.w && y >= c.rect.y && y <= c.rect.y + c.rect.h) { hoverCoop = c.id; break; }
   }
   let hoverHen = null;
   for (const h of S.hens) {
@@ -2946,12 +2400,7 @@ cv.addEventListener('mousemove', ev => {
   S.hoverHen = hoverHen;
   cv.style.cursor = (hoverCoop || hoverHen) ? 'pointer' : 'default';
 });
-
-cv.addEventListener('mouseleave', () => {
-  S.hoverCoop = null;
-  S.hoverHen = null;
-  cv.style.cursor = 'default';
-});
+cv.addEventListener('mouseleave', () => { S.hoverCoop = null; S.hoverHen = null; cv.style.cursor = 'default'; });
 
 const KEYS = {
   e: () => feedCoop(curCoop()),
@@ -2972,8 +2421,8 @@ const KEYS = {
 addEventListener('keydown', ev => {
   if (ev.repeat) return;
   const k = ev.key.toLowerCase();
-
-  if (!document.getElementById('sortLayer').classList.contains('hidden')) {
+  const sortOpen = !document.getElementById('sortLayer').classList.contains('hidden');
+  if (sortOpen) {
     const gradeMap = { '1': 'B', '2': 'A', '3': 'AA', '4': 'EX', '5': 'Yumbo' };
     if (gradeMap[k]) { ev.preventDefault(); placeSelectedInCrate(gradeMap[k]); return; }
     if (k === 'escape') { closeSort(); return; }
@@ -2981,7 +2430,6 @@ addEventListener('keydown', ev => {
     if (k === 'delete' || k === 'backspace') { clearCrates(); return; }
     return;
   }
-
   if (k === ' ') {
     ev.preventDefault();
     if (!S.over) { S.paused = !S.paused; updateUI(true); }
@@ -2996,7 +2444,6 @@ addEventListener('keydown', ev => {
     if (k === 'escape') document.getElementById('henBuyCancel').click();
     return;
   }
-
   if (k >= '1' && k <= '6') {
     const i = +k - 1;
     if (S.coops[i]) { S.selCoop = S.coops[i].id; updateUI(true); }
@@ -3005,12 +2452,11 @@ addEventListener('keydown', ev => {
   if (KEYS[k]) { ev.preventDefault(); KEYS[k](); }
 });
 
-/* ============ Bucle ============ */
+/* ============ BUCLE ============ */
 let last = performance.now();
 function frame(now) {
   const dtReal = Math.min(0.06, (now - last) / 1000);
   last = now;
-
   if (!S.paused && !S.over && !S.sorting) {
     const dm = dtReal * REAL_MINS_PER_SEC * S.speed;
     for (const h of S.hens) if (h.alive) tickLay(h, dm);
